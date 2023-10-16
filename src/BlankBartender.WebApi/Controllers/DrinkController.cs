@@ -84,11 +84,11 @@ public class DrinkController : ControllerBase
     [Route("available/all/")]
     public async Task<ActionResult> GetAvailableDrinks()
     {
-//#if !DEBUG
+#if !DEBUG
 //        _lightsService.TurnLight("blue", false);
 //        _lightsService.TurnLight("red", false);
-//        _displayService.MachineReadyForUse();
-//#endif
+        _displayService.MachineReadyForUse();
+#endif
         _drinks = _cocktailService.GetAvaiableCocktails();
         return new JsonResult(new
         {
@@ -99,11 +99,11 @@ public class DrinkController : ControllerBase
     [Route("all/")]
     public async Task<ActionResult> GetDrinks()
     {
-//#if !DEBUG
+#if !DEBUG
 //        _lightsService.TurnLight("blue", false);
 //        _lightsService.TurnLight("red", false);
-//        _displayService.MachineReadyForUse();
-//#endif
+        _displayService.MachineReadyForUse();
+#endif
         _drinks = _cocktailService.GetAllCocktails();
         return new JsonResult(new
         {

@@ -36,11 +36,11 @@ namespace BlankBartender.WebApi.Services
 #if !DEBUG
 
                 redLightController = new GpioController();
-                redLightController.OpenPin(lights.Where(light => light.Name == "red").First().Pin, PinMode.Output);
+                redLightController.OpenPin(lights.Where(light => light.Name == "red").First().Pin, PinMode.Output, PinValue.High);
                 blueLightController = new GpioController();
-                blueLightController.OpenPin(lights.Where(light => light.Name == "blue").First().Pin, PinMode.Output);
+                blueLightController.OpenPin(lights.Where(light => light.Name == "blue").First().Pin, PinMode.Output, PinValue.High);
                 greenLightController = new GpioController();
-                greenLightController.OpenPin(lights.Where(light => light.Name == "green").First().Pin, PinMode.Output);
+                greenLightController.OpenPin(lights.Where(light => light.Name == "green").First().Pin, PinMode.Output, PinValue.High);
 #endif
             }
         }

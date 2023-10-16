@@ -35,8 +35,8 @@ var app = builder.Build();
 
 #if !DEBUG
     var light = new GpioController();
-    light.OpenPin(10, PinMode.Output);
-    light.Write(10, PinValue.Low);
+    light.OpenPin(23, PinMode.Output);
+    light.Write(23, PinValue.Low);
 
     using I2cDevice i2c = I2cDevice.Create(new I2cConnectionSettings(2, 0x27));
     using var driver = new Pcf8574(i2c);
