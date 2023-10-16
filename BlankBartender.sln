@@ -1,0 +1,57 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31611.283
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlankBartender.WebApi", "src\BlankBartender.WebApi\BlankBartender.WebApi.csproj", "{CBC01440-3108-4720-ACEF-87FD499EE0A3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BlankBartender.UI", "BlankBartender.UI", "{C8A02A31-3D82-4294-AEE5-F4727411890D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlankBartender.UI.Core", "src\BlankBartender.UI\BlankBartender.UI.Core\BlankBartender.UI.Core.csproj", "{02C19FF0-2690-4447-98E9-CC458E84F12F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlankBartender.UI.Web", "src\BlankBartender.UI\BlankBartender.UI.Web\BlankBartender.UI.Web.csproj", "{138814C8-62AD-4F24-BE38-1A4985F986E1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlankBartender.UI.Mobile", "src\BlankBartender.UI\BlankBartender.UI.Mobile\BlankBartender.UI.Mobile.csproj", "{A4D3F6E7-A33B-4F6E-8878-A403E7632D76}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlankBartender.Shared", "src\BlankBartender.Shared\BlankBartender.Shared.csproj", "{5062E69C-8651-4582-81BD-D26E3BCE2430}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CBC01440-3108-4720-ACEF-87FD499EE0A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBC01440-3108-4720-ACEF-87FD499EE0A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBC01440-3108-4720-ACEF-87FD499EE0A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBC01440-3108-4720-ACEF-87FD499EE0A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02C19FF0-2690-4447-98E9-CC458E84F12F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02C19FF0-2690-4447-98E9-CC458E84F12F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02C19FF0-2690-4447-98E9-CC458E84F12F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02C19FF0-2690-4447-98E9-CC458E84F12F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{138814C8-62AD-4F24-BE38-1A4985F986E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{138814C8-62AD-4F24-BE38-1A4985F986E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{138814C8-62AD-4F24-BE38-1A4985F986E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{138814C8-62AD-4F24-BE38-1A4985F986E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4D3F6E7-A33B-4F6E-8878-A403E7632D76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4D3F6E7-A33B-4F6E-8878-A403E7632D76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4D3F6E7-A33B-4F6E-8878-A403E7632D76}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{A4D3F6E7-A33B-4F6E-8878-A403E7632D76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4D3F6E7-A33B-4F6E-8878-A403E7632D76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4D3F6E7-A33B-4F6E-8878-A403E7632D76}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{5062E69C-8651-4582-81BD-D26E3BCE2430}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5062E69C-8651-4582-81BD-D26E3BCE2430}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5062E69C-8651-4582-81BD-D26E3BCE2430}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5062E69C-8651-4582-81BD-D26E3BCE2430}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{02C19FF0-2690-4447-98E9-CC458E84F12F} = {C8A02A31-3D82-4294-AEE5-F4727411890D}
+		{138814C8-62AD-4F24-BE38-1A4985F986E1} = {C8A02A31-3D82-4294-AEE5-F4727411890D}
+		{A4D3F6E7-A33B-4F6E-8878-A403E7632D76} = {C8A02A31-3D82-4294-AEE5-F4727411890D}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {61F7FB11-1E47-470C-91E2-47F8143E1572}
+	EndGlobalSection
+EndGlobal

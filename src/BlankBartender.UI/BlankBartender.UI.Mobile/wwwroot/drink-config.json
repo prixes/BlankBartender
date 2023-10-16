@@ -1,0 +1,136 @@
+{
+  "flow_rate": "60.0/100.0",
+  "drink_options": [
+    {
+      "name": "Gin",
+      "value": "gin"
+    },
+    {
+      "name": "Rum",
+      "value": "rum"
+    },
+    {
+      "name": "Vodka",
+      "value": "vodka"
+    },
+    {
+      "name": "Tequila",
+      "value": "tequila"
+    },
+    {
+      "name": "Tonic Water",
+      "value": "tonic"
+    },
+    {
+      "name": "Coke",
+      "value": "coke"
+    },
+    {
+      "name": "Orange Juice",
+      "value": "orangejuice"
+    },
+    {
+      "name": "Margarita Mix",
+      "value": "margaritamix"
+    }
+  ],
+  "drinks":
+    [
+      {
+        "name": "Rum & Coke",
+        "type":  1,
+        "ingredients": [
+          {
+            "rum": 50
+          },
+          {
+            "coke": 150
+          }
+        ]
+      },
+      {
+        "name": "Gin & Tonic",
+        "type": 1,
+        "ingredients": [
+          {
+            "gin": 50
+          },
+          {
+            "tonic": 150
+          }
+        ]
+      },
+      {
+        "name": "Long Island",
+        "type": 1,
+        "ingredients": [
+          {
+            "gin": 15
+          },
+          {
+            "rum": 15
+          },
+          {
+            "vodka": 15
+          },
+          {
+            "tequila": 15
+          },
+          {
+            "coke": 100
+          },
+          {
+            "orangejuice": 30
+          }
+        ]
+      },
+      {
+        "name": "Screwdriver",
+        "type": 1,
+        "ingredients": [
+          {
+            "vodka": 50
+          },
+          {
+            "orangejuice": 150
+          }
+        ]
+      },
+      {
+        "name": "Margarita",
+        "type": 1,
+        "ingredients": [
+          {
+            "tequila": 50
+          },
+          {
+            "margaritamix": 150
+          }
+        ]
+      },
+      {
+        "name": "Gin & Juice",
+        "type": 1,
+        "ingredients": [
+          {
+            "gin": 50
+          },
+          {
+            "orangejuice": 150
+          }
+        ]
+      },
+      {
+        "name": "Tequila Sunrise",
+        "type": 1,
+        "ingredients": [
+          {
+            "tequila": 50
+          },
+          {
+            "orangejuice": 150
+          }
+        ]
+      }
+  ]
+}

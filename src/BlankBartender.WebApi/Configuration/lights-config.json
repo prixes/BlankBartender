@@ -1,0 +1,16 @@
+{
+  "lights": [
+    {
+      "name": "blue",
+      "pin": 123
+    },
+    {
+      "name": "green",
+      "pin": 120
+    },
+    {
+      "name": "red",
+      "pin": 127
+    }
+  ]
+}

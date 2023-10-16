@@ -1,0 +1,32 @@
+﻿@page "/custom/cocktail/{Model}"
+<h2 class="cocktailName">Customize @drink.Name</h2>
+@if (_statusService.isProcessing)
+{
+    <p class="text-warning">Machine is busy please wait</p>
+}
+<div class="table">
+    <div class="container">
+        <div class="row">
+            @foreach (var ingradient in drink.Ingradients)
+            {
+                <div class="ingredients col-3">@ingradient.Key</div>
+                <Slider Value="@ingradient.Value" Key="@ingradient.Key" ValueChanged="@(val => UpdateValue(val))"></Slider>
+            }
+            <div class="text-center">
+                @if ((!drink.IsProcessing && !_statusService.isProcessing) || (drink.IsProcessing && _statusService.isProcessing))
+                {
+                    <button type="button" class="btn @(drink.IsProcessing ? "btn-warning" : "btn-primary")" disabled="@_statusService.isProcessing"
+                        @onclick="@(async () => await ProcessCustomDrink(drink))">
+                        @(drink.IsProcessing ? "Processing" : "Make")
+                    </button>
+                }
+            </div>
+        </div>
+
+        <div class="garnishes">
+            Drink can be garnished with following ingredients: @string.Join(", ",drink.Garnishes)
+        </div>
+    </div>
+</div>
+
+

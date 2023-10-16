@@ -1,0 +1,89 @@
+﻿@page "/Maintenance"
+
+<PageTitle>Maintenance</PageTitle>
+
+
+
+<h1>Maintenance</h1>
+
+<button type="button" class="btn @(isProcessing ? "btn-warning" : "btn-primary")"
+        @onclick="@(async () => await StartPumps())">
+  Start Pumps
+</button>
+<button type="button" class="btn @(isProcessing ? "btn-warning" : "btn-primary")"
+        @onclick="@(async () => await StopPumps())">
+  Stop Pumps
+</button>
+<button type="button" class="btn @(isInitializing ? "btn-warning" : "btn-primary")"
+        @onclick="@(async () => await InitializeLiquidFlow())">
+  Initialize
+</button>
+
+
+@if (pumps != null && pumps.Count() > 0)
+{
+
+    <div class="table text-center">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 col-2">
+            Pump Number
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 col-2">
+            Hardware pin
+          </div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 col-6">
+            Liquid
+          </div>
+        </div>
+            @foreach (var (pump, index) in pumps.Select((value, i) => (value, i)))
+            {
+
+
+            <div class="row">
+
+              <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 col-2">
+                        @pump.Number
+              </div>
+              <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 col-2">
+                        @pump.Pin
+              </div>
+              <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 col-6">
+                <select class="form-control" @bind="selectedLiquids[index]">
+
+                            @foreach (var liquid in liquids)
+                            {
+                                if (liquid == pump.Value)
+                                {
+                          <option value="@liquid" selected> @liquid </option>
+                                }
+                                else
+                                {
+                          <option value="@liquid"> @liquid </option>
+                                }
+
+                            }
+
+                </select>
+              </div>
+
+              <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 col-1">
+                        @if (selectedLiquids[index] != pump.Value)
+                        {
+                    <button type="button" class="btn @(isProcessing ? "btn-warning" : "btn-primary")"
+                @onclick="@(async () => await PumpLiquidChange(pump.Number, selectedLiquids[index]))">
+                                @(isProcessing ? "Saving changes" : "save")
+                    </button>
+                        }
+
+              </div>
+            </div>
+
+
+            }
+
+      </div>
+    </div>
+
+}

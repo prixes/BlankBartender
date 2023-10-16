@@ -1,0 +1,40 @@
+{
+  "pumps": [
+    {
+      "number": 1,
+      "pin": 118,
+      "value": "Orange juice",
+      "time": null
+    },
+    {
+      "number": 2,
+      "pin": 128,
+      "value": "Vodka",
+      "time": null
+    },
+    {
+      "number": 3,
+      "pin": 130,
+      "value": "Lime juice",
+      "time": null
+    },
+    {
+      "number": 4,
+      "pin": 131,
+      "value": "White rum",
+      "time": null
+    },
+    {
+      "number": 5,
+      "pin": 129,
+      "value": "Gin",
+      "time": null
+    },
+    {
+      "number": 6,
+      "pin": 132,
+      "value": "Simple syrup",
+      "time": null
+    }
+  ]
+}

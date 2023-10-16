@@ -1,0 +1,20 @@
+﻿<div class="col-7">
+  <input class="w-100" type="range" min="5" max="150" bind="@Value" oninput="@HandleValueChanged" ValueChanged="@ValueChanged" />
+</div>
+<div class="col-2 ingredients">@Value ml</div>
+
+@code {
+    [Parameter]
+    public float Value { get; set; }
+    [Parameter]
+    public string Key { get; set; }
+    [Parameter]
+    public EventCallback<Tuple<string, float>> ValueChanged { get; set; }
+
+    private async Task HandleValueChanged(ChangeEventArgs args)
+    {
+        Value = float.Parse(args.Value.ToString());
+        await ValueChanged.InvokeAsync(new Tuple<string, float>(Key, Value));
+        StateHasChanged();
+    }
+}

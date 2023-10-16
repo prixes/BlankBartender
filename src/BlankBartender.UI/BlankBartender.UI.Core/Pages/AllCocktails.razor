@@ -1,0 +1,46 @@
+﻿@page "/"
+
+<PageTitle>Alcoholic Cocktails</PageTitle>
+
+<div class="table">
+    <div class="row">
+        <h1>All cocktails catalog</h1>
+    </div>
+    <div class="row">
+        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 col-8">
+            <input type="text" @bind-value="_searchQuery" @bind-value:event="oninput" placeholder="Search cocktails..." class="@((_filteredDrinks != null && _filteredDrinks.Any()) ? "result-found" : "result-not-found")">
+        </div>
+    </div>
+</div>
+@if (_drinks == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="table">
+        <div class="container">
+            @foreach (var drink in _filteredDrinks)
+            {
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-12">
+                        <h4 class="cocktailName">
+                            @drink.Name
+                        </h4>
+                        <div class="ingredients">
+                            @(string.Join(", ", drink.Ingradients.Select(i => $"{i.Key} {i.Value}ml ")))
+                        </div>
+                        @if (drink.Garnishes.Count > 0)
+                        {
+                            <div class="garnishes">
+                                Garnish/Add:
+                                @(string.Join(", ", drink.Garnishes))
+                            </div>
+                        }
+                    </div>
+
+                </div>
+            }
+        </div>
+    </div>
+}

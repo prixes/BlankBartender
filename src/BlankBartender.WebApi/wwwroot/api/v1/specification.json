@@ -1,0 +1,107 @@
+{
+  "x-generator": "NSwag v13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))",
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Maui Blazor Template",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/Drink": {
+      "get": {
+        "tags": [
+          "Drink"
+        ],
+        "operationId": "Drink_StartProcessing",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Drink/all/": {
+      "get": {
+        "tags": [
+          "Drink"
+        ],
+        "operationId": "Drink_GetDrinks",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Drink/process": {
+      "get": {
+        "tags": [
+          "Drink"
+        ],
+        "operationId": "Drink_ProcessDrink",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Drink/make/cocktail/{type}": {
+      "get": {
+        "tags": [
+          "Drink"
+        ],
+        "operationId": "Drink_MakeCocktail",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}
