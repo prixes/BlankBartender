@@ -8,7 +8,7 @@ namespace BlankBartender.UI.Core.Services
     {
         private readonly IDrinkClient _drinkClient;
 
-        public DrinkService(IDrinkClient drinkClient, IConfigurationClient configurationClient)
+        public DrinkService(IDrinkClient drinkClient)
         {
             _drinkClient = drinkClient;
         }

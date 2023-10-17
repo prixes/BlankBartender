@@ -36,7 +36,10 @@ public static class MauiProgram
         handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
 
         HttpClient httpClient = new HttpClient(handler);
-        builder.Services.AddScoped<IDrinkService>(_ => new DrinkService(builder.Configuration["ApiUrl"], httpClient));
+        builder.Services.AddScoped<IDrinkClient>(_ => new DrinkClient(builder.Configuration["ApiUrl"], httpClient));
+        builder.Services.AddScoped<IConfigurationClient>(_ => new ConfigurationClient(builder.Configuration["ApiUrl"], httpClient));
+        builder.Services.AddScoped<IConfigurationService, ConfigurationService>();
+        builder.Services.AddScoped<IDrinkService, DrinkService>();
         builder.Services.AddScoped<IPlatformService, PlatformService>();
         builder.Services.AddScoped<IStatusService, StatusService>();
 

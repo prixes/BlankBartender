@@ -15,7 +15,10 @@ httpClient.DefaultRequestHeaders.Add("Access-Control-Allow-Origin", "*");
 httpClient.DefaultRequestHeaders.Add("Access-Control-Allow-Credentials", "true");
 builder.Services.AddScoped(_ => httpClient);
 builder.Services.AddScoped<IPlatformService, PlatformService>();
-builder.Services.AddScoped<IDrinkService>(_ => new DrinkService(builder.Configuration["ApiUrl"], httpClient));
+builder.Services.AddScoped<IDrinkClient>(_ => new DrinkClient(builder.HostEnvironment.BaseAddress, httpClient));
+builder.Services.AddScoped<IConfigurationClient>(_ => new ConfigurationClient(builder.HostEnvironment.BaseAddress, httpClient));
+builder.Services.AddScoped<IConfigurationService, ConfigurationService>();
+builder.Services.AddScoped<IDrinkService, DrinkService>();
 builder.Services.AddScoped<IStatusService, StatusService>();
 
 await builder.Build().RunAsync();
