@@ -32,7 +32,7 @@ namespace BlankBartender.UI.Core.Pages
         protected async Task Process(Drink drink)
         {
             drink.IsProcessing = true;
-            await _drinkService.Process(drink.Id);
+            await _drinkService.ProcessDrinkId(drink.Id);
             drink.IsProcessing = false;
         }
 

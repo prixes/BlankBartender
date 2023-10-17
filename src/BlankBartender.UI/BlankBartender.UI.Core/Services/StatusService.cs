@@ -1,9 +1,6 @@
 ﻿using BlankBartender.UI.Core.Interfaces;
-using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Configuration;
-using Microsoft.JSInterop;
-
 namespace BlankBartender.UI.Core.Services
 {
     public class StatusService : IStatusService
@@ -15,7 +12,7 @@ namespace BlankBartender.UI.Core.Services
         public event Action OnChange;
         private void NotifyStateChanged() => OnChange?.Invoke();
 
-        public StatusService(IConfiguration Configuration) 
+        public StatusService(IConfiguration Configuration)
         {
             this.Configuration = Configuration;
         }

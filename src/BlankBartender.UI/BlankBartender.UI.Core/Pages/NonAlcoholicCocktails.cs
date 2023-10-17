@@ -45,7 +45,7 @@ public partial class NonAlcoholicCocktails
     protected async Task Process(Drink drink)
     {
         drink.IsProcessing = true;
-        await _drinkService.Process(drink.Id);
+        await _drinkService.ProcessDrinkId(drink.Id);
         drink.IsProcessing = false;
     }
 

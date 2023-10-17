@@ -7,7 +7,7 @@ namespace BlankBartender.UI.Core.Pages;
 public partial class PumpMaintenance
 {
     [Inject]
-    public IDrinkService _service { get; set; } = default!;
+    public IConfigurationService _service { get; set; } = default!;
     public bool isProcessing { get; set; } = false;
     public bool isInitializing { get; set; } = false;
     public IEnumerable<string> liquids;

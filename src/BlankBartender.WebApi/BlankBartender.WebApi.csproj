@@ -8,19 +8,23 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Iot.Device.Bindings" Version="2.2.0" />
+		<PackageReference Include="Iot.Device.Bindings" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
-		<PackageReference Include="NSwag.AspNetCore" Version="13.17.0" />
-		<PackageReference Include="NSwag.MSBuild" Version="13.17.0">
+		<PackageReference Include="NSwag.AspNetCore" Version="13.20.0" />
+		<PackageReference Include="NSwag.MSBuild" Version="13.20.0">
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="System.Device.Gpio" Version="2.2.0" />
+		<PackageReference Include="System.Device.Gpio" Version="3.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\BlankBartender.Shared\BlankBartender.Shared.csproj" />
 	</ItemGroup>
+  
+  <PropertyGroup>
+    <NSwagExe_Net70>"C:\Program Files (x86)\Rico Suter\NSwagStudio\Net70\dotnet-nswag.exe"</NSwagExe_Net70>
+  </PropertyGroup>
 
 	<ItemGroup>
 	  <Folder Include="wwwroot\" />
@@ -46,13 +50,12 @@
 	  <Optimize>True</Optimize>
 	</PropertyGroup>
 
-	<Target Name="NSwag" AfterTargets="PostBuildEvent" Condition=" '$(Configuration)' == 'Release' ">
-		<Exec WorkingDirectory="$(ProjectDir)" EnvironmentVariables="ASPNETCORE_ENVIRONMENT=Development" Command="$(NSwagExe_Net70) run /variables:Configuration=$(Configuration)" />
-
+  <Target Name="NSwag" AfterTargets="ComputeFilesToPublish" Condition=" '$(Configuration)' == 'Release' ">
+    <Exec WorkingDirectory="$(ProjectDir)" EnvironmentVariables="ASPNETCORE_ENVIRONMENT=Development" Command="$(NSwagExe_Net70) run config.nswag" />
   </Target>
-  <Target Name="NSwag" AfterTargets="ComputeFilesToPublish" Condition=" '$(Configuration)' == 'Debug' ">
-    <Exec WorkingDirectory="$(ProjectDir)" EnvironmentVariables="ASPNETCORE_ENVIRONMENT=Development" Command="$(NSwagExe_Net70) run /variables:Configuration=$(Configuration)" />
 
+  <Target Name="NSwag" AfterTargets="PostBuildEvent" Condition=" '$(Configuration)' == 'Debug' ">
+    <Exec WorkingDirectory="$(ProjectDir)" EnvironmentVariables="ASPNETCORE_ENVIRONMENT=Development" Command="$(NSwagExe_Net70) run config.nswag" />
   </Target>
 
   <Target Name="RunWebpack" AfterTargets="PostBuildEvent">
