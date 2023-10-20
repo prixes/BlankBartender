@@ -44,19 +44,20 @@
 
 	<PropertyGroup>
 		<RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+		<!--<PlatformTarget>ARM64</PlatformTarget>-->
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 	  <Optimize>True</Optimize>
 	</PropertyGroup>
 
-  <Target Name="NSwag" AfterTargets="ComputeFilesToPublish" Condition=" '$(Configuration)' == 'Release' ">
+  <!--<Target Name="NSwag" AfterTargets="ComputeFilesToPublish" Condition=" '$(Configuration)' == 'Release' ">
     <Exec WorkingDirectory="$(ProjectDir)" EnvironmentVariables="ASPNETCORE_ENVIRONMENT=Development" Command="$(NSwagExe_Net70) run config.nswag" />
-  </Target>
+  </Target>-->
 
-  <Target Name="NSwag" AfterTargets="PostBuildEvent" Condition=" '$(Configuration)' == 'Debug' ">
+  <!--<Target Name="NSwag" AfterTargets="PostBuildEvent" Condition=" '$(Configuration)' == 'Debug' ">
     <Exec WorkingDirectory="$(ProjectDir)" EnvironmentVariables="ASPNETCORE_ENVIRONMENT=Development" Command="$(NSwagExe_Net70) run config.nswag" />
-  </Target>
+  </Target>-->
 
   <Target Name="RunWebpack" AfterTargets="PostBuildEvent">
     <ItemGroup>

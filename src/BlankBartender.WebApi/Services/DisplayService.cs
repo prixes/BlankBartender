@@ -15,7 +15,6 @@ namespace BlankBartender.WebApi.Services
 
         public DisplayService()
         {
-#if !DEBUG
             i2c = I2cDevice.Create(new I2cConnectionSettings(2, 0x27));
             driver = new Pcf8574(i2c);
             lcd = new Lcd2004(registerSelectPin: 0,
@@ -25,7 +24,7 @@ namespace BlankBartender.WebApi.Services
                                         backlightBrightness: 0.1f,
                                         readWritePin: 1,
                                         controller: new GpioController(PinNumberingScheme.Logical, driver));
-#endif
+
         }
 
         public async Task PrepareStartDisplay(Drink drink)
@@ -35,7 +34,7 @@ namespace BlankBartender.WebApi.Services
             Write($"Start making");
             lcd.SetCursorPosition(0, 1);
             Write($"{drink.Name}");
-            Thread.Sleep(3000);
+            await Task.Delay(3000);
             lcd.Clear();
             lcd.SetCursorPosition(0, 0);
             Write($"{drink.Name}");
@@ -67,20 +66,19 @@ namespace BlankBartender.WebApi.Services
         }
         public async Task Countdown(int time)
         {
-#if !DEBUG
             for (int seconds = 0; seconds < time; seconds++)
             {
                 lcd.SetCursorPosition(0, 1);
-                lcd.Write($"{time - seconds} seconds left".PadLeft(16));
+                string message = string.Format("{0,16}", $"{time - seconds} seconds left");
+                lcd.Write(message);
                 Thread.Sleep(980);
             }
-#endif
         }
 
         public void Write(string source)
         {
             int spaces = 16 - source.Length;
-            int padLeft = spaces / 2 + source.Length ;
+            int padLeft = spaces / 2 + source.Length;
             lcd.Write(source.PadLeft(padLeft).PadRight(16));
         }
     }

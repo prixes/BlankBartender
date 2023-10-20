@@ -4,10 +4,8 @@ using BlankBartender.WebApi.Services.Interfaces;
 using BlankBartender.WebApi.WorkerQueues;
 using Iot.Device.CharacterLcd;
 using Iot.Device.Pcx857x;
-using Microsoft.Extensions.DependencyInjection;
 using System.Device.Gpio;
 using System.Device.I2c;
-using System.Runtime.Intrinsics.X86;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,7 +31,6 @@ builder.Services.AddTransient<ILightsService, LightsService>();
 builder.Services.AddTransient<IPinService, PinService>();
 var app = builder.Build();
 
-#if !DEBUG
     var light = new GpioController();
     light.OpenPin(23, PinMode.Output);
     light.Write(23, PinValue.Low);
@@ -53,7 +50,6 @@ var app = builder.Build();
     lcd.Write("Machine is ready");
     lcd.SetCursorPosition(0, 1);
     lcd.Write("     for use");
-#endif
 
 app.UseCors(options =>
 {
@@ -64,10 +60,6 @@ app.UseCors(options =>
 
 app.UseOpenApi();
 app.UseSwaggerUi3();
-
-// Configure the HTTP request pipeline.
-
-//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
