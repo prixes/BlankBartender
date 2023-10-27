@@ -16,9 +16,10 @@ public class DrinkController : ControllerBase
     private readonly IPinService _pinService;
     private readonly IStatusService _statusService;
     private readonly IPumpService _pumpService;
+    private readonly IDetectionService _detectionService;
 
     public DrinkController(ILightsService lightsService, IDisplayService displayService,
-                               ICocktailService cocktailService, IPinService pinService, IStatusService statusService, IPumpService pumpService)
+                               ICocktailService cocktailService, IPinService pinService, IStatusService statusService, IPumpService pumpService, IDetectionService detectionService)
     {
         _cocktailService = cocktailService;
         _statusService = statusService;
@@ -29,6 +30,7 @@ public class DrinkController : ControllerBase
         _pumpService = pumpService;
 
         _pumps = _pumpService.GetConfiguration();
+        _detectionService = detectionService;
     }
 
 
@@ -57,9 +59,16 @@ public class DrinkController : ControllerBase
     }
 
     [Route("process")]
-    public async Task<ActionResult> ProcessDrink(IEnumerable<Pump> model)
+    public async Task<ActionResult> ProcessDrink(IEnumerable<Pump> model, string name = "")
     {
         _lightsService.StartCocktailLights();
+        _displayService.PlaceGlassMessage();
+        while (await _detectionService.DetectGlass() == false)
+        {
+            Console.WriteLine($"Glass detected failed");
+        }
+        Console.WriteLine($"Glass detected success");
+        await _displayService.PrepareStartDisplay(name);
 
         async Task ExecutePumpAction(Pump pump)
         {
@@ -121,7 +130,7 @@ public class DrinkController : ControllerBase
         }).ToList();
 
 
-        await _displayService.PrepareStartDisplay(drink);
+        await _displayService.PrepareStartDisplay(drink.Name);
 
 
         return await ProcessDrink(recipe);
@@ -160,13 +169,11 @@ public class DrinkController : ControllerBase
 
         var timeToMakeCocktail = (int)recipe.Max(x => x.Time) / 1050;
 
-        await _displayService.PrepareStartDisplay(drink);
+        await _displayService.PrepareStartDisplay(drink.Name);
 
         Console.WriteLine($"Start pouring");
-        return await ProcessDrink(recipe);
+        return await ProcessDrink(recipe, drink.Name);
     }
-
-
 
     private async Task CocktailDoneLightsAndDisplay()
     {

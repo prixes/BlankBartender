@@ -14,6 +14,9 @@ namespace BlankBartender.WebApi.Services
         private readonly GpioController greenLightController;
         private readonly GpioController blueLightController;
         public List<Light> lights;
+        public short redPin;
+        public short greenPin;
+        public short bluePin;
 
         public LightsService() 
         {
@@ -33,12 +36,15 @@ namespace BlankBartender.WebApi.Services
                     Name = p["name"].ToString(),
                     Pin = short.Parse(p["pin"].ToString()),
                 }).ToList();
+                redPin = lights.Where(light => light.Name == "red").First().Pin;
+                bluePin = lights.Where(light => light.Name == "blue").First().Pin;
+                greenPin = lights.Where(light => light.Name == "green").First().Pin;
                 redLightController = new GpioController();
-                redLightController.OpenPin(lights.Where(light => light.Name == "red").First().Pin, PinMode.Output, PinValue.High);
+                redLightController.OpenPin(redPin, PinMode.Output, PinValue.High);
                 blueLightController = new GpioController();
-                blueLightController.OpenPin(lights.Where(light => light.Name == "blue").First().Pin, PinMode.Output, PinValue.High);
+                blueLightController.OpenPin(bluePin, PinMode.Output, PinValue.High);
                 greenLightController = new GpioController();
-                greenLightController.OpenPin(lights.Where(light => light.Name == "green").First().Pin, PinMode.Output, PinValue.High);
+                greenLightController.OpenPin(greenPin, PinMode.Output, PinValue.High);
             }
         }
 
@@ -55,15 +61,18 @@ namespace BlankBartender.WebApi.Services
             if (on == true) pinValue = PinValue.Low; else pinValue = PinValue.High;
 
             switch (light)
-            {
+            {   
                 case "red":
-                    redLightController.Write(lights.Where(light => light.Name == "red").First().Pin, pinValue);
+                    if(redLightController.Read(redPin) != pinValue)
+                        redLightController.Write(redPin, pinValue);
                     break;
                 case "blue":
-                    blueLightController.Write(lights.Where(light => light.Name == "blue").First().Pin, pinValue);
+                    if (blueLightController.Read(bluePin) != pinValue)
+                        blueLightController.Write(bluePin, pinValue);
                     break;
                 case "green":
-                    greenLightController.Write(lights.Where(light => light.Name == "green").First().Pin, pinValue);
+                    if (greenLightController.Read(greenPin) != pinValue)
+                        greenLightController.Write(greenPin, pinValue);
                     break;
             }
         }

@@ -4,8 +4,10 @@ using BlankBartender.WebApi.Services.Interfaces;
 using BlankBartender.WebApi.WorkerQueues;
 using Iot.Device.CharacterLcd;
 using Iot.Device.Pcx857x;
+using OpenCvSharp;
 using System.Device.Gpio;
 using System.Device.I2c;
+using System.Text.RegularExpressions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,19 +23,23 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddSignalR();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddOpenApiDocument(configure => { configure.Title = "Maui Blazor Template"; });
 builder.Services.AddHostedService<QueuedHostedService>();
 builder.Services.AddSingleton<IStatusService, StatusService>();
 builder.Services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
+builder.Services.AddSingleton<IDisplayService, DisplayService>();
+builder.Services.AddSingleton<ILightsService, LightsService>();
+builder.Services.AddSingleton<IPinService, PinService>();
+builder.Services.AddSingleton<IPumpService, PumpService>();
+builder.Services.AddSingleton<VideoCapture>();
+builder.Services.AddSingleton<IDetectionService, DetectionService>();
 builder.Services.AddTransient<ICocktailService, CocktailService>();
-builder.Services.AddTransient<IDisplayService, DisplayService>();
-builder.Services.AddTransient<ILightsService, LightsService>();
-builder.Services.AddTransient<IPinService, PinService>();
+
 var app = builder.Build();
 
     var light = new GpioController();
-    light.OpenPin(23, PinMode.Output);
-    light.Write(23, PinValue.Low);
+    light.OpenPin(120, PinMode.Output);
+    if(light.Read(120) == PinValue.High)
+        light.Write(120, PinValue.Low);
 
     using I2cDevice i2c = I2cDevice.Create(new I2cConnectionSettings(2, 0x27));
     using var driver = new Pcf8574(i2c);

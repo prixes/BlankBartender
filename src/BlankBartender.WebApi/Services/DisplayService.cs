@@ -24,20 +24,19 @@ namespace BlankBartender.WebApi.Services
                                         backlightBrightness: 0.1f,
                                         readWritePin: 1,
                                         controller: new GpioController(PinNumberingScheme.Logical, driver));
-
         }
 
-        public async Task PrepareStartDisplay(Drink drink)
+        public async Task PrepareStartDisplay(string name)
         {
             lcd.Clear();
             lcd.SetCursorPosition(0, 0);
             Write($"Start making");
             lcd.SetCursorPosition(0, 1);
-            Write($"{drink.Name}");
+            Write($"{name}");
             await Task.Delay(3000);
             lcd.Clear();
             lcd.SetCursorPosition(0, 0);
-            Write($"{drink.Name}");
+            Write($"{name}");
         }
 
         public async Task WriteFirstLineDisplay(string text)
@@ -63,6 +62,17 @@ namespace BlankBartender.WebApi.Services
             Write("Machine is ready");
             lcd.SetCursorPosition(0, 1);
             Write("for use");
+        }
+
+
+        public void PlaceGlassMessage()
+        {
+            lcd.Clear();
+            lcd.SetCursorPosition(0, 1);
+            lcd.SetCursorPosition(0, 0);
+            Write("Please place");
+            lcd.SetCursorPosition(0, 1);
+            Write("glass in holder");
         }
         public async Task Countdown(int time)
         {
