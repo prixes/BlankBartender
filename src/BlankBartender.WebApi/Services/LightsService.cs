@@ -1,6 +1,5 @@
 ﻿using BlankBartender.Shared;
 using BlankBartender.WebApi.Services.Interfaces;
-using Iot.Device.ExplorerHat;
 using Newtonsoft.Json.Linq;
 using System.Device.Gpio;
 

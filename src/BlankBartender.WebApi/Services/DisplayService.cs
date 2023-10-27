@@ -39,6 +39,11 @@ namespace BlankBartender.WebApi.Services
             Write($"{name}");
         }
 
+        public async Task Clear()
+        {
+            lcd.Clear();
+        }
+
         public async Task WriteFirstLineDisplay(string text)
         {
             lcd.SetCursorPosition(0, 0);

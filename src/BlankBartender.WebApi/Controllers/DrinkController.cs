@@ -1,6 +1,7 @@
 using BlankBartender.Shared;
 using Microsoft.AspNetCore.Mvc;
 using BlankBartender.WebApi.Services.Interfaces;
+using BlankBartender.WebApi.Services;
 
 namespace BlankBartender.WebApi.Controllers;
 
@@ -63,11 +64,31 @@ public class DrinkController : ControllerBase
     {
         _lightsService.StartCocktailLights();
         _displayService.PlaceGlassMessage();
-        while (await _detectionService.DetectGlass() == false)
+        var timeout = TimeSpan.FromSeconds(30);
+        var stopTime = DateTime.UtcNow.Add(timeout);
+
+        while (DateTime.UtcNow < stopTime)
         {
-            Console.WriteLine($"Glass detected failed");
+            if (await _detectionService.DetectGlass())
+            {
+                Console.WriteLine($"Glass detected success");
+                break;
+            }
+            else
+            {
+                Console.WriteLine($"Glass detected failed");
+            }
         }
-        Console.WriteLine($"Glass detected success");
+        if(DateTime.UtcNow > stopTime)
+        {
+            await _displayService.Clear();
+            await _displayService.WriteFirstLineDisplay("cocktail cancel!");
+            Thread.Sleep(1580);
+            _lightsService.TurnLight("green", true);
+            _displayService.MachineReadyForUse();
+            return Ok();
+        }
+
         await _displayService.PrepareStartDisplay(name);
 
         async Task ExecutePumpAction(Pump pump)
