@@ -7,43 +7,29 @@ namespace BlankBartender.WebApi.Services
 {
     public class LightsService : ILightsService
     {
-        private const string _lightConfigFileName = "lights-config.json";
-        private readonly string _lightConfigJson;
-        private readonly GpioController redLightController;
-        private readonly GpioController greenLightController;
-        private readonly GpioController blueLightController;
-        public List<Light> lights;
-        public short redPin;
-        public short greenPin;
-        public short bluePin;
+        private const string LightConfigFileName = "lights-config.json";
+        private readonly GpioController _gpioController = new GpioController();
+        private readonly Dictionary<string, short> _lightPins = new Dictionary<string, short>();
 
-        public LightsService() 
+        public LightsService()
         {
-            var lightsFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Configuration", _lightConfigFileName);
-            if (System.IO.File.Exists(lightsFilePath))
-            {
-                _lightConfigJson = System.IO.File.ReadAllText(lightsFilePath);
-            }
+            var lightsFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Configuration", LightConfigFileName);
+            if (!File.Exists(lightsFilePath)) return;
 
+            var lightConfigJson = File.ReadAllText(lightsFilePath);
+            if (string.IsNullOrEmpty(lightConfigJson)) return;
 
-            if (!string.IsNullOrEmpty(_lightConfigJson))
-            {
-                JObject lightJsonObject = JObject.Parse(_lightConfigJson);
-
-                lights = lightJsonObject["lights"].Select(p => new Light
+            var lights = JObject.Parse(lightConfigJson)["lights"]
+                .Select(p => new Light
                 {
                     Name = p["name"].ToString(),
-                    Pin = short.Parse(p["pin"].ToString()),
+                    Pin = short.Parse(p["pin"].ToString())
                 }).ToList();
-                redPin = lights.Where(light => light.Name == "red").First().Pin;
-                bluePin = lights.Where(light => light.Name == "blue").First().Pin;
-                greenPin = lights.Where(light => light.Name == "green").First().Pin;
-                redLightController = new GpioController();
-                redLightController.OpenPin(redPin, PinMode.Output, PinValue.High);
-                blueLightController = new GpioController();
-                blueLightController.OpenPin(bluePin, PinMode.Output, PinValue.High);
-                greenLightController = new GpioController();
-                greenLightController.OpenPin(greenPin, PinMode.Output, PinValue.High);
+
+            foreach (var light in lights)
+            {
+                _lightPins[light.Name] = light.Pin;
+                _gpioController.OpenPin(light.Pin, PinMode.Output, PinValue.High);
             }
         }
 
@@ -56,24 +42,11 @@ namespace BlankBartender.WebApi.Services
 
         public void TurnLight(string light, bool on)
         {
-            PinValue pinValue;
-            if (on == true) pinValue = PinValue.Low; else pinValue = PinValue.High;
+            if (!_lightPins.TryGetValue(light, out short pin)) return;
 
-            switch (light)
-            {   
-                case "red":
-                    if(redLightController.Read(redPin) != pinValue)
-                        redLightController.Write(redPin, pinValue);
-                    break;
-                case "blue":
-                    if (blueLightController.Read(bluePin) != pinValue)
-                        blueLightController.Write(bluePin, pinValue);
-                    break;
-                case "green":
-                    if (greenLightController.Read(greenPin) != pinValue)
-                        greenLightController.Write(greenPin, pinValue);
-                    break;
-            }
+            var pinValue = on ? PinValue.Low : PinValue.High;
+            if (_gpioController.Read(pin) != pinValue)
+                _gpioController.Write(pin, pinValue);
         }
     }
 }

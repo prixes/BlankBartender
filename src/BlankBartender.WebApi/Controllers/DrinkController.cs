@@ -1,7 +1,6 @@
 using BlankBartender.Shared;
 using Microsoft.AspNetCore.Mvc;
 using BlankBartender.WebApi.Services.Interfaces;
-using BlankBartender.WebApi.Services;
 
 namespace BlankBartender.WebApi.Controllers;
 
@@ -33,7 +32,6 @@ public class DrinkController : ControllerBase
         _pumps = _pumpService.GetConfiguration();
         _detectionService = detectionService;
     }
-
 
     [Route("available/all/")]
     public async Task<ActionResult> GetAvailableDrinks()
