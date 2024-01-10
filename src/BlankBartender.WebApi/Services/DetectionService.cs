@@ -20,8 +20,9 @@ namespace BlankBartender.WebApi.Services
         private UIntPtr ctx = default; // readonly ?
         private RknnInput[] inputs = new RknnInput[1];
         private Mat rawImage = new Mat();
-        private Mat rgbImage = new Mat();
-        private Mat padding = new Mat(640, 640, MatType.CV_8UC3, new Scalar(255, 255, 255));
+        private Mat padding = new Mat();
+        private Size size = new OpenCvSharp.Size(640, 480);
+
         private VideoCapture capture;
 
         public DetectionService()
@@ -100,18 +101,21 @@ namespace BlankBartender.WebApi.Services
 
         public async Task<bool> DetectGlass()
         {
-            this.capture = new VideoCapture(0, VideoCaptureAPIs.V4L); // 0 indicates the default camera
+            //this.capture = new VideoCapture(0, VideoCaptureAPIs.V4L); // 0 indicates the default camera
+            var pipeline = "v4l2src device=/dev/video0 ! video/x-raw, format=(string)NV12, width=(int)2592, height=(int)1944 ! videoconvert ! videoscale ! appsink";
+            var capture = new VideoCapture(pipeline, VideoCaptureAPIs.GSTREAMER);
+
             var isCaptured = capture.Read(rawImage);
             string filePath = "capturedImage.jpg";
             
             if (!capture.IsOpened())
                 return false;
             capture.Release();
-            Cv2.CopyTo(rawImage, padding.SubMat(0, rawImage.Height, 0, 640));
+            //Cv2.CopyTo(rawImage, padding.SubMat(0, 480, 0, 640));
+            Cv2.Resize(rawImage, padding, size);
+            //rgbImage = padding.CvtColor(ColorConversionCodes.BGR2RGB);
 
-            rgbImage = padding.CvtColor(ColorConversionCodes.BGR2RGB);
-
-            inputs[0].Buf = rgbImage.Data;
+            inputs[0].Buf = padding.Data;
             //var isSaved = rgbImage.SaveImage(filePath);  <---------------------- SAVE ACTUAL IMAGE
 
             bool success = Recognize(inputs, ctx, ret, io_num, outputAttrs);
