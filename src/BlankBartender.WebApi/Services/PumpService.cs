@@ -24,6 +24,7 @@ namespace BlankBartender.WebApi.Services.Interfaces
             {
                 Number = int.Parse(p["number"].ToString()),
                 Pin = short.Parse(p["pin"].ToString()),
+                FlowRate = int.Parse(p["flowRate"].ToString()),
                 Value = p["value"].ToString()
             }).ToList();
         }

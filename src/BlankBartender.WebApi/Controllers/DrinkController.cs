@@ -18,8 +18,10 @@ public class DrinkController : ControllerBase
     private readonly IPumpService _pumpService;
     private readonly IDetectionService _detectionService;
 
-    public DrinkController(ILightsService lightsService, IDisplayService displayService,
-                               ICocktailService cocktailService, IPinService pinService, IStatusService statusService, IPumpService pumpService, IDetectionService detectionService)
+    public DrinkController(ILightsService lightsService,     IDisplayService displayService,
+                           ICocktailService cocktailService, IPinService pinService, 
+                           IStatusService statusService,     IPumpService pumpService, 
+                           IDetectionService detectionService)
     {
         _cocktailService = cocktailService;
         _statusService = statusService;
@@ -136,8 +138,9 @@ public class DrinkController : ControllerBase
 
         var recipe = drink.Ingradients.Select(ingridient =>
         {
-            var time = ingridient.Value * 1220;
             var pump = _pumps.FirstOrDefault(x => x.Value == ingridient.Key);
+            var time = ingridient.Value * 1220 * pump.FlowRate;
+
             if (pump == null)
             {
                 // TODO: Handle the exception if the pump is not found.
@@ -148,9 +151,7 @@ public class DrinkController : ControllerBase
             return pump;
         }).ToList();
 
-
         await _displayService.PrepareStartDisplay(drink.Name);
-
 
         return await ProcessDrink(recipe);
     }
@@ -172,8 +173,8 @@ public class DrinkController : ControllerBase
 
         var recipe = drink.Ingradients.Select(ingridient =>
         {
-            var time = ingridient.Value * 1220;
             var pump = _pumps.FirstOrDefault(x => x.Value == ingridient.Key);
+            var time = ingridient.Value * 1220 * pump.FlowRate;
 
             if (pump == null)
             {
