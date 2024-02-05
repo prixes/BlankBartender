@@ -4,77 +4,77 @@
       "number": 1,
       "pin": 118,
       "value": "Orange juice",
-      "flowRate": 1,
+      "flowRate": 4,
       "time": null
     },
     {
       "number": 2,
       "pin": 128,
       "value": "Vodka",
-      "flowRate": 1,
+      "flowRate": 4,
       "time": null
     },
     {
       "number": 3,
       "pin": 130,
       "value": "Lime juice",
-      "flowRate": 1,
+      "flowRate": 4,
       "time": null
     },
     {
       "number": 4,
       "pin": 131,
       "value": "White rum",
-      "flowRate": 1,
+      "flowRate": 4,
       "time": null
     },
     {
       "number": 5,
       "pin": 129,
       "value": "Gin",
-      "flowRate": 1,
+      "flowRate": 4,
       "time": null
     },
     {
       "number": 6,
       "pin": 132,
       "value": "Simple syrup",
-      "flowRate": 1,
+      "flowRate": 4,
       "time": null
     },
     {
       "number": 7,
       "pin": 134,
       "value": "",
-      "flowRate": 1,
+      "flowRate": 4,
       "time": null
     },
     {
       "number": 8,
       "pin": 135,
       "value": "",
-      "flowRate": 4,
+      "flowRate": 1,
       "time": null
     },
     {
       "number": 9,
       "pin": 144,
       "value": "",
-      "flowRate": 4,
+      "flowRate": 1,
       "time": null
     },
     {
       "number": 10,
       "pin": 125,
       "value": "",
-      "flowRate": 4,
+      "flowRate": 1,
       "time": null
     },
     {
       "number": 11,
       "pin": 122,
       "value": "",
-      "flowRate": 4,
+      "flowRate": 1,
       "time": null
     },
 
@@ -82,14 +82,14 @@
       "number": 12,
       "pin": 121,
       "value": "",
-      "flowRate": 4,
+      "flowRate": 1,
       "time": null
     },
     {
       "number": 13,
-      "pin": 25,
+      "pin": 119,
       "value": "",
-      "flowRate": 4,
+      "flowRate": 1,
       "time": null
     }
   ]
