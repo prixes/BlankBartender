@@ -44,14 +44,14 @@
     },
     {
       "number": 7,
-      "pin": 134,
+      "pin": 133,
       "value": "",
       "flowRate": 4,
       "time": null
     },
     {
       "number": 8,
-      "pin": 135,
+      "pin": 124,
       "value": "",
       "flowRate": 1,
       "time": null
