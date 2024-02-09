@@ -3,6 +3,7 @@ using BlankBartender.WebApi.External;
 using BlankBartender.WebApi.Services.Interfaces;
 using System.Runtime.InteropServices;
 using OpenCvSharp;
+using System.Collections.Generic;
 
 namespace BlankBartender.WebApi.Services
 {
@@ -19,12 +20,14 @@ namespace BlankBartender.WebApi.Services
         private int ret;
         private UIntPtr ctx = default; // readonly ?
         private RknnInput[] inputs = new RknnInput[1];
-        private Mat rawImage = new Mat();
         private Mat padding = new Mat();
+        private Mat rawImage = new Mat();
         private Size size = new OpenCvSharp.Size(640, 480);
+        private bool first =true;
 
-        private VideoCapture capture;
 
+        private static string pipeline = "v4l2src device=/dev/video0 ! video/x-raw, format=(string)NV12, width=(int)2592, height=(int)1944 ! videoconvert ! videoscale ! appsink";
+        private VideoCapture capture = new VideoCapture(pipeline, VideoCaptureAPIs.GSTREAMER);
         public DetectionService()
         {
             modelData = System.IO.File.ReadAllBytes(modelPath);
@@ -88,7 +91,7 @@ namespace BlankBartender.WebApi.Services
                 width = inputAttrs[0].Dims[2];
                 channel = inputAttrs[0].Dims[3];
             }
-
+            //Console.WriteLine($"{ret}{ctx} ");
             inputs[0] = new RknnInput
             {
                 Index = 0,
@@ -97,34 +100,58 @@ namespace BlankBartender.WebApi.Services
                 Fmt = RknnTensorFormat.RKNN_TENSOR_NHWC,
                 PassThrough = 0
             };
+
+            var isCaptured = capture.Read(rawImage);
+
+                capture.Read(rawImage);
+                capture.Read(rawImage);
+
+
+            string filePath = "capturedImage.jpg";
+
+
+            if (!capture.IsOpened())
+            capture.Release();
+            Cv2.Resize(rawImage, padding, size);
+
+
+            inputs[0].Buf = padding.Data;
+            var isSaved = padding.SaveImage(filePath);
+
+            bool success = Recognize(inputs, ctx, ret, io_num, outputAttrs);
         }
 
         public async Task<bool> DetectGlass()
         {
             //this.capture = new VideoCapture(0, VideoCaptureAPIs.V4L); // 0 indicates the default camera
-            var pipeline = "v4l2src device=/dev/video0 ! video/x-raw, format=(string)NV12, width=(int)2592, height=(int)1944 ! videoconvert ! videoscale ! appsink";
-            var capture = new VideoCapture(pipeline, VideoCaptureAPIs.GSTREAMER);
+            
 
             var isCaptured = capture.Read(rawImage);
+            if (first)
+            {
+                capture.Read(rawImage);
+                capture.Read(rawImage);
+
+                first = false;
+            }
+
             string filePath = "capturedImage.jpg";
-            
-            if (!capture.IsOpened())
-                return false;
-            capture.Release();
-            //Cv2.CopyTo(rawImage, padding.SubMat(0, 480, 0, 640));
+
+
+           // if (!capture.IsOpened())
+           //     return false;
+           // capture.Release();
             Cv2.Resize(rawImage, padding, size);
-            //rgbImage = padding.CvtColor(ColorConversionCodes.BGR2RGB);
+          
 
             inputs[0].Buf = padding.Data;
-            //var isSaved = rgbImage.SaveImage(filePath);  <---------------------- SAVE ACTUAL IMAGE
+            var isSaved = padding.SaveImage(filePath);
 
             bool success = Recognize(inputs, ctx, ret, io_num, outputAttrs);
             return success;
         }
         private bool Recognize(RknnInput[] inputs, UIntPtr ctx, int ret, RknnInputOutputNum io_num, RknnTensorAttr[] outputAttrs)
         {
-
-
             // Initialize the outputs array...
             ret = RknnApi.rknn_inputs_set(ctx, io_num.input, inputs);
             if (ret < 0)
@@ -132,9 +159,6 @@ namespace BlankBartender.WebApi.Services
                 Console.WriteLine($"rknn_inputs_set error ret={ret}");
                 return false;
             }
-
-            //Console.WriteLine($"finish rknn_inputs_set");
-
             RknnOutput[] outputs = new RknnOutput[io_num.output];
             GCHandle handle = GCHandle.Alloc(outputs, GCHandleType.Pinned);
             IntPtr pointer = handle.AddrOfPinnedObject();
@@ -152,10 +176,6 @@ namespace BlankBartender.WebApi.Services
                 Console.WriteLine($"rknn_outputs_get error ret={ret}");
                 return false;
             }
-
-            // post process
-            float scale_w = 1;
-            float scale_h = 1;
 
             DetectResultGroup detect_result_group = new DetectResultGroup();
             List<float> out_scales = new List<float>();
@@ -178,76 +198,74 @@ namespace BlankBartender.WebApi.Services
             sbyte[] buf22 = new sbyte[outputs[2].Size];
             Buffer.BlockCopy(buf2, 0, buf22, 0, (int)outputs[2].Size);
             return PostProcess(buf00, buf11, buf22,
-                640, 640, 0.45f, 0.45f, scale_w, scale_h, out_zps, out_scales, detect_result_group);
+                640, 640, 0.25f, 0.45f, out_zps, out_scales, detect_result_group);
 
         }
 
 
-        private int Process(sbyte[] input, int[] anchor, int gridH, int gridW, int height, int width, int stride,
-                             List<float> filterBoxes, List<float> objProbs, List<int> classId, float threshold,
-                              int zp, float scale)
+      public int Process(sbyte[] input, int[] anchor, int gridH, int gridW, int height, int width, int stride,
+                         List<float> filterBoxes, List<float> objProbs, List<int> classId, float threshold,
+                          int zp, float scale)
+    {
+        int validCount = 0;
+        int gridLen = gridH * gridW;
+        float thres = unsigmoid(threshold);
+        int thresI8 = QntF32ToAffine(thres, zp, scale);
+
+        for (int a = 0; a < 3; a++)
         {
-
-            int validCount = 0;
-            int gridLen = gridH * gridW;
-            float thres = unsigmoid(threshold);
-            int thresI8 = QntF32ToAffine(thres, zp, scale);
-
-            for (int a = 0; a < 3; a++)
+            for (int i = 0; i < gridH; i++)
             {
-                for (int i = 0; i < gridH; i++)
+                for (int j = 0; j < gridW; j++)
                 {
-                    for (int j = 0; j < gridW; j++)
+                    sbyte boxConfidence = input[(15 * a + 4) * gridLen + i * gridW + j];
+
+                    if (boxConfidence >= thresI8)
                     {
-                        sbyte boxConfidence = input[(15 * a + 4) * gridLen + i * gridW + j];
+                        int offset = (15 * a) * gridLen + i * gridW + j;
+                        float box_x = (float)(Sigmoid((float)(DeqntAffineToF32(input[offset], zp, scale))) * 2.0 - 0.5);
+                        float box_y = (float)(Sigmoid((float)(DeqntAffineToF32(input[offset + gridLen], zp, scale))) * 2.0 - 0.5);
+                        float box_w = (float)(Sigmoid((float)(DeqntAffineToF32(input[offset + 2 * gridLen], zp, scale))) * 2.0);
+                        float box_h = (float)(Sigmoid((float)(DeqntAffineToF32(input[offset + 3 * gridLen], zp, scale))) * 2.0);
+                        box_x = (box_x + j) * stride;
+                        box_y = (box_y + i) * stride;
+                        box_w = box_w * box_w * anchor[a * 2];
+                        box_h = box_h * box_h * anchor[a * 2 + 1];
+                        box_x -= (float)(box_w / 2.0);
+                        box_y -= (float)(box_h / 2.0);
 
-                        if (boxConfidence >= thresI8)
+
+                        sbyte maxClassProbs = input[offset + 5 * gridLen];
+                        int maxClassId = 0;
+                        for (int k = 1; k < labels.Count; ++k)
                         {
-                            int offset = (15 * a) * gridLen + i * gridW + j;
-                            float box_x = (float)(Sigmoid((float)(DeqntAffineToF32(input[offset], zp, scale))) * 2.0 - 0.5);
-                            float box_y = (float)(Sigmoid((float)(DeqntAffineToF32(input[offset + gridLen], zp, scale))) * 2.0 - 0.5);
-                            float box_w = (float)(Sigmoid((float)(DeqntAffineToF32(input[offset + 2 * gridLen], zp, scale))) * 2.0);
-                            float box_h = (float)(Sigmoid((float)(DeqntAffineToF32(input[offset + 3 * gridLen], zp, scale))) * 2.0);
-                            box_x = (box_x + j) * stride;
-                            box_y = (box_y + i) * stride;
-                            box_w = box_w * box_w * anchor[a * 2];
-                            box_h = box_h * box_h * anchor[a * 2 + 1];
-                            box_x -= (float)(box_w / 2.0);
-                            box_y -= (float)(box_h / 2.0);
-
-
-                            sbyte maxClassProbs = input[offset + 5 * gridLen];
-                            int maxClassId = 0;
-                            for (int k = 1; k < labels.Count; ++k)
+                            sbyte prob = input[offset + (5 + k) * gridLen];
+                            if (prob > maxClassProbs)
                             {
-                                sbyte prob = input[offset + (5 + k) * gridLen];
-                                if (prob > maxClassProbs)
-                                {
-                                    maxClassId = k;
-                                    maxClassProbs = prob;
-                                }
+                                maxClassId = k;
+                                maxClassProbs = prob;
                             }
-                            float deqnt_cls_conf = Sigmoid((float)DeqntAffineToF32(maxClassProbs, zp, scale));
-                            float deqnt_box_conf = Sigmoid((float)DeqntAffineToF32(boxConfidence, zp, scale));
-                            float score = deqnt_cls_conf * deqnt_box_conf;
-                            if (score > thres)
-                            {
-                                objProbs.Add(score);
+                        }
+                        float deqnt_cls_conf = Sigmoid((float)DeqntAffineToF32(maxClassProbs, zp, scale));
+                        float deqnt_box_conf = Sigmoid((float)DeqntAffineToF32(boxConfidence, zp, scale));
+                        float score = deqnt_cls_conf * deqnt_box_conf;
+                        if (score > thres)
+                        {
+                            objProbs.Add(score);
 
-                                classId.Add(maxClassId);
-                                validCount++;
-                                filterBoxes.Add(box_x);
-                                filterBoxes.Add(box_y);
-                                filterBoxes.Add(box_w);
-                                filterBoxes.Add(box_h);
-                            }
+                            classId.Add(maxClassId);
+                            validCount++;
+                            filterBoxes.Add(box_x);
+                            filterBoxes.Add(box_y);
+                            filterBoxes.Add(box_w);
+                            filterBoxes.Add(box_h);
                         }
                     }
                 }
             }
-
-            return validCount;
         }
+        return validCount;
+    }
         private bool PostProcess(
         sbyte[] input0,
         sbyte[] input1,
@@ -256,8 +274,6 @@ namespace BlankBartender.WebApi.Services
         int model_in_w,
         float conf_threshold,
         float nms_threshold,
-        float scale_w,
-        float scale_h,
         List<int> qnt_zps,
         List<float> qnt_scales,
         DetectResultGroup group)
@@ -300,6 +316,7 @@ namespace BlankBartender.WebApi.Services
             int validCount = validCount0 + validCount1 + validCount2;
             if (validCount <= 0)
             {
+                Console.WriteLine("validCount = 0");
                 return false;
             }
 
@@ -319,7 +336,6 @@ namespace BlankBartender.WebApi.Services
 
             int last_count = 0;
             group.Count = 0;
-
             for (int i = 0; i < validCount; ++i)
             {
                 if (indexArray[i] == -1 || last_count >= 64)
@@ -341,6 +357,7 @@ namespace BlankBartender.WebApi.Services
                 }
             }
             group.Count = last_count;
+            if (group.Count == 0) System.Console.WriteLine($"{DateTime.Now.ToLongTimeString()} no glass");
 
             return group.Count > 0;
         }
@@ -359,7 +376,6 @@ namespace BlankBartender.WebApi.Services
         }
         static float DeqntAffineToF32(sbyte qnt, int zp, float scale) { return ((float)qnt - (float)zp) * scale; }
 
-
         private static float Sigmoid(float x)
         {
             return 1.0f / (1.0f + (float)Math.Exp(-x));
@@ -371,8 +387,7 @@ namespace BlankBartender.WebApi.Services
 
         }
 
-
-        private static int QuickSortIndiceInverse(List<float> input, int left, int right, List<int> indices)
+        public static int QuickSortIndiceInverse(List<float> input, int left, int right, List<int> indices)
         {
             float key;
             int keyIndex;
@@ -410,8 +425,7 @@ namespace BlankBartender.WebApi.Services
             return low;
         }
 
-
-        private static int Nms(int validCount, List<float> outputLocations, List<int> classIds, List<int> order, int filterId, float threshold)
+        public static int Nms(int validCount, List<float> outputLocations, List<int> classIds, List<int> order, int filterId, float threshold)
         {
             for (int i = 0; i < validCount; ++i)
             {
@@ -446,12 +460,11 @@ namespace BlankBartender.WebApi.Services
                         order[j] = -1;
                     }
                 }
-                //Console.WriteLine($"");
             }
             return 0;
         }
 
-        private static float CalculateOverlap(float xmin0, float ymin0, float xmax0, float ymax0, float xmin1, float ymin1, float xmax1, float ymax1)
+        public static float CalculateOverlap(float xmin0, float ymin0, float xmax0, float ymax0, float xmin1, float ymin1, float xmax1, float ymax1)
         {
             float area0 = (xmax0 - xmin0) * (ymax0 - ymin0);
             float area1 = (xmax1 - xmin1) * (ymax1 - ymin1);

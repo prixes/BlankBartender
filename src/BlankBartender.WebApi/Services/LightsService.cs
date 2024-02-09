@@ -35,8 +35,8 @@ namespace BlankBartender.WebApi.Services
 
         public void StartCocktailLights()
         {
-            TurnLight("blue", false);
-            TurnLight("green", false);
+            TurnLight("blue", true);
+            TurnLight("green", true);
             TurnLight("red", true);
         }
 

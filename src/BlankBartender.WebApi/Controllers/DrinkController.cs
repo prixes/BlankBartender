@@ -1,6 +1,8 @@
 using BlankBartender.Shared;
 using Microsoft.AspNetCore.Mvc;
 using BlankBartender.WebApi.Services.Interfaces;
+using System.Device.Gpio;
+using BlankBartender.WebApi.Services;
 
 namespace BlankBartender.WebApi.Controllers;
 
@@ -17,11 +19,14 @@ public class DrinkController : ControllerBase
     private readonly IStatusService _statusService;
     private readonly IPumpService _pumpService;
     private readonly IDetectionService _detectionService;
+    private readonly IServoService _servoService;
+
+    private readonly GpioController _gpioController = new GpioController();
 
     public DrinkController(ILightsService lightsService,     IDisplayService displayService,
                            ICocktailService cocktailService, IPinService pinService, 
                            IStatusService statusService,     IPumpService pumpService, 
-                           IDetectionService detectionService)
+                           IDetectionService detectionService,IServoService servoService)
     {
         _cocktailService = cocktailService;
         _statusService = statusService;
@@ -30,10 +35,11 @@ public class DrinkController : ControllerBase
         _pinService = pinService;
         _statusService = statusService;
         _pumpService = pumpService;
+        _servoService = servoService;
 
         _pumps = _pumpService.GetConfiguration();
         _detectionService = detectionService;
-    }
+}
 
     [Route("available/all/")]
     public async Task<ActionResult> GetAvailableDrinks()
@@ -77,6 +83,7 @@ public class DrinkController : ControllerBase
             else
             {
                 Console.WriteLine($"Glass detected failed");
+                Thread.Sleep(1580);
             }
         }
         if(DateTime.UtcNow > stopTime)
@@ -109,6 +116,16 @@ public class DrinkController : ControllerBase
             var countdownTask = _displayService.Countdown(timeToMakeCocktail);
             tasks.Add(countdownTask);
             await Task.WhenAll(tasks);
+
+            //Stirring process part
+            _servoService.MovePlatformToStirrer();
+            _servoService.MoveStirrerToGlass();
+            TurnStirrer(on:true);
+            Thread.Sleep(4000);
+            _servoService.MoveStirrerToStart();
+            TurnStirrer(on: false);
+            _servoService.MovePlatformToStart();
+
             await CocktailDoneLightsAndDisplay();
             _statusService.StopRunning();
             return Ok();
@@ -206,5 +223,12 @@ public class DrinkController : ControllerBase
 
         _lightsService.TurnLight("red", false);
         _displayService.MachineReadyForUse();
+    }
+
+    private void TurnStirrer(bool on)
+    {
+            var pinValue = on ? PinValue.Low : PinValue.High;
+            if (_gpioController.Read(147) != pinValue)
+                _gpioController.Write(147, pinValue);
     }
 }
