@@ -20,9 +20,13 @@ namespace BlankBartender.WebApi.Services
         Pca9685 pca;
 
         double t, easedValue, dutyCycle;
-        const int loopCount = 1000;
-        const double seconds = 1;
-        int delay = (int)(seconds * 1000) / loopCount;
+        const int loopCountPlatform = 1000;
+        const double platformSeconds = 1;
+        const int loopCountArmDown = 100;
+        const int loopCountArmUp = 100;
+        const double armDownSeconds = 2.7;
+        const double armUpSeconds = 2.5;
+        int delay = (int)(platformSeconds * 1000) / loopCountPlatform;
 
         PwmChannel plaformPwmChannel;
         PwmChannel stirrerPwmChannel;
@@ -37,7 +41,7 @@ namespace BlankBartender.WebApi.Services
 
         public void MovePlatformToStirrer()
         {
-            for (int i = loopCount / 2; i <= loopCount; i++)
+            for (int i = loopCountPlatform / 2; i <= loopCountPlatform; i++)
             {
                 plaformPwmChannel.DutyCycle = CalculateDutyCycle(i) / 4096.0;
                 Thread.Sleep(delay);
@@ -45,7 +49,7 @@ namespace BlankBartender.WebApi.Services
         }
         public void MovePlatformToStart()
         {
-            for (int i = loopCount; i >= loopCount / 2; i--)
+            for (int i = loopCountPlatform; i >= loopCountPlatform / 2; i--)
             {
                 plaformPwmChannel.DutyCycle = CalculateDutyCycle(i) / 4096.0;
                 Thread.Sleep(delay);
@@ -53,35 +57,56 @@ namespace BlankBartender.WebApi.Services
         }
         public void MoveStirrerToGlass() 
         {
-            for (int i = loopCount; i >= 0; i--)
+            for (int i = loopCountArmDown; i >= 0; i--)
             {
-                t = (double)i / loopCount;
-                easedValue = (Math.Sin((t - 0.5) * Math.PI) + 1) / 2;
-                dutyCycle = (1 - easedValue) * stirrerServoMaxClockwise + easedValue * stirrerServoStop;
+                t = (double)i / loopCountArmDown;
+                easedValue = (Math.Sin((t - 0.75) * Math.PI) + 1) / 2;
+                dutyCycle = (1 - easedValue) * stirrerServoMaxCounterClockwise + easedValue * stirrerServoStop;
 
                 stirrerPwmChannel.DutyCycle = dutyCycle / 4096.0;
-                Thread.Sleep((int)(seconds * 1000) / (2 * loopCount));
+                Thread.Sleep((int)(armDownSeconds * 1000) / (2 * loopCountArmDown));
                 Console.WriteLine(dutyCycle.ToString());
             }
+            for (int i = 0; i <= loopCountArmDown; i++)
+            {
+                t = (double)i / loopCountArmDown;
+                easedValue = (Math.Sin((t - 0.75) * Math.PI) + 1) / 2; // Eased value between 0 and 1.
+                dutyCycle = (1 - easedValue) * stirrerServoMaxCounterClockwise + easedValue * stirrerServoStop;
+
+                stirrerPwmChannel.DutyCycle = dutyCycle / 4096.0; // Convert to a value between 0 and 1.
+                Thread.Sleep((int)(armDownSeconds * 1000) / (2 * loopCountArmDown));
+                Console.WriteLine(dutyCycle.ToString());
+            }
+            //stirrerPwmChannel.DutyCycle = 307 / 4096.0; // Convert to a value between 0 and 1.
         }
 
         public void MoveStirrerToStart() 
         {
-            for (int i = 0; i <= loopCount; i++)
+            for (int i = loopCountArmUp; i >= 0; i--)
             {
-                t = (double)i / loopCount;
+                t = (double)i / loopCountArmUp;
+                easedValue = (Math.Sin((t - 0.5) * Math.PI) + 1) / 2;
+                dutyCycle = (1 - easedValue) * stirrerServoMaxClockwise + easedValue * stirrerServoStop;
+
+                stirrerPwmChannel.DutyCycle = dutyCycle / 4096.0;
+                Thread.Sleep((int)(armUpSeconds * 1000) / (2 * loopCountArmUp));
+                Console.WriteLine(dutyCycle.ToString());
+            }
+            for (int i = 0; i <= loopCountArmUp; i++)
+            {
+                t = (double)i / loopCountArmUp;
                 easedValue = (Math.Sin((t - 0.5) * Math.PI) + 1) / 2; // Eased value between 0 and 1.
                 dutyCycle = (1 - easedValue) * stirrerServoMaxClockwise + easedValue * stirrerServoStop;
 
                 stirrerPwmChannel.DutyCycle = dutyCycle / 4096.0; // Convert to a value between 0 and 1.
-                Thread.Sleep((int)(seconds * 1000) / (2 * loopCount));
+                Thread.Sleep((int)(armUpSeconds * 1000) / (2 * loopCountArmUp));
                 Console.WriteLine(dutyCycle.ToString());
             }
         }
 
         private double CalculateDutyCycle(int i)
         {
-            double t = (double)i / loopCount;
+            double t = (double)i / loopCountPlatform;
             double easedValue = (Math.Sin((t - 0.5) * Math.PI) + 1) / 2;
             return easedValue * platformServoMax + (1 - easedValue) * platformServoMin;
         }

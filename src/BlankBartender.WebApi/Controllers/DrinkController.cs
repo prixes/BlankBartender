@@ -1,8 +1,6 @@
 using BlankBartender.Shared;
 using Microsoft.AspNetCore.Mvc;
 using BlankBartender.WebApi.Services.Interfaces;
-using System.Device.Gpio;
-using BlankBartender.WebApi.Services;
 
 namespace BlankBartender.WebApi.Controllers;
 
@@ -20,13 +18,13 @@ public class DrinkController : ControllerBase
     private readonly IPumpService _pumpService;
     private readonly IDetectionService _detectionService;
     private readonly IServoService _servoService;
-
-    private readonly GpioController _gpioController = new GpioController();
+    private readonly IStirrerService _stirrerService;
 
     public DrinkController(ILightsService lightsService,     IDisplayService displayService,
                            ICocktailService cocktailService, IPinService pinService, 
                            IStatusService statusService,     IPumpService pumpService, 
-                           IDetectionService detectionService,IServoService servoService)
+                           IDetectionService detectionService,IServoService servoService,
+                           IStirrerService stirrerService)
     {
         _cocktailService = cocktailService;
         _statusService = statusService;
@@ -36,6 +34,7 @@ public class DrinkController : ControllerBase
         _statusService = statusService;
         _pumpService = pumpService;
         _servoService = servoService;
+        _stirrerService = stirrerService;
 
         _pumps = _pumpService.GetConfiguration();
         _detectionService = detectionService;
@@ -120,10 +119,16 @@ public class DrinkController : ControllerBase
             //Stirring process part
             _servoService.MovePlatformToStirrer();
             _servoService.MoveStirrerToGlass();
-            TurnStirrer(on:true);
-            Thread.Sleep(4000);
+            Console.WriteLine($"Start Stirrer");
+            //await _stirrerService.StartStirrer();
+            _pinService.SwitchPin(147, true);
+            await Task.Delay(3000);
+            Console.WriteLine($"wait");
+            Console.WriteLine($"go up");
             _servoService.MoveStirrerToStart();
-            TurnStirrer(on: false);
+            Console.WriteLine($"Start stop");
+            _pinService.SwitchPin(147, false);
+            //_stirrerService.StopStirrer();
             _servoService.MovePlatformToStart();
 
             await CocktailDoneLightsAndDisplay();
@@ -156,7 +161,7 @@ public class DrinkController : ControllerBase
         var recipe = drink.Ingradients.Select(ingridient =>
         {
             var pump = _pumps.FirstOrDefault(x => x.Value == ingridient.Key);
-            var time = ingridient.Value * 1220 * pump.FlowRate;
+            var time = ingridient.Value * 1220 / pump.FlowRate;
 
             if (pump == null)
             {
@@ -225,10 +230,5 @@ public class DrinkController : ControllerBase
         _displayService.MachineReadyForUse();
     }
 
-    private void TurnStirrer(bool on)
-    {
-            var pinValue = on ? PinValue.Low : PinValue.High;
-            if (_gpioController.Read(147) != pinValue)
-                _gpioController.Write(147, pinValue);
-    }
+
 }

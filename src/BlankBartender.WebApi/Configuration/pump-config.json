@@ -45,35 +45,35 @@
     {
       "number": 7,
       "pin": 133,
-      "value": "",
+      "value": "Whiskey",
       "flowRate": 4,
       "time": null
     },
     {
       "number": 8,
       "pin": 124,
-      "value": "",
+      "value": "Bitters",
       "flowRate": 1,
       "time": null
     },
     {
       "number": 9,
       "pin": 144,
-      "value": "",
+      "value": "Coke",
       "flowRate": 1,
       "time": null
     },
     {
       "number": 10,
       "pin": 125,
-      "value": "",
+      "value": "Lime juice",
       "flowRate": 1,
       "time": null
     },
     {
       "number": 11,
       "pin": 122,
-      "value": "",
+      "value": "Triple sec",
       "flowRate": 1,
       "time": null
     },
@@ -81,14 +81,14 @@
     {
       "number": 12,
       "pin": 121,
-      "value": "",
+      "value": "Vermouth",
       "flowRate": 1,
       "time": null
     },
     {
       "number": 13,
       "pin": 119,
-      "value": "",
+      "value": "Grenadine",
       "flowRate": 1,
       "time": null
     }

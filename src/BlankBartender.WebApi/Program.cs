@@ -34,6 +34,7 @@ builder.Services.AddSingleton<VideoCapture>();
 builder.Services.AddSingleton<IDetectionService, DetectionService>();
 builder.Services.AddSingleton<IServoService, ServoService>();
 builder.Services.AddTransient<ICocktailService, CocktailService>();
+builder.Services.AddSingleton<IStirrerService, StirrerService>(); 
 
 var app = builder.Build();
 
