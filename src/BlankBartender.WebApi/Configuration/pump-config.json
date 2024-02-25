@@ -4,69 +4,69 @@
       "number": 1,
       "pin": 118,
       "value": "Orange juice",
-      "flowRate": 4,
+      "flowRate": 5,
       "time": null
     },
     {
       "number": 2,
       "pin": 128,
-      "value": "Vodka",
-      "flowRate": 4,
+      "value": "Lime juice",
+      "flowRate": 5.5,
       "time": null
     },
     {
       "number": 3,
       "pin": 130,
-      "value": "Lime juice",
-      "flowRate": 4,
+      "value": "White rum",
+      "flowRate": 5.5,
       "time": null
     },
     {
       "number": 4,
       "pin": 131,
-      "value": "White rum",
-      "flowRate": 4,
+      "value": "Gin",
+      "flowRate": 4.5,
       "time": null
     },
     {
       "number": 5,
       "pin": 129,
-      "value": "Gin",
-      "flowRate": 4,
+      "value": "Vodka",
+      "flowRate": 5.5,
       "time": null
     },
     {
       "number": 6,
       "pin": 132,
-      "value": "Simple syrup",
-      "flowRate": 4,
+      "value": "Whiskey",
+      "flowRate": 4.8,
       "time": null
     },
     {
       "number": 7,
       "pin": 133,
-      "value": "Whiskey",
-      "flowRate": 4,
+      "value": "Bitters",
+      "flowRate": 4.0,
       "time": null
     },
     {
       "number": 8,
       "pin": 124,
-      "value": "Bitters",
-      "flowRate": 1,
+      "value": "Coke",
+      "flowRate": 1.5,
       "time": null
     },
     {
       "number": 9,
       "pin": 144,
-      "value": "Coke",
-      "flowRate": 1,
+      "value": "Lime juice",
+      "flowRate": 1.5,
       "time": null
     },
     {
       "number": 10,
       "pin": 125,
-      "value": "Lime juice",
+      "value": "Simple syrup",
       "flowRate": 1,
       "time": null
     },
@@ -74,7 +74,7 @@
       "number": 11,
       "pin": 122,
       "value": "Triple sec",
-      "flowRate": 1,
+      "flowRate": 1.5,
       "time": null
     },
 
@@ -82,14 +82,14 @@
       "number": 12,
       "pin": 121,
       "value": "Vermouth",
-      "flowRate": 1,
+      "flowRate": 1.5,
       "time": null
     },
     {
       "number": 13,
       "pin": 119,
       "value": "Grenadine",
-      "flowRate": 1,
+      "flowRate": 1.5,
       "time": null
     }
   ]

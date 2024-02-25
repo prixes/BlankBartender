@@ -35,7 +35,7 @@ namespace BlankBartender.WebApi.Services
         {
             i2cDevice = I2cDevice.Create(i2cConnection);
             pca = new Pca9685(i2cDevice, 50);
-            plaformPwmChannel = pca.CreatePwmChannel(0);
+            plaformPwmChannel = pca.CreatePwmChannel(7);
             stirrerPwmChannel = pca.CreatePwmChannel(1);
         }
 
@@ -77,7 +77,6 @@ namespace BlankBartender.WebApi.Services
                 Thread.Sleep((int)(armDownSeconds * 1000) / (2 * loopCountArmDown));
                 Console.WriteLine(dutyCycle.ToString());
             }
-            //stirrerPwmChannel.DutyCycle = 307 / 4096.0; // Convert to a value between 0 and 1.
         }
 
         public void MoveStirrerToStart() 

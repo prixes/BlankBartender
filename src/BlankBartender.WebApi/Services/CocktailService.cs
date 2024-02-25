@@ -34,7 +34,7 @@ namespace BlankBartender.WebApi.Services
                     Ingradients = d["ingredients"].Children<JObject>().Select(ing => new
                     {
                         Key = ing.Properties().First().Name,
-                        Value = float.Parse(ing.Properties().First().Value.ToString()),
+                        Value = decimal.Parse(ing.Properties().First().Value.ToString()),
                     }).ToDictionary(k => k.Key, v => v.Value),
                     Garnishes = d["garnishes"].Values<string>().ToList()
                 }).ToList();
@@ -76,7 +76,7 @@ namespace BlankBartender.WebApi.Services
                     Ingradients = d["ingredients"].Children<JObject>().Select(ing => new
                     {
                         Key = ing.Properties().First().Name,
-                        Value = float.Parse(ing.Properties().First().Value.ToString()),
+                        Value = decimal.Parse(ing.Properties().First().Value.ToString()),
                     }).ToDictionary(k => k.Key, v => v.Value),
                     Garnishes = d["garnishes"].Values<string>().ToList()
                 }).ToList();
