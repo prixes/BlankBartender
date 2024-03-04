@@ -112,8 +112,8 @@ public class DrinkController : ControllerBase
         try
         {
             var timeToMakeCocktail = (int)model.Max(x => x.Time) / 1050;
-            var countdownTask = _displayService.Countdown(timeToMakeCocktail);
-            tasks.Add(countdownTask);
+            Task.Run(() => _displayService.Countdown(timeToMakeCocktail + 15));
+
             await Task.WhenAll(tasks);
 
             //Stirring process part
@@ -175,7 +175,7 @@ public class DrinkController : ControllerBase
 
         await _displayService.PrepareStartDisplay(drink.Name);
 
-        return await ProcessDrink(recipe);
+        return await ProcessDrink(recipe, drink.Name);
     }
 
 

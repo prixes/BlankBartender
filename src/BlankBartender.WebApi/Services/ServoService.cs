@@ -41,26 +41,33 @@ namespace BlankBartender.WebApi.Services
 
         public void MovePlatformToStirrer()
         {
+            plaformPwmChannel.Start();
             for (int i = loopCountPlatform / 2; i <= loopCountPlatform; i++)
             {
                 plaformPwmChannel.DutyCycle = CalculateDutyCycle(i) / 4096.0;
                 Thread.Sleep(delay);
             }
+            plaformPwmChannel.DutyCycle = 0;
+            plaformPwmChannel.Stop();
         }
         public void MovePlatformToStart()
         {
+            plaformPwmChannel.Start();
             for (int i = loopCountPlatform; i >= loopCountPlatform / 2; i--)
             {
                 plaformPwmChannel.DutyCycle = CalculateDutyCycle(i) / 4096.0;
                 Thread.Sleep(delay);
             }
+            plaformPwmChannel.DutyCycle = 0;
+            plaformPwmChannel.Stop();
         }
         public void MoveStirrerToGlass() 
         {
+            stirrerPwmChannel.Start();
             for (int i = loopCountArmDown; i >= 0; i--)
             {
                 t = (double)i / loopCountArmDown;
-                easedValue = (Math.Sin((t - 0.75) * Math.PI) + 1) / 2;
+                easedValue = (Math.Sin((t - 0.85) * Math.PI) + 1) / 2;
                 dutyCycle = (1 - easedValue) * stirrerServoMaxCounterClockwise + easedValue * stirrerServoStop;
 
                 stirrerPwmChannel.DutyCycle = dutyCycle / 4096.0;
@@ -70,21 +77,24 @@ namespace BlankBartender.WebApi.Services
             for (int i = 0; i <= loopCountArmDown; i++)
             {
                 t = (double)i / loopCountArmDown;
-                easedValue = (Math.Sin((t - 0.75) * Math.PI) + 1) / 2; // Eased value between 0 and 1.
+                easedValue = (Math.Sin((t - 0.85) * Math.PI) + 1) / 2; // Eased value between 0 and 1.
                 dutyCycle = (1 - easedValue) * stirrerServoMaxCounterClockwise + easedValue * stirrerServoStop;
 
                 stirrerPwmChannel.DutyCycle = dutyCycle / 4096.0; // Convert to a value between 0 and 1.
                 Thread.Sleep((int)(armDownSeconds * 1000) / (2 * loopCountArmDown));
                 Console.WriteLine(dutyCycle.ToString());
             }
+            stirrerPwmChannel.DutyCycle = 0;
+            stirrerPwmChannel.Stop();
         }
 
         public void MoveStirrerToStart() 
         {
+            stirrerPwmChannel.Start();
             for (int i = loopCountArmUp; i >= 0; i--)
             {
                 t = (double)i / loopCountArmUp;
-                easedValue = (Math.Sin((t - 0.5) * Math.PI) + 1) / 2;
+                easedValue = (Math.Sin((t - 0.7) * Math.PI) + 1) / 2;
                 dutyCycle = (1 - easedValue) * stirrerServoMaxClockwise + easedValue * stirrerServoStop;
 
                 stirrerPwmChannel.DutyCycle = dutyCycle / 4096.0;
@@ -94,13 +104,15 @@ namespace BlankBartender.WebApi.Services
             for (int i = 0; i <= loopCountArmUp; i++)
             {
                 t = (double)i / loopCountArmUp;
-                easedValue = (Math.Sin((t - 0.5) * Math.PI) + 1) / 2; // Eased value between 0 and 1.
+                easedValue = (Math.Sin((t - 0.7) * Math.PI) + 1) / 2; // Eased value between 0 and 1.
                 dutyCycle = (1 - easedValue) * stirrerServoMaxClockwise + easedValue * stirrerServoStop;
 
                 stirrerPwmChannel.DutyCycle = dutyCycle / 4096.0; // Convert to a value between 0 and 1.
                 Thread.Sleep((int)(armUpSeconds * 1000) / (2 * loopCountArmUp));
                 Console.WriteLine(dutyCycle.ToString());
             }
+            stirrerPwmChannel.DutyCycle = 0;
+            stirrerPwmChannel.Stop();
         }
 
         private double CalculateDutyCycle(int i)

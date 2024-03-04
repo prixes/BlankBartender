@@ -18,12 +18,11 @@ namespace BlankBartender.WebApi.Services
         private readonly RknnTensorAttr[] outputAttrs;
 
         private int ret;
-        private UIntPtr ctx = default; // readonly ?
+        private readonly UIntPtr ctx = default;
         private RknnInput[] inputs = new RknnInput[1];
         private Mat padding = new Mat();
         private Mat rawImage = new Mat();
         private Size size = new OpenCvSharp.Size(640, 480);
-        private bool first =true;
 
 
         private static string pipeline = "v4l2src device=/dev/video0 ! video/x-raw, format=(string)NV12, width=(int)2592, height=(int)1944 ! videoconvert ! videoscale ! appsink";
@@ -103,17 +102,18 @@ namespace BlankBartender.WebApi.Services
 
             var isCaptured = capture.Read(rawImage);
 
-                capture.Read(rawImage);
-                capture.Read(rawImage);
-
+            capture.Read(rawImage);
+            capture.Read(rawImage);
+            capture.Read(rawImage);
+            capture.Read(rawImage);
 
             string filePath = "capturedImage.jpg";
-
 
             if (!capture.IsOpened())
             capture.Release();
             Cv2.Resize(rawImage, padding, size);
 
+            Console.WriteLine($"size of image in bytes {padding.Total() * padding.ElemSize()} ");
 
             inputs[0].Buf = padding.Data;
             var isSaved = padding.SaveImage(filePath);
@@ -123,26 +123,18 @@ namespace BlankBartender.WebApi.Services
 
         public async Task<bool> DetectGlass()
         {
-            //this.capture = new VideoCapture(0, VideoCaptureAPIs.V4L); // 0 indicates the default camera
-            
-
             var isCaptured = capture.Read(rawImage);
-            if (first)
+            while (rawImage.Total() * rawImage.ElemSize() == 0)
             {
                 capture.Read(rawImage);
-                capture.Read(rawImage);
-
-                first = false;
+                Console.WriteLine($"size of image in bytes {rawImage.Total() * rawImage.ElemSize()} ");
             }
-
             string filePath = "capturedImage.jpg";
-
 
            // if (!capture.IsOpened())
            //     return false;
            // capture.Release();
             Cv2.Resize(rawImage, padding, size);
-          
 
             inputs[0].Buf = padding.Data;
             var isSaved = padding.SaveImage(filePath);
@@ -152,6 +144,7 @@ namespace BlankBartender.WebApi.Services
         }
         private bool Recognize(RknnInput[] inputs, UIntPtr ctx, int ret, RknnInputOutputNum io_num, RknnTensorAttr[] outputAttrs)
         {
+            Console.WriteLine($"Recognize method {ctx}");
             // Initialize the outputs array...
             ret = RknnApi.rknn_inputs_set(ctx, io_num.input, inputs);
             if (ret < 0)
@@ -159,10 +152,11 @@ namespace BlankBartender.WebApi.Services
                 Console.WriteLine($"rknn_inputs_set error ret={ret}");
                 return false;
             }
+            Console.WriteLine($"rknn_input_set finished");
             RknnOutput[] outputs = new RknnOutput[io_num.output];
             GCHandle handle = GCHandle.Alloc(outputs, GCHandleType.Pinned);
             IntPtr pointer = handle.AddrOfPinnedObject();
-
+            Console.WriteLine($"rknn_run");
             ret = RknnApi.rknn_run(ctx, IntPtr.Zero);
             if (ret < 0)
             {
@@ -170,6 +164,7 @@ namespace BlankBartender.WebApi.Services
                 return false;
             }
 
+            Console.WriteLine($"rknn_outputs_get");
             ret = RknnApi.rknn_outputs_get(ctx, io_num.output, pointer, IntPtr.Zero);
             if (ret < 0)
             {
@@ -185,6 +180,7 @@ namespace BlankBartender.WebApi.Services
                 out_scales.Add(outputAttrs[i].Scale);
                 out_zps.Add(outputAttrs[i].Zp);
             }
+            Console.WriteLine($"initialize buffers");
             byte[] buf0 = new byte[outputs[0].Size];
             Marshal.Copy(outputs[0].Buf, buf0, 0, (int)outputs[0].Size);
             sbyte[] buf00 = new sbyte[outputs[0].Size];
@@ -296,7 +292,6 @@ namespace BlankBartender.WebApi.Services
             int[] anchor0 = { 10, 13, 16, 30, 33, 23 };
             int[] anchor1 = { 30, 61, 62, 45, 59, 119 };
             int[] anchor2 = { 116, 90, 156, 198, 373, 326 };
-
             // stride 8
             int stride0 = 8;
             int grid_h0 = model_in_h / stride0;

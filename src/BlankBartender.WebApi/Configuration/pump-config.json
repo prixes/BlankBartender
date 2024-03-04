@@ -3,7 +3,7 @@
     {
       "number": 1,
       "pin": 118,
-      "value": "Orange juice",
+      "value": "Simple syrup",
       "flowRate": 5,
       "time": null
     },
@@ -66,7 +66,7 @@
     {
       "number": 10,
       "pin": 125,
-      "value": "Simple syrup",
+      "value": "Orange juice",
       "flowRate": 1,
       "time": null
     },

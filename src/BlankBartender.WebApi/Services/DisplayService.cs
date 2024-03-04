@@ -86,7 +86,7 @@ namespace BlankBartender.WebApi.Services
                 lcd.SetCursorPosition(0, 1);
                 string message = string.Format("{0,16}", $"{time - seconds} seconds left");
                 lcd.Write(message);
-                Thread.Sleep(980);
+                await Task.Delay(980);
             }
         }
 
