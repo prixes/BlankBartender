@@ -31,7 +31,7 @@ namespace BlankBartender.UI.Core.Pages
             drink.IsProcessing = false;
         }
 
-        private void UpdateValue(Tuple<string, float> ingredient)
+        private void UpdateValue(Tuple<string, decimal> ingredient)
         {
             drink.Ingradients[ingredient.Item1] = ingredient.Item2;
         }

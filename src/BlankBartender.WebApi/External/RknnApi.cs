@@ -21,7 +21,7 @@ namespace BlankBartender.WebApi.External
         public static extern int rknn_destroy(UIntPtr ctx);
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl)]
-        public static extern int rknn_inputs_set(UIntPtr ctx, int length, RknnInput[] inputs);
+        public static extern int rknn_inputs_set(UIntPtr ctx, IntPtr lengthPointer, RknnInput[] inputs);//int length
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl)]
         public static extern int rknn_run(UIntPtr ctx, IntPtr intPtr);

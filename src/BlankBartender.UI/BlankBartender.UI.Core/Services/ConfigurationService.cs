@@ -1,6 +1,7 @@
 ﻿using BlankBartender.Shared;
 using BlankBartender.UI.Core.Helpers;
 using BlankBartender.UI.Core.Interfaces;
+using System.Text.Json;
 
 namespace BlankBartender.UI.Core.Services
 {
@@ -19,10 +20,23 @@ namespace BlankBartender.UI.Core.Services
             await RequestHandler.ValidateResponseAsync(response);
             return true;
         }
+        public async Task<bool> StartPump(int pumpNumber)
+        {
+            var response = await _configurationClient.StartPumpAsync(pumpNumber);
+            await RequestHandler.ValidateResponseAsync(response);
+            return true;
+        }
 
         public async Task<bool> StopPumps()
         {
             var response = await _configurationClient.StopAllPumpsAsync();
+            await RequestHandler.ValidateResponseAsync(response);
+            return true;
+        }
+
+        public async Task<bool> StopPump(int pumpNumber)
+        {
+            var response = await _configurationClient.StopAsync(pumpNumber);
             await RequestHandler.ValidateResponseAsync(response);
             return true;
         }
@@ -51,6 +65,27 @@ namespace BlankBartender.UI.Core.Services
         public async Task<bool> PumpLiquidChange(int pumpNumber, string liquid)
         {
             var response = await _configurationClient.ChangePumpLiquidAsync(pumpNumber, liquid);
+            await RequestHandler.ValidateResponseAsync(response);
+            return true;
+        }
+
+        public async Task<(bool, bool)> GetSettings()
+        {
+            var response = await _configurationClient.GetMachineSettingsAsync();
+
+            using var jsonDocument = await JsonDocument.ParseAsync(response.Stream);
+
+            var root = jsonDocument.RootElement;
+
+            var useCameraAI = root.GetProperty("useCameraAI").GetBoolean();
+            var useStirrer = root.GetProperty("useStirrer").GetBoolean();
+
+            return (useCameraAI, useStirrer);
+        }
+
+        public async Task<bool> SetSettings(bool UseCameraAI, bool UseStirrer)
+        {
+            var response = await _configurationClient.SetMachineSettingsAsync(UseCameraAI, UseStirrer);
             await RequestHandler.ValidateResponseAsync(response);
             return true;
         }

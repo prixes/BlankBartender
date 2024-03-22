@@ -72,7 +72,7 @@ namespace BlankBartender.WebApi.Services
 
                 stirrerPwmChannel.DutyCycle = dutyCycle / 4096.0;
                 Thread.Sleep((int)(armDownSeconds * 1000) / (2 * loopCountArmDown));
-                Console.WriteLine(dutyCycle.ToString());
+               // Console.WriteLine(dutyCycle.ToString());
             }
             for (int i = 0; i <= loopCountArmDown; i++)
             {
@@ -82,7 +82,7 @@ namespace BlankBartender.WebApi.Services
 
                 stirrerPwmChannel.DutyCycle = dutyCycle / 4096.0; // Convert to a value between 0 and 1.
                 Thread.Sleep((int)(armDownSeconds * 1000) / (2 * loopCountArmDown));
-                Console.WriteLine(dutyCycle.ToString());
+               // Console.WriteLine(dutyCycle.ToString());
             }
             stirrerPwmChannel.DutyCycle = 0;
             stirrerPwmChannel.Stop();
@@ -99,7 +99,7 @@ namespace BlankBartender.WebApi.Services
 
                 stirrerPwmChannel.DutyCycle = dutyCycle / 4096.0;
                 Thread.Sleep((int)(armUpSeconds * 1000) / (2 * loopCountArmUp));
-                Console.WriteLine(dutyCycle.ToString());
+               // Console.WriteLine(dutyCycle.ToString());
             }
             for (int i = 0; i <= loopCountArmUp; i++)
             {
@@ -109,7 +109,7 @@ namespace BlankBartender.WebApi.Services
 
                 stirrerPwmChannel.DutyCycle = dutyCycle / 4096.0; // Convert to a value between 0 and 1.
                 Thread.Sleep((int)(armUpSeconds * 1000) / (2 * loopCountArmUp));
-                Console.WriteLine(dutyCycle.ToString());
+               // Console.WriteLine(dutyCycle.ToString());
             }
             stirrerPwmChannel.DutyCycle = 0;
             stirrerPwmChannel.Stop();

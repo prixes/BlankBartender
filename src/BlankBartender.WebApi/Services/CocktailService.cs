@@ -9,8 +9,8 @@ namespace BlankBartender.WebApi.Services
         private string _drinkConfigJson;
         private string _pumpConfigJson;
 
-        private string drinkFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Configuration", "drink-config.json");
-        private string pumpFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Configuration", "pump-config.json");
+        private string drinkFilePath = Path.Combine(Directory.GetCurrentDirectory(), "ConfigurationData", "drink-config.json");
+        private string pumpFilePath = Path.Combine(Directory.GetCurrentDirectory(), "ConfigurationData", "pump-config.json");
 
         private ICollection<Pump> _pumps;
         private ICollection<Drink> _drinks;

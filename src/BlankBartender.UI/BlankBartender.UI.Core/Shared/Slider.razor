@@ -5,16 +5,16 @@
 
 @code {
     [Parameter]
-    public float Value { get; set; }
+    public decimal Value { get; set; }
     [Parameter]
     public string Key { get; set; }
     [Parameter]
-    public EventCallback<Tuple<string, float>> ValueChanged { get; set; }
+    public EventCallback<Tuple<string, decimal>> ValueChanged { get; set; }
 
     private async Task HandleValueChanged(ChangeEventArgs args)
     {
-        Value = float.Parse(args.Value.ToString());
-        await ValueChanged.InvokeAsync(new Tuple<string, float>(Key, Value));
+        Value = decimal.Parse(args.Value.ToString());
+        await ValueChanged.InvokeAsync(new Tuple<string, decimal>(Key, Value));
         StateHasChanged();
     }
 }

@@ -1,6 +1,6 @@
-﻿
+﻿using BlankBartender.Shared;
 
-namespace BlankBartender.Shared
+namespace BlankBartender.WebApi.Configuration
 {
     public class PumpsConfiguration
     {

@@ -7,7 +7,6 @@ using Iot.Device.Pcx857x;
 using OpenCvSharp;
 using System.Device.Gpio;
 using System.Device.I2c;
-using System.Text.RegularExpressions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,31 +33,33 @@ builder.Services.AddSingleton<VideoCapture>();
 builder.Services.AddSingleton<IDetectionService, DetectionService>();
 builder.Services.AddSingleton<IServoService, ServoService>();
 builder.Services.AddTransient<ICocktailService, CocktailService>();
-builder.Services.AddSingleton<IStirrerService, StirrerService>(); 
+builder.Services.AddSingleton<IStirrerService, StirrerService>();
+builder.Services.AddSingleton<ISettingsService, SettingsService>();
+builder.Services.AddOpenApiDocument();
 
 var app = builder.Build();
+#if !DEBUG
+var light = new GpioController();
+light.OpenPin(120, PinMode.Output);
+if (light.Read(120) == PinValue.High)
+    light.Write(120, PinValue.Low);
 
-    var light = new GpioController();
-    light.OpenPin(120, PinMode.Output);
-    if(light.Read(120) == PinValue.High)
-        light.Write(120, PinValue.Low);
+using I2cDevice i2c = I2cDevice.Create(new I2cConnectionSettings(2, 0x27));
+using var driver = new Pcf8574(i2c);
+using var lcd = new Lcd2004(registerSelectPin: 0,
+                        enablePin: 2,
+                        dataPins: new int[] { 4, 5, 6, 7 },
+                        backlightPin: 3,
+                        backlightBrightness: 0.1f,
+                        readWritePin: 1,
+                        controller: new GpioController(PinNumberingScheme.Logical, driver));
 
-    using I2cDevice i2c = I2cDevice.Create(new I2cConnectionSettings(2, 0x27));
-    using var driver = new Pcf8574(i2c);
-    using var lcd = new Lcd2004(registerSelectPin: 0,
-                            enablePin: 2,
-                            dataPins: new int[] { 4, 5, 6, 7 },
-                            backlightPin: 3,
-                            backlightBrightness: 0.1f,
-                            readWritePin: 1,
-                            controller: new GpioController(PinNumberingScheme.Logical, driver));
-    int currentLine = 0;
-    lcd.Clear();
-    lcd.SetCursorPosition(0, 0);
-    lcd.Write("Machine is ready");
-    lcd.SetCursorPosition(0, 1);
-    lcd.Write("     for use");
-
+lcd.Clear();
+lcd.SetCursorPosition(0, 0);
+lcd.Write("Machine is ready");
+lcd.SetCursorPosition(0, 1);
+lcd.Write("     for use");
+#endif
 app.UseCors(options =>
 {
     options.AllowAnyOrigin();
@@ -67,7 +68,7 @@ app.UseCors(options =>
 });
 
 app.UseOpenApi();
-app.UseSwaggerUi3();
+app.UseSwaggerUi();
 
 app.UseAuthorization();
 

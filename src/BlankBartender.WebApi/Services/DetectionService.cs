@@ -13,7 +13,7 @@ namespace BlankBartender.WebApi.Services
         private string labelsPath = "coco_80_labels_list.txt";
         private readonly byte[] modelData;
         private readonly List<string> labels = new List<string>();
-        private readonly RknnInputOutputNum io_num = new RknnInputOutputNum();
+        private RknnInputOutputNum io_num = new RknnInputOutputNum();
         private readonly RknnTensorAttr[] inputAttrs;
         private readonly RknnTensorAttr[] outputAttrs;
 
@@ -109,16 +109,17 @@ namespace BlankBartender.WebApi.Services
 
             string filePath = "capturedImage.jpg";
 
-            if (!capture.IsOpened())
-            capture.Release();
-            Cv2.Resize(rawImage, padding, size);
+            if(rawImage.Total() * rawImage.ElemSize() != 0)
+            {
+                Cv2.Resize(rawImage, padding, size);
 
-            Console.WriteLine($"size of image in bytes {padding.Total() * padding.ElemSize()} ");
+                Console.WriteLine($"size of image in bytes {padding.Total() * padding.ElemSize()} ");
 
-            inputs[0].Buf = padding.Data;
-            var isSaved = padding.SaveImage(filePath);
+                inputs[0].Buf = padding.Data;
+                var isSaved = padding.SaveImage(filePath);
 
-            bool success = Recognize(inputs, ctx, ret, io_num, outputAttrs);
+                bool success = Recognize(inputs, ctx, ret, io_num, outputAttrs);
+            }
         }
 
         public async Task<bool> DetectGlass()
@@ -128,6 +129,7 @@ namespace BlankBartender.WebApi.Services
             {
                 capture.Read(rawImage);
                 Console.WriteLine($"size of image in bytes {rawImage.Total() * rawImage.ElemSize()} ");
+                if(rawImage.Total() * rawImage.ElemSize() == 0) {  return false; }
             }
             string filePath = "capturedImage.jpg";
 
@@ -135,7 +137,10 @@ namespace BlankBartender.WebApi.Services
            //     return false;
            // capture.Release();
             Cv2.Resize(rawImage, padding, size);
-
+            Console.WriteLine($"padding.Data {padding.Data} ");
+            //inputs[0].Buf = padding.Data;
+            //GCHandle dataHandle = GCHandle.Alloc(padding.CvPtr, GCHandleType.Pinned);
+            //IntPtr dataPointer = dataHandle.AddrOfPinnedObject();
             inputs[0].Buf = padding.Data;
             var isSaved = padding.SaveImage(filePath);
 
@@ -144,9 +149,9 @@ namespace BlankBartender.WebApi.Services
         }
         private bool Recognize(RknnInput[] inputs, UIntPtr ctx, int ret, RknnInputOutputNum io_num, RknnTensorAttr[] outputAttrs)
         {
-            Console.WriteLine($"Recognize method {ctx}");
+            Console.WriteLine($"Recognize method {ctx} size {inputs[0].Size}");
             // Initialize the outputs array...
-            ret = RknnApi.rknn_inputs_set(ctx, io_num.input, inputs);
+            ret = RknnApi.rknn_inputs_set(ctx, 1, inputs);
             if (ret < 0)
             {
                 Console.WriteLine($"rknn_inputs_set error ret={ret}");

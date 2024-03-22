@@ -1,6 +1,7 @@
 using BlankBartender.Shared;
 using Microsoft.AspNetCore.Mvc;
 using BlankBartender.WebApi.Services.Interfaces;
+using BlankBartender.WebApi.Configuration;
 
 namespace BlankBartender.WebApi.Controllers;
 
@@ -9,7 +10,7 @@ namespace BlankBartender.WebApi.Controllers;
 public class DrinkController : ControllerBase
 {
     private readonly IEnumerable<Pump> _pumps;
-    private IEnumerable<Drink> _drinks;
+    private IEnumerable<Drink>? _drinks;
     private readonly ILightsService _lightsService;
     private readonly IDisplayService _displayService;
     private readonly ICocktailService _cocktailService;
@@ -18,13 +19,14 @@ public class DrinkController : ControllerBase
     private readonly IPumpService _pumpService;
     private readonly IDetectionService _detectionService;
     private readonly IServoService _servoService;
-    private readonly IStirrerService _stirrerService;
+    private readonly ISettingsService _settingsService;
+    private SettingsValues _settinsValues;
 
     public DrinkController(ILightsService lightsService,     IDisplayService displayService,
                            ICocktailService cocktailService, IPinService pinService, 
                            IStatusService statusService,     IPumpService pumpService, 
                            IDetectionService detectionService,IServoService servoService,
-                           IStirrerService stirrerService)
+                           ISettingsService settingsService)
     {
         _cocktailService = cocktailService;
         _statusService = statusService;
@@ -34,14 +36,14 @@ public class DrinkController : ControllerBase
         _statusService = statusService;
         _pumpService = pumpService;
         _servoService = servoService;
-        _stirrerService = stirrerService;
+        _settingsService = settingsService;
 
         _pumps = _pumpService.GetConfiguration();
         _detectionService = detectionService;
 }
 
     [Route("available/all/")]
-    public async Task<ActionResult> GetAvailableDrinks()
+    public ActionResult GetAvailableDrinks()
     {
         _lightsService.TurnLight("green", true);
         _displayService.MachineReadyForUse();
@@ -53,7 +55,7 @@ public class DrinkController : ControllerBase
     }
 
     [Route("all/")]
-    public async Task<ActionResult> GetDrinks()
+    public ActionResult GetDrinks()
     {
         _lightsService.TurnLight("green", true);
         _displayService.MachineReadyForUse();
@@ -67,34 +69,38 @@ public class DrinkController : ControllerBase
     [Route("process")]
     public async Task<ActionResult> ProcessDrink(IEnumerable<Pump> model, string name = "")
     {
+        _settinsValues = _settingsService.GetMachineSettings();
         _lightsService.StartCocktailLights();
         _displayService.PlaceGlassMessage();
-        var timeout = TimeSpan.FromSeconds(30);
-        var stopTime = DateTime.UtcNow.Add(timeout);
-
-        while (DateTime.UtcNow < stopTime)
+        if(_settinsValues.UseCameraAI)
         {
-            if (await _detectionService.DetectGlass())
+            var timeout = TimeSpan.FromSeconds(30);
+            var stopTime = DateTime.UtcNow.Add(timeout);
+
+            while (DateTime.UtcNow < stopTime)
             {
-                Console.WriteLine($"Glass detected success");
-                break;
+                if (await _detectionService.DetectGlass())
+                {
+                    Console.WriteLine($"Glass detected success");
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine($"Glass detected failed");
+                    Thread.Sleep(1580);
+                }
             }
-            else
+            if (DateTime.UtcNow > stopTime)
             {
-                Console.WriteLine($"Glass detected failed");
+                await _displayService.Clear();
+                await _displayService.WriteFirstLineDisplay("cocktail cancel!");
                 Thread.Sleep(1580);
+                _lightsService.TurnLight("green", true);
+                _displayService.MachineReadyForUse();
+                return Ok();
             }
         }
-        if(DateTime.UtcNow > stopTime)
-        {
-            await _displayService.Clear();
-            await _displayService.WriteFirstLineDisplay("cocktail cancel!");
-            Thread.Sleep(1580);
-            _lightsService.TurnLight("green", true);
-            _displayService.MachineReadyForUse();
-            return Ok();
-        }
-
+       
         await _displayService.PrepareStartDisplay(name);
 
         async Task ExecutePumpAction(Pump pump)
@@ -112,24 +118,29 @@ public class DrinkController : ControllerBase
         try
         {
             var timeToMakeCocktail = (int)model.Max(x => x.Time) / 1050;
-            Task.Run(() => _displayService.Countdown(timeToMakeCocktail + 15));
+            if (_settinsValues.UseStirrer)
+                timeToMakeCocktail += 15;
+
+            Task.Run(() => _displayService.Countdown(timeToMakeCocktail));
 
             await Task.WhenAll(tasks);
-
-            //Stirring process part
-            _servoService.MovePlatformToStirrer();
-            _servoService.MoveStirrerToGlass();
-            Console.WriteLine($"Start Stirrer");
-            //await _stirrerService.StartStirrer();
-            _pinService.SwitchPin(147, true);
-            await Task.Delay(3000);
-            Console.WriteLine($"wait");
-            Console.WriteLine($"go up");
-            _servoService.MoveStirrerToStart();
-            Console.WriteLine($"Start stop");
-            _pinService.SwitchPin(147, false);
-            //_stirrerService.StopStirrer();
-            _servoService.MovePlatformToStart();
+            if (_settinsValues.UseStirrer)
+            {
+                //Stirring process part
+                _servoService.MovePlatformToStirrer();
+                _servoService.MoveStirrerToGlass();
+                Console.WriteLine($"Start Stirrer");
+                //await _stirrerService.StartStirrer();
+                _pinService.SwitchPin(147, true);
+                await Task.Delay(3000);
+                Console.WriteLine($"wait");
+                Console.WriteLine($"go up");
+                _servoService.MoveStirrerToStart();
+                Console.WriteLine($"Start stop");
+                _pinService.SwitchPin(147, false);
+                //_stirrerService.StopStirrer();
+                _servoService.MovePlatformToStart();
+            }
 
             await CocktailDoneLightsAndDisplay();
             _statusService.StopRunning();

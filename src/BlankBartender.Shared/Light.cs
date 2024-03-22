@@ -1,6 +1,4 @@
-﻿using SQLite;
-
-namespace BlankBartender.Shared
+﻿namespace BlankBartender.Shared
 {
     public class Light
     {

@@ -16,7 +16,7 @@
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.2-beta2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -39,8 +39,8 @@
     <Compile Update="Pages\NonAlcoholicCocktails.cs">
       <DependentUpon>NonAlcoholicCocktails.razor</DependentUpon>
     </Compile>
-    <Compile Update="Pages\PumpMaintenance.cs">
-      <DependentUpon>PumpMaintenance.razor</DependentUpon>
+    <Compile Update="Pages\Maintenance.cs">
+      <DependentUpon>Maintenance.razor</DependentUpon>
     </Compile>
     <Compile Update="Pages\CustomizedCocktail.cs">
       <DependentUpon>CustomizedCocktail.razor</DependentUpon>

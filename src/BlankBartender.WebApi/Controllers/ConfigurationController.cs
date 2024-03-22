@@ -1,10 +1,12 @@
 ﻿using BlankBartender.Shared;
+using BlankBartender.WebApi.Configuration;
 using BlankBartender.WebApi.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Text.Json;
 using JsonSerializer = System.Text.Json.JsonSerializer;
+using PumpsConfiguration = BlankBartender.Shared.PumpsConfiguration;
 
 namespace BlankBartender.WebApi.Controllers
 {
@@ -18,32 +20,36 @@ namespace BlankBartender.WebApi.Controllers
         private readonly string _liquidsFilePath;
         private readonly string _pumpsFilePath;
 
-        private IEnumerable<string> liquids;
+        private IEnumerable<string>? liquids;
         private readonly ILogger<DrinkController> _logger;
-        private string _pumpsConfigJson;
+        private string? _pumpsConfigJson;
 
         private PumpsConfiguration _pumpsConfiguration;
 
         private readonly IDisplayService _displayService;
         private readonly IPinService _pinService;
         private readonly IStatusService _statusService;
-        public ConfigurationController(ILogger<DrinkController> logger, IPinService pinService, IDisplayService displayService, IStatusService statusService)
+        private readonly ISettingsService _settingsService;
+        public ConfigurationController(ILogger<DrinkController> logger, IPinService pinService,
+                                       IDisplayService displayService, IStatusService statusService,
+                                       ISettingsService settingsService)
         {
             _logger = logger;
             _pinService = pinService;
             _pumpsConfiguration = new PumpsConfiguration();
             _displayService = displayService;
             _statusService = statusService;
+            _settingsService = settingsService;
 
-            _liquidsFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Configuration", _liquidsConfigFileName);
-            _pumpsFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Configuration", _pumpConfigFileName);
+            _liquidsFilePath = Path.Combine(Directory.GetCurrentDirectory(), "ConfigurationData", _liquidsConfigFileName);
+            _pumpsFilePath = Path.Combine(Directory.GetCurrentDirectory(), "ConfigurationData", _pumpConfigFileName);
             ReadCurrentLiquids();
             ReadCurrentPumpConfiguration();
 
         }
 
         [Route("liquids")]
-        public async Task<ActionResult> ReadCurrentLiquids()
+        public ActionResult ReadCurrentLiquids()
         {
             if (System.IO.File.Exists(_liquidsFilePath))
             {
@@ -59,7 +65,7 @@ namespace BlankBartender.WebApi.Controllers
         }
 
         [Route("pump")]
-        public async Task<ActionResult> ReadCurrentPumpConfiguration()
+        public ActionResult ReadCurrentPumpConfiguration()
         {
             if (System.IO.File.Exists(_pumpsFilePath))
             {
@@ -75,15 +81,15 @@ namespace BlankBartender.WebApi.Controllers
             }).ToList();
             return new JsonResult(new
             {
-                Pumps = _pumpsConfiguration.Pumps
+                _pumpsConfiguration.Pumps
             });
         }
 
         [Route("pump/change")]
         public async Task<ActionResult> ChangePumpLiquid(int pumpNumber, string liquid)
         {
-            _statusService.StartRunning();
-            await ReadCurrentPumpConfiguration();
+            await _statusService.StartRunning();
+            ReadCurrentPumpConfiguration();
             _pumpsConfiguration.Pumps[pumpNumber - 1].Value = liquid;
             var serializeOptions = new JsonSerializerOptions
             {
@@ -94,7 +100,7 @@ namespace BlankBartender.WebApi.Controllers
             string json = JsonSerializer.Serialize(_pumpsConfiguration, serializeOptions);
             using StreamWriter file = new(_pumpsFilePath);
             await file.WriteLineAsync(json);
-            _statusService.StopRunning();
+            await _statusService.StopRunning();
 
             return Ok();
         }
@@ -102,31 +108,51 @@ namespace BlankBartender.WebApi.Controllers
         [Route("pumps/all/start")]
         public async Task<ActionResult> StartAllPumps()
         {
-            _statusService.StartRunning();
+            await _statusService.StartRunning();
             foreach (var pump in _pumpsConfiguration.Pumps)
             {
                 _pinService.SwitchPin(pump.Pin, true);
             }
-            _statusService.StopRunning();
+            await _statusService.StopRunning();
+            return Ok();
+        }
+
+        [Route("pump/{pumpNumber}/start")]
+        public async Task<ActionResult> StartPump(int pumpNumber)
+        {
+            await _statusService.StartRunning();
+            var pump = _pumpsConfiguration.Pumps.First(x => x.Number == pumpNumber);
+            _pinService.SwitchPin(pump.Pin, true);
+            await _statusService.StopRunning();
             return Ok();
         }
 
         [Route("pumps/all/stop")]
         public async Task<ActionResult> StopAllPumps()
         {
-            _statusService.StartRunning();
+            await _statusService.StartRunning();
             foreach (var pump in _pumpsConfiguration.Pumps)
             {
                 _pinService.SwitchPin(pump.Pin, false);
             }
-            _statusService.StopRunning();
+            await _statusService.StopRunning();
+            return Ok();
+        }
+
+        [Route("pump/{pumpNumber}/stop")]
+        public async Task<ActionResult> Stop(int pumpNumber)
+        {
+            await _statusService.StartRunning();
+            var pump = _pumpsConfiguration.Pumps.First(x => x.Number == pumpNumber);
+            _pinService.SwitchPin(pump.Pin, false);
+            await _statusService.StopRunning();
             return Ok();
         }
 
         [Route("initialize")]
         public async Task<ActionResult> InitializeLiquidFlow()
         {
-            _statusService.StartRunning();
+            await _statusService.StartRunning();
             foreach (var pump in _pumpsConfiguration.Pumps)
             {
                 _pinService.SwitchPin(pump.Pin, true);
@@ -140,7 +166,30 @@ namespace BlankBartender.WebApi.Controllers
                 _pinService.SwitchPin(pump.Pin, false);
             }
             _displayService.MachineReadyForUse();
-            _statusService.StopRunning();
+            await _statusService.StopRunning();
+
+            return Ok();
+        }
+
+        [HttpGet]
+        [Route("settings")]
+        public ActionResult GetMachineSettings()
+        {
+            var settingsValues = _settingsService.GetMachineSettings();
+            return new JsonResult(new
+            {
+                settingsValues.UseCameraAI,
+                settingsValues.UseStirrer
+            });
+        }
+
+        [HttpPut]
+        [Route("settings")]
+        public async Task<ActionResult> SetMachineSettings(bool useCameraAI, bool useStitter)
+        {
+            await _statusService.StartRunning();
+            _settingsService.SetMachineSettings(useCameraAI, useStitter);
+            await _statusService.StopRunning();
 
             return Ok();
         }

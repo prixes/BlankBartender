@@ -8,16 +8,17 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Iot.Device.Bindings" Version="3.0.0" />
+		<PackageReference Include="Iot.Device.Bindings" Version="3.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
-		<PackageReference Include="NSwag.AspNetCore" Version="13.20.0" />
-		<PackageReference Include="NSwag.MSBuild" Version="13.20.0">
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="NSwag.AspNetCore" Version="14.0.3" />
+    <PackageReference Include="NSwag.MSBuild" Version="14.0.3">
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 		<PackageReference Include="OpenCvSharp4" Version="4.8.0.20230708" />
 		<PackageReference Include="OpenCvSharp4.runtime.linux-arm64.cuda" Version="4.5.2.20210803" />
-		<PackageReference Include="System.Device.Gpio" Version="3.0.0" />
+    <PackageReference Include="System.Device.Gpio" Version="3.1.0" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -33,13 +34,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Content Update="Configuration\drink-config.json">
+	  <Content Update="ConfigurationData\drink-config.json">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </Content>
-	  <Content Update="Configuration\lights-config.json">
+	  <Content Update="ConfigurationData\lights-config.json">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </Content>
-	  <Content Update="Configuration\pump-config.json">
+	  <Content Update="ConfigurationData\pump-config.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	  <Content Update="ConfigurationData\settings.json">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </Content>
 	</ItemGroup>
@@ -55,6 +59,8 @@
 
 	<PropertyGroup>
 		<RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+		<!--<SupportedOSPlatformVersion>10.0.22000.0</SupportedOSPlatformVersion>-->
+    <!--CommentOut when nswag client generate !!!-->
 		<PlatformTarget>ARM64</PlatformTarget>
 	</PropertyGroup>
 
@@ -69,6 +75,7 @@
   <!--<Target Name="NSwag" AfterTargets="PostBuildEvent" Condition=" '$(Configuration)' == 'Debug' ">
     <Exec WorkingDirectory="$(ProjectDir)" EnvironmentVariables="ASPNETCORE_ENVIRONMENT=Development" Command="$(NSwagExe_Net70) run config.nswag" />
   </Target>-->
+
 
   <Target Name="RunWebpack" AfterTargets="PostBuildEvent">
     <ItemGroup>

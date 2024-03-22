@@ -11,7 +11,7 @@ namespace BlankBartender.WebApi.Services.Interfaces
 
         public PumpService(IHostEnvironment env)
         {
-            _pumpConfigFilePath = Path.Combine(env.ContentRootPath, "Configuration", PumpConfigFileName);
+            _pumpConfigFilePath = Path.Combine(env.ContentRootPath, "ConfigurationData", PumpConfigFileName);
             if (!File.Exists(_pumpConfigFilePath))
                 throw new Exception($"pump-config.json not found in root");
 

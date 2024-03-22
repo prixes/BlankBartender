@@ -1,8 +1,8 @@
 {
-  "x-generator": "NSwag v13.20.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v11.0.0.0))",
+  "x-generator": "NSwag v14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))",
   "openapi": "3.0.0",
   "info": {
-    "title": "Maui Blazor Template",
+    "title": "My Title",
     "version": "1.0.0"
   },
   "paths": {
@@ -109,12 +109,78 @@
         }
       }
     },
+    "/Configuration/pump/{pumpNumber}/start": {
+      "get": {
+        "tags": [
+          "Configuration"
+        ],
+        "operationId": "Configuration_StartPump",
+        "parameters": [
+          {
+            "name": "pumpNumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/Configuration/pumps/all/stop": {
       "get": {
         "tags": [
           "Configuration"
         ],
         "operationId": "Configuration_StopAllPumps",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Configuration/pump/{pumpNumber}/stop": {
+      "get": {
+        "tags": [
+          "Configuration"
+        ],
+        "operationId": "Configuration_Stop",
+        "parameters": [
+          {
+            "name": "pumpNumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
         "responses": {
           "200": {
             "description": "",
@@ -151,12 +217,49 @@
         }
       }
     },
-    "/Drink": {
+    "/Configuration/settings": {
       "get": {
         "tags": [
-          "Drink"
+          "Configuration"
         ],
-        "operationId": "Drink_StartProcessing",
+        "operationId": "Configuration_GetMachineSettings",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Configuration"
+        ],
+        "operationId": "Configuration_SetMachineSettings",
+        "parameters": [
+          {
+            "name": "useCameraAI",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "useStitter",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            },
+            "x-position": 2
+          }
+        ],
         "responses": {
           "200": {
             "description": "",
@@ -220,6 +323,17 @@
           "Drink"
         ],
         "operationId": "Drink_ProcessDrink",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": ""
+            },
+            "x-position": 2
+          }
+        ],
         "requestBody": {
           "x-name": "model",
           "content": {
@@ -333,9 +447,13 @@
           "value": {
             "type": "string"
           },
+          "flowRate": {
+            "type": "number",
+            "format": "decimal"
+          },
           "time": {
             "type": "number",
-            "format": "float",
+            "format": "decimal",
             "nullable": true
           }
         }
@@ -359,7 +477,7 @@
             "type": "object",
             "additionalProperties": {
               "type": "number",
-              "format": "float"
+              "format": "decimal"
             }
           },
           "isProcessing": {

@@ -1,5 +1,4 @@
-﻿using SQLite;
-
+﻿
 namespace BlankBartender.Shared
 {
     public class FlowRate
