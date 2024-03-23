@@ -453,16 +453,13 @@
           "Tomato juice": 150
         },
         {
-          "Lemon juice": 25
+          "Lemon juice": 15
         },
         {
           "Worcestershire sauce": 5
         },
         {
           "Hot sauce": 5
-        },
-        {
-          "Horseradish": 5
         }
       ],
       "garnishes": [ "celery stalk", "lemon wedge", "olive", "salt" ]
@@ -1535,25 +1532,25 @@
         "Mint leaves"
       ]
     },
+
     {
-      "name": "Caribbean Sunset",
+      "name": "Grasshopper",
       "id": 89,
       "type": 1,
       "ingredients": [
         {
-          "Dark rum": 45
+          "Crème de menthe": 30
         },
         {
-          "Orange juice": 30
+          "Crème de cacao": 30
         },
         {
-          "Pineapple juice": 30
-        },
-        {
-          "Grenadine": 15
+          "Heavy cream": 30
         }
       ],
-      "garnishes": [ "orange slice", "cherry" ]
+      "garnishes": [
+        "Mint sprig"
+      ]
     },
     {
       "name": "Mango Margarita",

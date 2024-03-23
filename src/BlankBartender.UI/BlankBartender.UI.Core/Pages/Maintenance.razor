@@ -92,7 +92,7 @@
                             </button>
                         }
                         <button type="button" class="btn @(isProcessing ? "btn-warning" : "btn-primary")"
-                                @onclick="@(async () => await PumpStateSwitch(pump.Number))">
+                                @onclick="@(async () => await PumpStateSwitch(index))">
                             @(isProcessing ? "Saving changes" : (pumpsSwitch[index] ? "Stop" : "Start"))
                         </button>
                     </div>

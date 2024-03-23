@@ -207,7 +207,7 @@ public class DrinkController : ControllerBase
         var recipe = drink.Ingradients.Select(ingridient =>
         {
             var pump = _pumps.FirstOrDefault(x => x.Value == ingridient.Key);
-            var time = ingridient.Value * 1220 * pump.FlowRate;
+            var time = ingridient.Value * 1000 / pump.FlowRate;
 
             if (pump == null)
             {

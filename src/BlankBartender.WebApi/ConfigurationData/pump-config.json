@@ -3,14 +3,14 @@
     {
       "number": 1,
       "pin": 118,
-      "value": "Simple syrup",
+      "value": "Vodka",
       "flowRate": 5,
       "time": null
     },
     {
       "number": 2,
       "pin": 128,
-      "value": "Lime juice",
+      "value": "Orange juice",
       "flowRate": 5.5,
       "time": null
     },
@@ -31,28 +31,28 @@
     {
       "number": 5,
       "pin": 129,
-      "value": "Vodka",
+      "value": "Tequila",
       "flowRate": 5.5,
       "time": null
     },
     {
       "number": 6,
       "pin": 132,
-      "value": "Whiskey",
+      "value": "Soda water",
       "flowRate": 4.8,
       "time": null
     },
     {
       "number": 7,
       "pin": 133,
-      "value": "Bitters",
-      "flowRate": 4.0,
+      "value": "White rum",
+      "flowRate": 4,
       "time": null
     },
     {
       "number": 8,
       "pin": 124,
-      "value": "Coke",
+      "value": "Dark rum",
       "flowRate": 1.5,
       "time": null
     },
@@ -66,7 +66,7 @@
     {
       "number": 10,
       "pin": 125,
-      "value": "Orange juice",
+      "value": "Simple syrup",
       "flowRate": 1,
       "time": null
     },
@@ -77,18 +77,17 @@
       "flowRate": 1.5,
       "time": null
     },
-
     {
       "number": 12,
       "pin": 121,
-      "value": "Vermouth",
+      "value": "Gin",
       "flowRate": 1.5,
       "time": null
     },
     {
       "number": 13,
       "pin": 119,
-      "value": "Grenadine",
+      "value": "Lemon juice",
       "flowRate": 1.5,
       "time": null
     }

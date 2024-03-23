@@ -64,18 +64,18 @@ public partial class Maintenance
         isProcessing = false;
     }
 
-    protected async Task PumpStateSwitch(int number)
+    protected async Task PumpStateSwitch(int index)
     {
         isProcessing = true;
-        if (pumpsSwitch[number] == false)
+        if (pumpsSwitch[index] == false)
         {
-            await _service.StartPump(number);
+            await _service.StartPump(index + 1);
         }
         else
         {
-            await _service.StopPump(number);
+            await _service.StopPump(index + 1);
         }
         isProcessing = false;
-        pumpsSwitch[number] = !pumpsSwitch[number];
+        pumpsSwitch[index] = !pumpsSwitch[index];
     }
 }

@@ -77,6 +77,7 @@ namespace BlankBartender.WebApi.Controllers
             {
                 Number = int.Parse(p["number"].ToString()),
                 Pin = short.Parse(p["pin"].ToString()),
+                FlowRate = decimal.Parse(p["flowRate"].ToString()),
                 Value = p["value"].ToString()
             }).ToList();
             return new JsonResult(new
