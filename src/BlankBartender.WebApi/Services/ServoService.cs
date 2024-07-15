@@ -20,8 +20,8 @@ namespace BlankBartender.WebApi.Services
         Pca9685 pca;
 
         double t, easedValue, dutyCycle;
-        const int loopCountPlatform = 1000;
-        const double platformSeconds = 1;
+        const int loopCountPlatform = 1500;
+        const double platformSeconds = 1.5;
         const int loopCountArmDown = 100;
         const int loopCountArmUp = 100;
         const double armDownSeconds = 2.7;

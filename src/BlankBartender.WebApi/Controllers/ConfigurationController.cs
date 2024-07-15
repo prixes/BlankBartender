@@ -154,22 +154,44 @@ namespace BlankBartender.WebApi.Controllers
         public async Task<ActionResult> InitializeLiquidFlow()
         {
             await _statusService.StartRunning();
+            int[] countdownTimes = new int[] { 6, 10, 11, 6, 7, 8, 9, 10, 13, 14, 11, 12, 12 };
+
             foreach (var pump in _pumpsConfiguration.Pumps)
             {
                 _pinService.SwitchPin(pump.Pin, true);
             }
 
             await _displayService.WriteFirstLineDisplay("System fill");
-            await _displayService.Countdown(22);
+            int maxCountdownTime = countdownTimes.Max();
 
-            foreach (var pump in _pumpsConfiguration.Pumps)
-            {
-                _pinService.SwitchPin(pump.Pin, false);
-            }
+            // Create a list of tasks for turning off each pump at the correct time
+            List<Task> pumpOffTasks = countdownTimes.Select((time, index) => TurnOffPumpAfterDelay(_pumpsConfiguration.Pumps[index].Pin, time)).ToList();
+
+            // Create a countdown display task that runs parallel to the pump tasks
+            Task displayCountdownTask = RunCountdownDisplay(maxCountdownTime);
+
+            // Wait for all tasks to complete
+            await Task.WhenAll(pumpOffTasks.Concat(new[] { displayCountdownTask }));
+
             _displayService.MachineReadyForUse();
             await _statusService.StopRunning();
 
             return Ok();
+        }
+
+        private async Task RunCountdownDisplay(int seconds)
+        {
+            for (int sec = seconds; sec > 0; sec--)
+            {
+                await _displayService.WriteSecondLineDisplay($"Seconds {sec} left");
+                await Task.Delay(1000); // Delay for one second
+            }
+        }
+
+        private async Task TurnOffPumpAfterDelay(int pin, int delaySeconds)
+        {
+            await Task.Delay(delaySeconds * 1000); // Convert seconds to milliseconds
+            _pinService.SwitchPin(pin, false);
         }
 
         [HttpGet]

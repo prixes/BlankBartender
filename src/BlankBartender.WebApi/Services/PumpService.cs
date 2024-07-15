@@ -1,25 +1,26 @@
 ﻿using BlankBartender.Shared;
+using BlankBartender.WebApi.Controllers;
 using Newtonsoft.Json.Linq;
 
 namespace BlankBartender.WebApi.Services.Interfaces
 {
     public class PumpService : IPumpService
     {
-        private const string PumpConfigFileName = "pump-config.json";
-        private readonly string _pumpConfigFilePath;
+        private const string _pumpConfigFileName = "pump-config.json";
         public IEnumerable<Pump> pumps;
 
-        public PumpService(IHostEnvironment env)
+        private readonly string _pumpsFilePath;
+        private string? _pumpsConfigJson;
+
+        public PumpService()
         {
-            _pumpConfigFilePath = Path.Combine(env.ContentRootPath, "ConfigurationData", PumpConfigFileName);
-            if (!File.Exists(_pumpConfigFilePath))
-                throw new Exception($"pump-config.json not found in root");
+            _pumpsFilePath = Path.Combine(Directory.GetCurrentDirectory(), "ConfigurationData", _pumpConfigFileName);
 
-            var pumpConfigJson = File.ReadAllText(_pumpConfigFilePath);
-            if (string.IsNullOrEmpty(pumpConfigJson))
-                throw new Exception($"pump-config.json empty or corrupted");
-
-            var pumpJsonObject = JObject.Parse(pumpConfigJson);
+            if (System.IO.File.Exists(_pumpsFilePath))
+            {
+                _pumpsConfigJson = System.IO.File.ReadAllText(_pumpsFilePath);
+            }
+            JObject pumpJsonObject = JObject.Parse(_pumpsConfigJson);
             pumps = pumpJsonObject["pumps"].Select(p => new Pump
             {
                 Number = int.Parse(p["number"].ToString()),
@@ -31,6 +32,19 @@ namespace BlankBartender.WebApi.Services.Interfaces
 
         public IEnumerable<Pump> GetConfiguration()
         {
+            if (System.IO.File.Exists(_pumpsFilePath))
+            {
+                _pumpsConfigJson = System.IO.File.ReadAllText(_pumpsFilePath);
+            }
+            JObject pumpJsonObject = JObject.Parse(_pumpsConfigJson);
+
+            pumps = pumpJsonObject["pumps"].Select(p => new Pump
+            {
+                Number = int.Parse(p["number"].ToString()),
+                Pin = short.Parse(p["pin"].ToString()),
+                FlowRate = decimal.Parse(p["flowRate"].ToString()),
+                Value = p["value"].ToString()
+            }).ToList();
             return pumps;
         }
     }

@@ -1,29 +1,104 @@
 {
   "drinks": [
     {
-      "name": "Test",
-      "id": 99,
+      "name": "Fruit Punch",
+      "id": 183,
       "type": 1,
       "ingredients": [
         {
-          "Simple syrup": 50
-        }
-      ],
-      "garnishes": [ "orange slice" ]
-    },
-    {
-      "name": "Screwdriver",
-      "id": 1,
-      "type": 1,
-      "ingredients": [
-        {
-          "Orange juice": 150
+          "White rum": 50
         },
         {
-          "Vodka": 50
+          "Pineapple juice": 40
+        },
+        {
+          "Grapefruit": 80
+        },
+        {
+          "Triple sec": 10
+        },
+        {
+          "Lime juice": 10
         }
       ],
-      "garnishes": [ "orange slice" ]
+      "garnishes": []
+    },
+    {
+      "name": "David's top mix",
+      "id": 181,
+      "type": 1,
+      "ingredients": [
+        {
+          "Tonic": 120
+        },
+        {
+          "Gin": 40
+        },
+        {
+          "Lime juice": 15
+        },
+        {
+          "Triple sec": 10
+        }
+      ],
+      "garnishes": []
+    },
+    {
+      "name": "Buffalo",
+      "id": 191,
+      "type": 1,
+      "ingredients": [
+        {
+          "Fanta orange": 120
+        },
+        {
+          "Mint liqueur": 25
+        },
+        {
+          "Rakia": 20
+        }
+      ],
+      "garnishes": []
+    },
+    {
+      "name": "Gin tonic",
+      "id": 182,
+      "type": 1,
+      "ingredients": [
+        {
+          "Tonic": 130
+        },
+        {
+          "Gin": 60
+        },
+        {
+          "Lime juice": 15
+        }
+      ],
+      "garnishes": []
+    },
+    {
+      "name": "Seeker",
+      "id": 184,
+      "type": 1,
+      "ingredients": [
+        {
+          "Gin": 45
+        },
+        {
+          "Skinos": 40
+        },
+        {
+          "Pineapple juice": 80
+        },
+        {
+          "Tonic": 20
+        },
+        {
+          "Lime juice": 10
+        }
+      ],
+      "garnishes": []
     },
     {
       "name": "Margarita",
@@ -236,7 +311,7 @@
           "Vodka": 50
         },
         {
-          "Kahlúa": 30
+          "Kahlua": 30
         }
       ],
       "garnishes": [ "cherry" ]
@@ -385,13 +460,13 @@
           "Vodka": 50
         },
         {
-          "Kahlúa": 30
+          "KahlÃºa": 30
         }
       ],
       "garnishes": [ "heavy cream", "cherry" ]
     },
     {
-      "name": "Piña Colada",
+      "name": "Pina Colada",
       "id": 23,
       "type": 1,
       "ingredients": [
@@ -450,16 +525,13 @@
           "Vodka": 50
         },
         {
-          "Tomato juice": 150
+          "Tomato juice": 120
         },
         {
           "Lemon juice": 15
         },
         {
-          "Worcestershire sauce": 5
-        },
-        {
-          "Hot sauce": 5
+          "BloodyIngredient": 10
         }
       ],
       "garnishes": [ "celery stalk", "lemon wedge", "olive", "salt" ]
@@ -470,7 +542,7 @@
       "type": 1,
       "ingredients": [
         { "Vodka": 50 },
-        { "Blue Curaçao": 25 },
+        { "Blue Curacao": 25 },
         { "Lemonade": 100 }
       ],
       "garnishes": [ "lemon wedge" ]
@@ -510,7 +582,7 @@
           "Orgeat syrup": 10
         },
         {
-          "Orange Curaçao": 25
+          "Orange Curacao": 25
         },
         {
           "Lime juice": 25
@@ -1040,7 +1112,7 @@
           "Cherry liqueur": 25
         },
         {
-          "Bénédictine": 25
+          "Benedictine": 25
         },
         {
           "Grenadine": 10
@@ -1100,7 +1172,7 @@
           "Vodka": 45
         },
         {
-          "Kahlúa": 30
+          "Kuhlua": 30
         },
         {
           "Espresso": 30
@@ -1539,10 +1611,10 @@
       "type": 1,
       "ingredients": [
         {
-          "Crème de menthe": 30
+          "Creme de menthe": 30
         },
         {
-          "Crème de cacao": 30
+          "Creme de cacao": 30
         },
         {
           "Heavy cream": 30
@@ -1621,7 +1693,7 @@
           "Lemon juice": 15
         },
         {
-          "Crème de violette": 7.5
+          "Creme de violette": 7.5
         }
       ],
       "garnishes": [ "Lemon twist" ]
@@ -1658,7 +1730,7 @@
           "Simple syrup": 15
         },
         {
-          "Crème de mûre": 15
+          "Creme de mure": 15
         }
       ],
       "garnishes": [ "Blackberries", "Lemon slice" ]
@@ -1678,7 +1750,7 @@
           "Simple syrup": 15
         },
         {
-          "Crème de mûre": 15
+          "Creme de mure": 15
         }
       ],
       "garnishes": [ "Blackberries", "Lemon slice" ]
@@ -1689,7 +1761,7 @@
       "type": 1,
       "ingredients": [
         {
-          "Cachaça": 60
+          "Cachaca": 60
         },
         {
           "Simple syrup": 15
@@ -1967,7 +2039,7 @@
       "type": 1,
       "ingredients": [
         {
-          "Crème de cassis": 15
+          "Creme de cassis": 15
         },
         {
           "Champagne": 120
@@ -2107,7 +2179,7 @@
           "Vodka": 30
         },
         {
-          "Kahlúa": 30
+          "Kahlua": 30
         },
         {
           "Baileys Irish Cream": 30
@@ -2657,7 +2729,7 @@
           "Amaretto": 45
         },
         {
-          "Kahlúa": 45
+          "Kahlua": 45
         },
         {
           "Cream": 30
@@ -2767,7 +2839,7 @@
       "garnishes": [ "Lemon wheel", "Mint sprig" ]
     },
     {
-      "name": "Vieux Carré",
+      "name": "Vieux Carre",
       "id": 154,
       "type": 1,
       "ingredients": [
@@ -2957,7 +3029,7 @@
           "Vodka": 45
         },
         {
-          "Kahlúa": 45
+          "Kahlua": 45
         },
         {
           "Champagne": 60
@@ -2974,7 +3046,7 @@
           "Tequila": 45
         },
         {
-          "Blue curaçao": 30
+          "Blue curacao": 30
         },
         {
           "Lime juice": 30
@@ -3295,10 +3367,10 @@
       "type": 1,
       "ingredients": [
         {
-          "Crème de menthe": 30
+          "Creme de menthe": 30
         },
         {
-          "Crème de cacao": 30
+          "Creme de cacao": 30
         },
         {
           "Heavy cream": 30

@@ -9,7 +9,7 @@ namespace BlankBartender.WebApi.Controllers;
 [Route("[controller]")]
 public class DrinkController : ControllerBase
 {
-    private readonly IEnumerable<Pump> _pumps;
+    private IEnumerable<Pump> _pumps;
     private IEnumerable<Drink>? _drinks;
     private readonly ILightsService _lightsService;
     private readonly IDisplayService _displayService;
@@ -39,7 +39,11 @@ public class DrinkController : ControllerBase
         _settingsService = settingsService;
 
         _pumps = _pumpService.GetConfiguration();
-        _detectionService = detectionService;
+        _settinsValues = _settingsService.GetMachineSettings();
+        if(_settinsValues.UseCameraAI)
+        {
+            _detectionService = detectionService;
+        }
 }
 
     [Route("available/all/")]
@@ -70,10 +74,11 @@ public class DrinkController : ControllerBase
     public async Task<ActionResult> ProcessDrink(IEnumerable<Pump> model, string name = "")
     {
         _settinsValues = _settingsService.GetMachineSettings();
-        _lightsService.StartCocktailLights();
-        _displayService.PlaceGlassMessage();
+        //_lightsService.StartCocktailLights();
+        Thread.Sleep(1580);
         if(_settinsValues.UseCameraAI)
         {
+            _displayService.PlaceGlassMessage();
             var timeout = TimeSpan.FromSeconds(30);
             var stopTime = DateTime.UtcNow.Add(timeout);
 
@@ -106,9 +111,9 @@ public class DrinkController : ControllerBase
         async Task ExecutePumpAction(Pump pump)
         {
             _pinService.SwitchPin(pump.Pin, true);
-            Console.WriteLine($"Start pump {pump.Number} on pin {pump.Pin} for {pump.Time}ms");
+            Console.WriteLine($"Start pump {pump.Number} on pin {pump.Pin} for {pump.Time.Value.ToString("00000.00")} ms");
             await Task.Delay((int)pump.Time);  // Replacing Thread.Sleep with Task.Delay in async methods.
-            Console.WriteLine($"Stop pump {pump.Number} on pin {pump.Pin} that worked for {pump.Time} ms");
+            Console.WriteLine($"Stop pump {pump.Number} on pin {pump.Pin} that worked for {pump.Time.Value.ToString("00000.00")} ms");
 
             _pinService.SwitchPin(pump.Pin, false);
         }
@@ -119,13 +124,14 @@ public class DrinkController : ControllerBase
         {
             var timeToMakeCocktail = (int)model.Max(x => x.Time) / 1050;
             if (_settinsValues.UseStirrer)
-                timeToMakeCocktail += 15;
+                timeToMakeCocktail += 16;
 
             Task.Run(() => _displayService.Countdown(timeToMakeCocktail));
 
             await Task.WhenAll(tasks);
             if (_settinsValues.UseStirrer)
             {
+                Thread.Sleep(2500);
                 //Stirring process part
                 _servoService.MovePlatformToStirrer();
                 _servoService.MoveStirrerToGlass();
@@ -159,6 +165,7 @@ public class DrinkController : ControllerBase
     {
         _statusService.StartRunning();
         _drinks = _cocktailService.GetAvaiableCocktails();
+        _pumps = _pumpService.GetConfiguration();
 
         var drink = _drinks.FirstOrDefault(x => x.Id == id);
         if (drink == null)
@@ -180,13 +187,13 @@ public class DrinkController : ControllerBase
                 throw new Exception($"Pump for ingredient {ingridient.Key} not found.");
             }
             pump.Time = time;
-            Console.WriteLine($"Found and added ingredient {ingridient.Key} amount:{ingridient.Value} (taking {time / 1000} seconds) corresponding to Pump{pump.Number}");
+            Console.WriteLine($"Found and added ingredient {ingridient.Key} amount:{ingridient.Value.ToString("0.00")} (taking {time / 1000:0.00} seconds) corresponding to Pump {pump.Number}");
             return pump;
         }).ToList();
 
         await _displayService.PrepareStartDisplay(drink.Name);
-
-        return await ProcessDrink(recipe, drink.Name);
+        ProcessDrink(recipe, drink.Name);
+        return Ok();
     }
 
 
@@ -195,6 +202,8 @@ public class DrinkController : ControllerBase
     public async Task<ActionResult> MakeCustomCocktail(Drink drink)
     {
         _statusService.StartRunning();
+        _pumps = _pumpService.GetConfiguration();
+
 
         if (drink == null || string.IsNullOrEmpty(drink.Name))
         {
@@ -215,7 +224,7 @@ public class DrinkController : ControllerBase
             }
 
             pump.Time = time;
-            Console.WriteLine($"Added ingredient {ingridient.Key} amount:{ingridient.Value} (taking {time / 1000} seconds) to Pump{pump.Number}");
+            Console.WriteLine($"Added ingredient {ingridient.Key} amount:{ingridient.Value:0.00} (taking {time / 1000:0.00} seconds) to Pump{pump.Number}");
             return pump;
 
         }).ToList();

@@ -71,7 +71,7 @@ namespace BlankBartender.WebApi.Services
                 _drinks = drinkJsonObject["drinks"].Select(d => new Drink
                 {
                     Name = d["name"].ToString(),
-                    Id = byte.Parse(d["id"].ToString()),
+                    Id = int.Parse(d["id"].ToString()),
                     Type = byte.Parse(d["type"].ToString()),
                     Ingradients = d["ingredients"].Children<JObject>().Select(ing => new
                     {

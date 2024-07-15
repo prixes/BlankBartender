@@ -49,6 +49,11 @@ namespace BlankBartender.WebApi.Services
             lcd.SetCursorPosition(0, 0);
             Write($"{text}");
         }
+        public async Task WriteSecondLineDisplay(string text)
+        {
+            lcd.SetCursorPosition(0, 1);
+            Write($"{text}");
+        }
 
         public void CocktailReadyDisplay()
         {

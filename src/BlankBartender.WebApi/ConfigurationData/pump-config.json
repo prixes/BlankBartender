@@ -3,21 +3,21 @@
     {
       "number": 1,
       "pin": 118,
-      "value": "Vodka",
+      "value": "Skinos",
       "flowRate": 5,
       "time": null
     },
     {
       "number": 2,
       "pin": 128,
-      "value": "Orange juice",
+      "value": "Peach schnapps",
       "flowRate": 5.5,
       "time": null
     },
     {
       "number": 3,
       "pin": 130,
-      "value": "White rum",
+      "value": "Vodka",
       "flowRate": 5.5,
       "time": null
     },
@@ -25,70 +25,70 @@
       "number": 4,
       "pin": 131,
       "value": "Gin",
-      "flowRate": 4.5,
+      "flowRate": 4.7,
       "time": null
     },
     {
       "number": 5,
       "pin": 129,
       "value": "Tequila",
-      "flowRate": 5.5,
+      "flowRate": 5.05,
       "time": null
     },
     {
       "number": 6,
       "pin": 132,
-      "value": "Soda water",
+      "value": "Lychee Juice",
       "flowRate": 4.8,
       "time": null
     },
     {
       "number": 7,
       "pin": 133,
-      "value": "White rum",
-      "flowRate": 4,
+      "value": "Tonic",
+      "flowRate": 5.65,
       "time": null
     },
     {
       "number": 8,
       "pin": 124,
-      "value": "Dark rum",
-      "flowRate": 1.5,
+      "value": "White rum",
+      "flowRate": 1.2,
       "time": null
     },
     {
       "number": 9,
       "pin": 144,
-      "value": "Lime juice",
-      "flowRate": 1.5,
+      "value": "Pineapple juice",
+      "flowRate": 0.85,
       "time": null
     },
     {
       "number": 10,
       "pin": 125,
-      "value": "Simple syrup",
-      "flowRate": 1,
+      "value": "Lime juice",
+      "flowRate": 1.25,
       "time": null
     },
     {
       "number": 11,
       "pin": 122,
-      "value": "Triple sec",
-      "flowRate": 1.5,
+      "value": "Grapefruit",
+      "flowRate": 1.43,
       "time": null
     },
     {
       "number": 12,
       "pin": 121,
-      "value": "Gin",
-      "flowRate": 1.5,
+      "value": "Triple sec",
+      "flowRate": 1.35,
       "time": null
     },
     {
       "number": 13,
       "pin": 119,
-      "value": "Lemon juice",
-      "flowRate": 1.5,
+      "value": "Skinos",
+      "flowRate": 1.2,
       "time": null
     }
   ]
