@@ -1,4 +1,109 @@
 ﻿@using Microsoft.AspNetCore.Components.Routing
+@using MudBlazor
+
+
+<MudGrid Class="bottom-nav-bar align-content-center" Justify="Justify.SpaceAround" Spacing="0">
+    <MudItem xs="2">
+        <MudNavLink Href="catalog" Match="NavLinkMatch.All" Class="nav-link align-content-center" ActiveClass="active-nav-link">
+            <MudStack AlignItems="AlignItems.Center" Spacing="0">
+                <MudIconButton Icon="@Icons.Material.Filled.MenuBook" Size="Size.Small" Color="@GetNavLinkColor("catalog")" />
+                <MudText Color="@GetTextColor("catalog")">Gallery</MudText>
+            </MudStack>
+        </MudNavLink>
+    </MudItem>
+    <MudItem xs="2">
+        <MudNavLink Href="alcoholic-cocktails" Class="nav-link align-content-center" ActiveClass="active-nav-link">
+            <MudStack AlignItems="AlignItems.Center" Spacing="0">
+                <MudIconButton Icon="@Icons.Material.Filled.LocalBar" Size="Size.Small" Color="@GetNavLinkColor("alcoholic-cocktails")" />
+                <MudText Color="@GetTextColor("alcoholic-cocktails")">Alcoholic</MudText>
+            </MudStack>
+        </MudNavLink>
+    </MudItem>
+    <MudItem xs="2">
+        <MudNavLink Href="non-alcoholic-cocktails" Class="nav-link align-content-center" ActiveClass="active-nav-link">
+            <MudStack AlignItems="AlignItems.Center" Spacing="0">
+                <MudIconButton Icon="@Icons.Material.Filled.NoDrinks" Size="Size.Small" Color="@GetNavLinkColor("non-alcoholic-cocktails")" />
+                <MudText Color="@GetTextColor("non-alcoholic-cocktails")">Non-Alcoholic</MudText>
+            </MudStack>
+        </MudNavLink>
+    </MudItem>
+    <MudItem xs="2">
+        <MudNavLink Href="maintenance" Class="nav-link align-content-center" ActiveClass="active-nav-link">
+            <MudStack AlignItems="AlignItems.Center" Spacing="0">
+                <MudIconButton Icon="@Icons.Material.Filled.Build" Size="Size.Small" Color="@GetNavLinkColor("maintenance")" />
+                <MudText Color="@GetTextColor("maintenance")">Maintenance</MudText>
+            </MudStack>
+        </MudNavLink>
+    </MudItem>
+</MudGrid>
+
+<style>
+    .bottom-nav-bar {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background-color: black;
+        box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
+        padding: 5px 0; /* Reduced padding */
+        margin: 0px;
+    }
+
+        .bottom-nav-bar p {
+            margin: 0;
+            font-size: 9px; /* Smaller font size */
+            text-align: center;
+        }
+
+    .mud-grid-item {
+        padding: 0px;
+    }
+
+    .mud-nav-link-text {
+        margin: 0px !important;
+    }
+
+    .nav-link {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-decoration: none;
+        color: inherit;
+        padding: 0px;
+    }
+
+    .mud-nav-link {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    .active-nav-link .MudIconButton-root {
+        color: deepskyblue;
+    }
+
+    .active-nav-link .nav-text {
+        color: deepskyblue;
+    }
+
+
+</style>
+
+@inject NavigationManager NavigationManager
+@code {
+    private Color GetNavLinkColor(string href)
+    {
+        return href == CurrentUri ? Color.Tertiary : Color.Primary;
+    }
+
+    private Color GetTextColor(string href)
+    {
+        return href == CurrentUri ? Color.Tertiary : Color.Primary;
+    }
+
+    private string CurrentUri => NavigationManager.Uri.Replace(NavigationManager.BaseUri, "");
+}
+
+
+@* @using Microsoft.AspNetCore.Components.Routing
 
 <div class="top-row ps-3 navbar navbar-dark">
   <div class="container-fluid">
@@ -50,3 +155,4 @@
         _collapseNavMenu = !_collapseNavMenu;
     }
 }
+ *@

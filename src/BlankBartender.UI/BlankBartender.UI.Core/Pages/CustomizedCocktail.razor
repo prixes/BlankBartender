@@ -1,32 +1,46 @@
 ﻿@page "/custom/cocktail/{Model}"
-<h2 class="cocktailName">Customize @drink.Name</h2>
+@inject ISnackbar Snackbar
+<MudStack Class="d-flex align-center justify-center flex-grow-1 gap-6 mb-5" Row>
+    <MudText Typo="Typo.h5" Class="cocktailName">Customize @drink.Name</MudText>
+    <MudItem Style="position:absolute; left:80%;">
+        <MudIconButton Icon="@Icons.Material.Filled.Refresh" OnClick="ResetValues" Color="Color.Info" Size="Size.Large" />
+    </MudItem>
+</MudStack>
+
 @if (_statusService.isProcessing)
 {
-    <p class="text-warning">Machine is busy please wait</p>
+    <MudAlert Severity="Severity.Warning">Machine is busy please wait</MudAlert>
 }
-<div class="table">
-    <div class="container">
-        <div class="row">
-            @foreach (var ingradient in drink.Ingradients)
+
+<MudStack AlignItems="AlignItems.Center" Spacing="3">
+    @foreach (var ingredient in drink.Ingredients)
+    {
+        <MudGrid Spacing="3" Class="justify-center m-4">
+            <MudItem xs="12" sm="12">
+                <MudText Align="Align.Center">@ingredient.Key: @ingredient.Value.ToString() ml</MudText>
+            </MudItem>
+            <MudItem Spacing="3" xs="12" sm="12">
+                <MudSlider @bind-Value="drink.Ingredients[ingredient.Key]" Min="1" Max="200" Size="Size.Medium" ValueLabel="true" ValueLabelFormat=@("0 ml") />
+                @* @onchange="val => UpdateValue(ingredient.Key, (decimal)val)" *@
+            </MudItem>
+        </MudGrid>
+    }
+
+    <MudGrid Spacing="3" Justify="Justify.Center">
+        <MudItem>
+            @if ((!drink.IsProcessing && !_statusService.isProcessing) || (drink.IsProcessing && _statusService.isProcessing))
             {
-                <div class="ingredients col-3">@ingradient.Key</div>
-                <Slider Value="@ingradient.Value" Key="@ingradient.Key" ValueChanged="@(val => UpdateValue(val))"></Slider>
+                <MudButton Disabled="@_statusService.isProcessing" Color="@((drink.IsProcessing ? Color.Warning : Color.Primary))" Variant="Variant.Filled" OnClick="@(async () => await ProcessCustomDrink(drink))">
+                    @(drink.IsProcessing ? "Processing" : "Make")
+                </MudButton>
             }
-            <div class="text-center">
-                @if ((!drink.IsProcessing && !_statusService.isProcessing) || (drink.IsProcessing && _statusService.isProcessing))
-                {
-                    <button type="button" class="btn @(drink.IsProcessing ? "btn-warning" : "btn-primary")" disabled="@_statusService.isProcessing"
-                        @onclick="@(async () => await ProcessCustomDrink(drink))">
-                        @(drink.IsProcessing ? "Processing" : "Make")
-                    </button>
-                }
-            </div>
-        </div>
+        </MudItem>
+    </MudGrid>
+</MudStack>
 
-        <div class="garnishes">
-            Drink can be garnished with following ingredients: @string.Join(", ",drink.Garnishes)
-        </div>
-    </div>
-</div>
-
-
+@if (drink.Garnishes.Count > 0)
+{
+    <MudText>
+        Drink can be garnished with the following Ingredients: @string.Join(", ", drink.Garnishes)
+    </MudText>
+}

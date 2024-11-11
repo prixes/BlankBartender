@@ -1,0 +1,106 @@
+﻿@using MudBlazor
+@inject IJSRuntime JS
+
+<style>
+    .search-container {
+        position: absolute;
+    }
+
+    .search-input {
+        width: 65vh;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+        .search-input.expanded {
+            width: 200px; /* Adjust the width as needed */
+        }
+</style>
+
+<MudStack @onfocusin="HandleFocusIn" @onfocusout="HandleFocusOut"
+          Style="@(_isSearchOpen ? "position:static;" : "position:absolute; transform: translateX(-23vh) translateY(-4vh);")"
+          Justify="Justify.Center" Row>
+    <MudCollapse Expanded="@_isSearchOpen">
+        <MudTextField Value="@SearchQuery" ValueChanged="OnSearchQueryChanged" Label="Search cocktails..." Variant="Variant.Outlined"
+                      Immediate="true" T="string" Adornment="Adornment.End"
+                      AdornmentColor="Color.Primary"
+                      Class="@(_isSearchOpen ? "search-input expanded" : "search-input")"
+                      @onfocusout="HandleFocusOut"
+                      @onmouseover="ExpandSearch"
+                      @onmouseleave="HandleMouseLeave" />
+    </MudCollapse>
+
+    <MudIconButton Icon="@Icons.Material.Filled.Search" Color="Color.Primary" Size="Size.Small" Variant="Variant.Filled" OnClick="ToggleSearch"
+                   @onfocusout="HandleFocusOut" @onmouseover="ExpandSearch" @onmouseleave="HandleMouseLeave"/>
+</MudStack>
+
+@code {
+    [Parameter]
+    public string SearchQuery { get; set; } = "";
+
+    [Parameter]
+    public EventCallback<string> SearchQueryChanged { get; set; }
+
+    private bool _isSearchOpen;
+    private bool _searchQueryFocused;
+    private bool _mudStackFocused;
+
+    private void ExpandSearch()
+    {
+        _isSearchOpen = true;
+    }
+
+    private void HandleMouseLeave()
+    {
+        _ = Task.Run(async () =>
+        {
+            await Task.Delay(300);
+            if (_mudStackFocused)
+                return;
+
+            CollapseSearch();
+        });
+    }
+
+    private void CollapseSearch()
+    {
+        _isSearchOpen = false;
+    }
+
+    private void ToggleSearch()
+    {
+        _isSearchOpen = !_isSearchOpen;
+        if (_isSearchOpen)
+        {
+            StateHasChanged();
+        }
+    }
+
+    private void HandleFocusIn(FocusEventArgs args)
+    {
+        _mudStackFocused = true;
+    }
+
+    private void HandleFocusOut(FocusEventArgs args)
+    {
+        _ = Task.Run(async () =>
+        {
+            await Task.Delay(300);
+            if (!_searchQueryFocused)
+            {
+                _isSearchOpen = false;
+                _mudStackFocused = false;
+                StateHasChanged();
+            }
+        });
+    }
+
+    private async Task OnSearchQueryChanged(string value)
+    {
+        if (SearchQuery != value)
+        {
+            SearchQuery = value;
+            await SearchQueryChanged.InvokeAsync(value);
+        }
+    }
+}

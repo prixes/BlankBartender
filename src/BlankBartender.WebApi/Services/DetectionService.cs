@@ -20,6 +20,7 @@ namespace BlankBartender.WebApi.Services
         private int ret;
         private readonly UIntPtr ctx = default;
         private RknnInput[] inputs = new RknnInput[1];
+#if !DEBUG
         private Mat padding = new Mat();
         private Mat rawImage = new Mat();
         private Size size = new OpenCvSharp.Size(640, 480);
@@ -27,11 +28,13 @@ namespace BlankBartender.WebApi.Services
 
         private static string pipeline = "v4l2src device=/dev/video0 ! video/x-raw, format=(string)NV12, width=(int)2592, height=(int)1944 ! videoconvert ! videoscale ! appsink";
         private VideoCapture capture = new VideoCapture(pipeline, VideoCaptureAPIs.GSTREAMER);
+#endif
         public DetectionService()
         {
             modelData = System.IO.File.ReadAllBytes(modelPath);
             labels = File.ReadAllLines(labelsPath).ToList();
 
+#if !DEBUG
             int ret = RknnApi.rknn_init(ref ctx, modelData, modelData.Length, 0);
             if (ret < 0)
             {
@@ -99,7 +102,6 @@ namespace BlankBartender.WebApi.Services
                 Fmt = RknnTensorFormat.RKNN_TENSOR_NHWC,
                 PassThrough = 0
             };
-
             var isCaptured = capture.Read(rawImage);
 
             capture.Read(rawImage);
@@ -120,10 +122,12 @@ namespace BlankBartender.WebApi.Services
 
                 bool success = Recognize(inputs, ctx, ret, io_num, outputAttrs);
             }
+#endif
         }
 
         public async Task<bool> DetectGlass()
         {
+#if !DEBUG
             var isCaptured = capture.Read(rawImage);
             while (rawImage.Total() * rawImage.ElemSize() == 0)
             {
@@ -145,7 +149,13 @@ namespace BlankBartender.WebApi.Services
             var isSaved = padding.SaveImage(filePath);
 
             bool success = Recognize(inputs, ctx, ret, io_num, outputAttrs);
+            
             return success;
+#endif
+#if DEBUG
+            return true;
+#endif
+
         }
         private bool Recognize(RknnInput[] inputs, UIntPtr ctx, int ret, RknnInputOutputNum io_num, RknnTensorAttr[] outputAttrs)
         {

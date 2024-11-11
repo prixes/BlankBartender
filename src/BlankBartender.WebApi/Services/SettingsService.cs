@@ -8,7 +8,12 @@ namespace BlankBartender.WebApi.Services
     public class SettingsService : ISettingsService
     {
         private const string _settingsFileName = "settings.json";
+
+        private string _liquidConfigJson;
+
         private readonly string _settingsPath = Path.Combine(Directory.GetCurrentDirectory(), "ConfigurationData", _settingsFileName);
+        private readonly string liquidFilePath = Path.Combine(Directory.GetCurrentDirectory(), "ConfigurationData", "liquids-config.json");
+
         private SettingsValues _settinsValues;
         private string? _settingsJson;
         public SettingsService()
@@ -44,6 +49,72 @@ namespace BlankBartender.WebApi.Services
             using StreamWriter file = new(_settingsPath);
             await file.WriteLineAsync(json);
 
+        }
+
+        public void AddLiquid(string newLiquid)
+        {
+            Console.WriteLine($"Adding new liquid: {newLiquid}");
+            JArray liquidsArray;
+
+            if (System.IO.File.Exists(liquidFilePath))
+            {
+                _liquidConfigJson = System.IO.File.ReadAllText(liquidFilePath);
+                if (!string.IsNullOrEmpty(_liquidConfigJson))
+                {
+                    liquidsArray = JArray.Parse(_liquidConfigJson);
+                }
+                else
+                {
+                    liquidsArray = new JArray();
+                }
+            }
+            else
+            {
+                liquidsArray = new JArray();
+            }
+
+            // Add new liquid if it doesn't already exist in the array
+            if (!liquidsArray.Contains(newLiquid))
+            {
+                liquidsArray.Add(newLiquid);
+                System.IO.File.WriteAllText(liquidFilePath, liquidsArray.ToString());
+                Console.WriteLine("Liquid added successfully");
+            }
+            else
+            {
+                Console.WriteLine("Liquid already exists in the list");
+            }
+        }
+
+        public void RemoveLiquid(string liquidToRemove)
+        {
+            Console.WriteLine($"Removing liquid: {liquidToRemove}");
+            List<string> liquidsArray;
+
+            if (System.IO.File.Exists(liquidFilePath))
+            {
+                _liquidConfigJson = System.IO.File.ReadAllText(liquidFilePath);
+                if (!string.IsNullOrEmpty(_liquidConfigJson))
+                {
+                    liquidsArray = JArray.Parse(_liquidConfigJson).ToObject<List<string>>(); ;
+
+                    // Remove liquid if it exists in the array
+                    if (liquidsArray.Contains(liquidToRemove))
+                    {
+                        liquidsArray.Remove(liquidToRemove);
+                        System.IO.File.WriteAllText(liquidFilePath, JArray.FromObject(liquidsArray).ToString());
+                        Console.WriteLine("Liquid removed successfully");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Liquid not found in the list");
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("Liquid configuration file does not exist");
+            }
         }
     }
 }

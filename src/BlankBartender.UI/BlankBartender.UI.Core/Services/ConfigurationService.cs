@@ -48,11 +48,32 @@ namespace BlankBartender.UI.Core.Services
             return true;
         }
 
-        public async Task<IEnumerable<string>> GetAllPumpLiquids()
+        public async Task<IEnumerable<string>> GetAllLiquids()
         {
-            var response = await _configurationClient.ReadCurrentLiquidsAsync();
+            var response = await _configurationClient.AllLiquidsAsync();
             await RequestHandler.ValidateResponseAsync(response);
             return await RequestHandler.ParseResponseJsonAsync<IEnumerable<string>>(response, "liquids");
+        }
+
+        public async Task<IEnumerable<string>> GetReadAvailableLiquids()
+        {
+            var response = await _configurationClient.ReadAvailableLiquidsAsync();
+            await RequestHandler.ValidateResponseAsync(response);
+            return await RequestHandler.ParseResponseJsonAsync<IEnumerable<string>>(response, "liquids");
+        }
+
+        public async Task AddLiquid(string liquidName)
+        {
+            var response = await _configurationClient.AddLiquidAsync(liquidName);
+            await RequestHandler.ValidateResponseAsync(response);
+            return;
+        }
+
+        public async Task RemoveLiquid(string liquidName)
+        {
+            var response = await _configurationClient.RemoveLiquidAsync(liquidName);
+            await RequestHandler.ValidateResponseAsync(response);
+            return;
         }
 
         public async Task<IEnumerable<Pump>> GetPumpConfiguration()

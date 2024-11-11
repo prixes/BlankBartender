@@ -11,7 +11,10 @@ namespace BlankBartender.UI.Core.Interfaces
         public Task<bool> StopPumps();
         public Task<bool> StopPump(int pumpNumber);
         public Task<bool> InitializeLiquidFlow();
-        public Task<IEnumerable<string>> GetAllPumpLiquids();
+        public Task<IEnumerable<string>> GetAllLiquids();
+        public Task<IEnumerable<string>> GetReadAvailableLiquids();
+        public Task AddLiquid(string liquidName);
+        public Task RemoveLiquid(string liquidName);
 
         public Task<IEnumerable<Pump>> GetPumpConfiguration();
 

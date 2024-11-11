@@ -8,7 +8,9 @@ namespace BlankBartender.WebApi.Services
     public class LightsService : ILightsService
     {
         private const string LightConfigFileName = "lights-config.json";
+#if !DEBUG
         private readonly GpioController _gpioController = new GpioController();
+#endif
         private readonly Dictionary<string, short> _lightPins = new Dictionary<string, short>();
 
         public LightsService()
@@ -29,7 +31,9 @@ namespace BlankBartender.WebApi.Services
             foreach (var light in lights)
             {
                 _lightPins[light.Name] = light.Pin;
+#if !DEBUG
                 _gpioController.OpenPin(light.Pin, PinMode.Output, PinValue.High);
+#endif
             }
         }
 
@@ -43,10 +47,11 @@ namespace BlankBartender.WebApi.Services
         public void TurnLight(string light, bool on)
         {
             if (!_lightPins.TryGetValue(light, out short pin)) return;
-
+#if !DEBUG
             var pinValue = on ? PinValue.Low : PinValue.High;
             if (_gpioController.Read(pin) != pinValue)
                 _gpioController.Write(pin, pinValue);
+#endif
         }
     }
 }

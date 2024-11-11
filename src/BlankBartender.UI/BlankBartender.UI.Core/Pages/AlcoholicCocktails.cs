@@ -6,7 +6,7 @@ using System.Text.Json;
 
 namespace BlankBartender.UI.Core.Pages
 {
-    public partial class AlcoholicCocktails
+    public partial class AlcoholicCocktails : ComponentBase
     {
         [Inject]
         public IDrinkService _drinkService { get; set; } = default!;
@@ -19,27 +19,20 @@ namespace BlankBartender.UI.Core.Pages
         private IEnumerable<Drink>? _filteredDrinks;
         private string _searchQuery = "";
 
-        protected override void OnParametersSet()
+        protected override async Task OnInitializedAsync()
         {
-            _filteredDrinks = _drinks.Where(drink => drink.Type == 1)
-                .Where(drink =>
-                drink.Name.ToLower().Contains(_searchQuery.ToLower())
-             || drink.Garnishes.Any(g => g.ToLower().Contains(_searchQuery.ToLower()))
-             || drink.Ingradients.Any(i => i.Key.ToLower().Contains(_searchQuery.ToLower()))
-            );
+            _drinks = await _drinkService.GetAvailableAll();
+            _filteredDrinks = _drinks; // Initialize with all drinks
+            await _statusService.StartHub();
+            _statusService.OnChange += OnChangeHandler;
         }
+
         private void NavigateToCustomCocktailPage(Drink drink)
         {
             var modelJson = JsonSerializer.Serialize(drink);
             var encodedModel = WebUtility.UrlEncode(modelJson);
             var url = $"/custom/cocktail/{encodedModel}";
             NavigationManager.NavigateTo(url);
-        }
-        protected override async Task OnInitializedAsync()
-        {
-            _drinks = await _drinkService.GetAvailableAll();
-            await _statusService.StartHub();
-            _statusService.OnChange += OnChangeHandler;
         }
 
         protected async Task Process(Drink drink)
@@ -52,6 +45,25 @@ namespace BlankBartender.UI.Core.Pages
         private async void OnChangeHandler()
         {
             await InvokeAsync(StateHasChanged);
+        }
+
+        private async Task OnSearchQueryChanged(string value)
+        {
+            _searchQuery = value;
+            FilterDrinks();
+            await InvokeAsync(StateHasChanged);
+        }
+
+        private void FilterDrinks()
+        {
+            if (_drinks == null) return;
+
+            _filteredDrinks = _drinks.Where(drink => drink.Type == 1)
+                .Where(drink =>
+                    drink.Name.ToLower().Contains(_searchQuery.ToLower())
+                    || drink.Garnishes.Any(g => g.ToLower().Contains(_searchQuery.ToLower()))
+                    || drink.Ingredients.Any(i => i.Key.ToLower().Contains(_searchQuery.ToLower()))
+                ).ToList();
         }
     }
 }

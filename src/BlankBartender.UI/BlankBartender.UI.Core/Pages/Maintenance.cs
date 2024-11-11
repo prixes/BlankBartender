@@ -10,6 +10,9 @@ public partial class Maintenance
     public IConfigurationService _service { get; set; } = default!;
     public bool isProcessing { get; set; } = false;
     public bool isInitializing { get; set; } = false;
+    public bool isAddLiquid { get; set; } = false;
+    public bool isRemoveLiquid { get; set; } = false;
+    
     public IEnumerable<string> liquids;
     public IEnumerable<Pump> pumps;
     public List<bool> pumpsSwitch { get; set; }
@@ -17,16 +20,30 @@ public partial class Maintenance
     public bool UseCameraAI { get; set; } = false;
 
     public bool UseStirrer { get; set; } = false;
+    public string liquidName { get; set; } = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
-        liquids = await _service.GetAllPumpLiquids();
+        base.OnInitialized();
+        liquids = await _service.GetAllLiquids();
         pumps = await _service.GetPumpConfiguration();
         pumpsSwitch = Enumerable.Repeat(false, pumps.Count()).ToList(); 
         selectedLiquids = pumps.Select(pump => pump.Value).ToList();
         var (cameraAI, stirrer) = await _service.GetSettings();
         UseCameraAI = cameraAI;
         UseStirrer = stirrer;
+    }
+
+    protected async Task AddLiquid()
+    {
+        await _service.AddLiquid(liquidName);
+        liquids = await _service.GetAllLiquids();
+    }
+
+    protected async Task RemoveLiquid()
+    {
+        await _service.RemoveLiquid(liquidName);
+        liquids = await _service.GetAllLiquids();
     }
 
     protected async Task StartPumps()
@@ -57,10 +74,10 @@ public partial class Maintenance
         isProcessing = false;
     }
 
-    protected async Task UpdateSettings(bool useCameraAI, bool useStirrer)
+    protected async Task UpdateSettings()
     {
         isProcessing = true;
-        await _service.SetSettings(useCameraAI, useStirrer);
+        await _service.SetSettings(UseCameraAI, UseStirrer);
         isProcessing = false;
     }
 

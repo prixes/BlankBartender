@@ -1,67 +1,103 @@
 ﻿@page "/alcoholic-cocktails"
 
-<PageTitle>Alcoholic Cocktails</PageTitle>
+<MudContainer MaxWidth="MaxWidth.Large">
+    <MudStack Spacing="2">
 
-<div class="table">
-    <div class="row">
-        <h1>Alcoholic Cocktails</h1>
-    </div>
-    <div class="row">
-        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 col-8">
-            <input type="text" @bind-value="_searchQuery" @bind-value:event="oninput" placeholder="Search cocktails..." class="@((_filteredDrinks != null && _filteredDrinks.Any()) ? "result-found" : "result-not-found")">
-        </div>
-    </div>
-</div>
+        <HeaderWithSearch Title="Alcoholic Cocktails" SearchQuery="@_searchQuery" SearchQueryChanged="OnSearchQueryChanged" />
 
-@if (_drinks == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    @if(_statusService.isProcessing)
-    {
-        <p class="text-warning">Machine is busy please wait</p>
-    }
-    <div class="table">
-        <div class="container">
+        @*         <MudText Color="@Color.Primary" Typo="Typo.h5" Align="Align.Center" GutterBottom="true">
+        Alcoholic Cocktails
+        <SearchComponent SearchQuery="@_searchQuery" SearchQueryChanged="OnSearchQueryChanged" />
+        </MudText> *@
+
+
+
+        @if (_statusService.isProcessing)
+        {
+            <MudStack AlignItems="AlignItems.Center" Spacing="0">
+                <MudAlert Severity="Severity.Warning">
+                    Machine is busy please wait
+                   
+                </MudAlert>
+                <MudProgressCircular Class="ms-n1" Size="Size.Small" Color="Color.Warning" Indeterminate="true" />
+            </MudStack>
+        }
+
+        @if (_drinks == null)
+        {
+            <MudStack AlignItems="AlignItems.Center" Spacing="0">
+                <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                <MudAlert Severity="Severity.Info">Loading...</MudAlert>
+            </MudStack>
+        }
+        else if (_filteredDrinks == null || !_filteredDrinks.Any())
+        {
+            <MudStack AlignItems="AlignItems.Center" Spacing="0">
+                <MudAlert Severity="Severity.Info">Results not found</MudAlert>
+            </MudStack>
+        }
+        else
+        {
             @foreach (var drink in _filteredDrinks)
             {
-                <div class="row">
-                    <div class="col-lg-10 col-md-10 col-sm-9 col-xs-8 col-8">
-                        <h4 class="cocktailName"> @*  @onclick="@(async () => await Process(drink))" *@
-                            @drink.Name
-                        </h4>
-                        <div class="ingredients">
-                            @(string.Join(", ", drink.Ingradients.Select(i => $"{i.Key} {i.Value}ml ")))
-                        </div>
-                        @if (drink.Garnishes.Count > 0)
-                        {
-                            <div class="garnishes">
-                                Garnish/Add:
-                                @(string.Join(", ", drink.Garnishes))
-                            </div>
-                        }
-                    </div>
-                    <div class="col-lg-2 col-md-2 col-sm-3 col-xs-4 col-3 text-center">
-                        @if ((!drink.IsProcessing && !_statusService.isProcessing) || (drink.IsProcessing && _statusService.isProcessing))
-                        {
-                            <button type="button" class="btn @(drink.IsProcessing ? "btn-warning" : "btn-primary")" disabled="@_statusService.isProcessing"
-                            @onclick="@(async () => await Process(drink))">
-                                @(drink.IsProcessing ? "Processing" : "Make")
-                            </button>
-
-                            @if (!_statusService.isProcessing)
-                            {
-                                <button type="button" class="btn @(drink.IsProcessing ? "btn-warning" : "btn-primary")"
-                                @onclick="@(() => NavigateToCustomCocktailPage(drink))">
-                                    @(drink.IsProcessing ? "Processing" : "Customize")
-                                </button>
-                            }
-                        }
-                    </div>
-                </div>
-            }
+                <CocktailCard Id="@drink.Id"
+                              Name="@drink.Name"
+                              Ingredients="drink.Ingredients"
+                              Garnishes="drink.Garnishes"
+                              ShowActions="true"
+                              IsProcessing="@_statusService.isProcessing"
+                              OnProcess="@(async () => await Process(drink))"
+                              OnTune="@(async () => NavigateToCustomCocktailPage(drink))" />
+                @*                 <MudStack Spacing="4" AlignItems="AlignItems.Center" Class="mt-2" Row>
+        <MudImage Src="images/cocktail.png" Alt="images/cocktail.png" Class="img-fluid cocktailImage" />
+        <MudContainer>
+        <MudText Color="@Color.Tertiary" Typo="Typo.h6" Class="mb-2">@drink.Name.ToUpper()</MudText>
+        <MudText Color="@Color.Secondary" Typo="Typo.body1">
+        @string.Join(", ", drink.Ingredients.Select(i => $"{i.Key}"/*{i.Value}ml*/))
+        </MudText>
+        @if (drink.Garnishes.Count > 0)
+        {
+        <div style="display: flex; align-items: center;">
+        <MudText Color="Color.Primary" Typo="Typo.body1">
+        Garnish:&nbsp;
+        </MudText>
+        <MudText Color="Color.Secondary" Typo="Typo.body1">
+        @if (drink.Garnishes.Count > 0)
+        {
+        @string.Join(", ", drink.Garnishes)
+        }
+        </MudText>
         </div>
-    </div>
-}
+        }
+        </MudContainer>
+        <MudStack AlignItems="AlignItems.Center" Spacing="3">
+        <MudGrid Spacing="5" Class="justify-center">
+        <MudItem>
+        <MudButton Disabled="@_statusService.isProcessing" OnClick="@(async () => await Process(drink))" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small">
+        @if (@_statusService.isProcessing)
+        {
+        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+        <MudText Class="ms-2">Processing</MudText>
+        }
+        else
+        {
+        <MudText>Make</MudText>
+        }
+        </MudButton>
+        </MudItem>
+        <MudItem>
+        @if (!_statusService.isProcessing)
+        {
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" OnClick="@(() => NavigateToCustomCocktailPage(drink))">
+        <MudText>Tune</MudText>  @* Icon="@Icons.Material.Filled.Build Size=" Size.Medium" aria-label="Customize" *@
+                @*  </MudButton>
+        }
+        </MudItem>
+        </MudGrid>
+        </MudStack>
+        </MudStack> *@
+            }
+        }
+    </MudStack>
+</MudContainer>
+

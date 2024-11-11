@@ -1,0 +1,153 @@
+﻿@using MudBlazor
+@inject IJSRuntime JS
+
+<MudStack AlignItems="AlignItems.Center" Justify="Justify.Center" Row Class="header-container">
+    <div class="title-container @( _isSearchOpen ? "slide-out" : "slide-in")">
+        <MudText Color="Color.Primary" Typo="Typo.h5" Align="Align.Center" GutterBottom="true">
+            @Title
+        </MudText>
+    </div>
+    <div class="search-container @( _isSearchOpen ? "slide-in" : "slide-out")">
+        <MudTextField Class="search-input" Value="@SearchQuery" ValueChanged="OnSearchQueryChanged" Variant="Variant.Outlined"
+                      Immediate="true" T="string" Adornment="Adornment.End"
+                      AdornmentColor="Color.Primary"
+                      @onfocusout="HandleFocusOut"
+                      @onmouseover="ExpandSearch"
+                      @onmouseleave="HandleMouseLeave"
+                      @onfocusin="HandleFocusIn" />
+    </div>
+    <MudIconButton Icon="@Icons.Material.Filled.Search"
+                   Color="Color.Primary"
+                   Size="Size.Small"
+                   Variant="Variant.Filled"
+                   OnClick="ToggleSearch"
+                   @onfocusout="HandleFocusOut"
+                   @onmouseover="ExpandSearch"
+                   @onfocusin="HandleFocusIn" />
+</MudStack>
+
+<style>
+    .header-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .title-container, .search-container {
+        overflow: hidden;
+        display: inline-block;
+        vertical-align: middle;
+        white-space: nowrap;
+        transition: max-width 0.8s ease, opacity 0.8s ease;
+    }
+
+    .title-container {
+        padding-top: 10px;
+    }
+
+        .title-container.slide-out {
+            max-width: 0;
+            opacity: 0;
+        }
+
+        .title-container.slide-in {
+            max-width: auto;
+            opacity: 1;
+        }
+
+    .search-container {
+        max-width: 0;
+        opacity: 0;
+    }
+
+        .search-container.slide-in {
+            max-width: 400px;
+            opacity: 1;
+        }
+
+        .search-container.slide-out {
+            max-width: 0;
+            opacity: 0;
+        }
+
+    .search-input {
+        width: 100%;
+    }
+</style>
+
+@code {
+    [Parameter]
+    public string Title { get; set; } = "Default Title";
+
+    [Parameter]
+    public string SearchQuery { get; set; } = "";
+
+    [Parameter]
+    public EventCallback<string> SearchQueryChanged { get; set; }
+
+    private bool _isSearchOpen;
+    private bool _searchQueryFocused;
+    private bool _mudStackFocused;
+
+    private void ExpandSearch()
+    {
+        _isSearchOpen = true;
+        StateHasChanged();
+    }
+
+    private void HandleMouseLeave()
+    {
+        if (!_mudStackFocused)
+        {
+            _ = Task.Run(async () =>
+            {
+                await Task.Delay(300);
+                if (_mudStackFocused)
+                    return;
+
+                CollapseSearch();
+            });
+        }
+    }
+
+    private void CollapseSearch()
+    {
+        _isSearchOpen = false;
+        StateHasChanged();
+    }
+
+    private void ToggleSearch()
+    {
+        _isSearchOpen = !_isSearchOpen;
+        StateHasChanged();
+    }
+
+    private void HandleFocusIn(FocusEventArgs args)
+    {
+        _mudStackFocused = true;
+    }
+
+    private void HandleFocusOut(FocusEventArgs args)
+    {
+        _ = Task.Run(async () =>
+        {
+            await Task.Delay(300);
+            if (!_searchQueryFocused)
+            {
+                _isSearchOpen = false;
+                _mudStackFocused = false;
+                StateHasChanged();
+            }
+        });
+    }
+
+    private async Task OnSearchQueryChanged(string value)
+    {
+        if (SearchQuery != value)
+        {
+            SearchQuery = value;
+            await SearchQueryChanged.InvokeAsync(value);
+        }
+    }
+}

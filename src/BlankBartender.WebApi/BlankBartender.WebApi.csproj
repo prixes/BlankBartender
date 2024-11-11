@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<PropertyGroup>
-		<TargetFramework>net7.0</TargetFramework>
+		<TargetFramework>net8.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<RootNamespace>BlankBartender.WebApi</RootNamespace>
@@ -11,12 +11,12 @@
 		<PackageReference Include="Iot.Device.Bindings" Version="3.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="NSwag.AspNetCore" Version="14.0.3" />
-    <PackageReference Include="NSwag.MSBuild" Version="14.0.3">
+    <PackageReference Include="NSwag.AspNetCore" Version="14.1.0" />
+    <PackageReference Include="NSwag.MSBuild" Version="14.1.0">
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="OpenCvSharp4" Version="4.8.0.20230708" />
+		<PackageReference Include="OpenCvSharp4" Version="4.10.0.20241108" />
 		<PackageReference Include="OpenCvSharp4.runtime.linux-arm64.cuda" Version="4.5.2.20210803" />
     <PackageReference Include="System.Device.Gpio" Version="3.1.0" />
 	</ItemGroup>
@@ -26,12 +26,8 @@
 	</ItemGroup>
   
   <PropertyGroup>
-    <NSwagExe_Net70>"C:\Program Files (x86)\Rico Suter\NSwagStudio\Net70\dotnet-nswag.exe"</NSwagExe_Net70>
+    <NSwagExe_Net80>"C:\Program Files (x86)\Rico Suter\NSwagStudio\Net80\dotnet-nswag.exe"</NSwagExe_Net80>
   </PropertyGroup>
-
-	<ItemGroup>
-	  <Folder Include="wwwroot\" />
-	</ItemGroup>
 
 	<ItemGroup>
 	  <Content Update="ConfigurationData\drink-config.json">
@@ -59,13 +55,18 @@
 
 	<PropertyGroup>
 		<RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+		<PublishAot>False</PublishAot>
 		<!--<SupportedOSPlatformVersion>10.0.22000.0</SupportedOSPlatformVersion>-->
     <!--CommentOut when nswag client generate !!!-->
-		<PlatformTarget>ARM64</PlatformTarget>
+		<!--<PlatformTarget>ARM64</PlatformTarget>-->
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-	  <Optimize>True</Optimize>
+	  <Optimize>False</Optimize>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+	  <Optimize>False</Optimize>
 	</PropertyGroup>
 
   <!--<Target Name="NSwag" AfterTargets="ComputeFilesToPublish" Condition=" '$(Configuration)' == 'Release' ">
@@ -73,7 +74,7 @@
   </Target>-->
 
   <!--<Target Name="NSwag" AfterTargets="PostBuildEvent" Condition=" '$(Configuration)' == 'Debug' ">
-    <Exec WorkingDirectory="$(ProjectDir)" EnvironmentVariables="ASPNETCORE_ENVIRONMENT=Development" Command="$(NSwagExe_Net70) run config.nswag" />
+    <Exec WorkingDirectory="$(ProjectDir)" EnvironmentVariables="ASPNETCORE_ENVIRONMENT=Development" Command="$(NSwagExe_Net80) run config.nswag" />
   </Target>-->
 
 

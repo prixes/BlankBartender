@@ -6,7 +6,7 @@ using System.Text.Json;
 
 namespace BlankBartender.UI.Core.Pages
 {
-    public partial class CustomizedCocktail
+    public partial class CustomizedCocktail : ComponentBase
     {
         [Parameter]
         public string model { get; set; }
@@ -15,11 +15,15 @@ namespace BlankBartender.UI.Core.Pages
         [Inject]
         public IStatusService _statusService { get; set; } = default!;
         private Drink drink { get; set; }
+        private Dictionary<string, decimal> originalIngredients { get; set; }
+
+        public string SliderFormat { get; set; }
         protected override async Task OnInitializedAsync()
         {
             base.OnInitialized();
             var modelJson = WebUtility.UrlDecode(model);
             drink = JsonSerializer.Deserialize<Drink>(modelJson);
+            originalIngredients = new Dictionary<string, decimal>(drink.Ingredients);
             await _statusService.StartHub();
             _statusService.OnChange += OnChangeHandler;
         }
@@ -31,13 +35,17 @@ namespace BlankBartender.UI.Core.Pages
             drink.IsProcessing = false;
         }
 
-        private void UpdateValue(Tuple<string, decimal> ingredient)
-        {
-            drink.Ingradients[ingredient.Item1] = ingredient.Item2;
-        }
         private async void OnChangeHandler()
         {
             await InvokeAsync(StateHasChanged);
+        }
+
+        private void ResetValues()
+        {
+            foreach (var key in originalIngredients.Keys)
+            {
+                drink.Ingredients[key] = originalIngredients[key];
+            }
         }
     }
 }

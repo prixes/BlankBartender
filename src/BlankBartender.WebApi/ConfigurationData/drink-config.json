@@ -4,7 +4,7 @@
       "name": "Fruit Punch",
       "id": 183,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "White rum": 50
         },
@@ -27,7 +27,7 @@
       "name": "David's top mix",
       "id": 181,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Tonic": 120
         },
@@ -45,9 +45,9 @@
     },
     {
       "name": "Buffalo",
-      "id": 191,
+      "id": 185,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Fanta orange": 120
         },
@@ -64,7 +64,7 @@
       "name": "Gin tonic",
       "id": 182,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Tonic": 130
         },
@@ -81,7 +81,7 @@
       "name": "Seeker",
       "id": 184,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Gin": 45
         },
@@ -104,7 +104,7 @@
       "name": "Margarita",
       "id": 2,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Tequila": 50
         },
@@ -115,13 +115,16 @@
           "Lime juice": 25
         }
       ],
-      "garnishes": [ "lime wedge", "salt rim" ]
+      "garnishes": [
+        "lime wedge",
+        "salt rim"
+      ]
     },
     {
       "name": "Shirley Temple",
       "id": 3,
       "type": 0,
-      "ingredients": [
+      "Ingredients": [
         {
           "Ginger ale": 100
         },
@@ -129,13 +132,15 @@
           "Cherry syrup": 10
         }
       ],
-      "garnishes": [ "cherry" ]
+      "garnishes": [
+        "cherry"
+      ]
     },
     {
       "name": "Mojito",
       "id": 4,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "White rum": 50
         },
@@ -146,13 +151,17 @@
           "Soda water": 100
         }
       ],
-      "garnishes": [ "mint leaves", "lime wedge", "sugar" ]
+      "garnishes": [
+        "mint leaves",
+        "lime wedge",
+        "sugar"
+      ]
     },
     {
       "name": "Daiquiri",
       "id": 5,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "White rum": 50
         },
@@ -163,13 +172,15 @@
           "Simple syrup": 10
         }
       ],
-      "garnishes": [ "lime wedge" ]
+      "garnishes": [
+        "lime wedge"
+      ]
     },
     {
       "name": "Pina Colada",
       "id": 6,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "White rum": 50
         },
@@ -180,13 +191,16 @@
           "Pineapple juice": 50
         }
       ],
-      "garnishes": [ "pineapple wedge", "cherry" ]
+      "garnishes": [
+        "pineapple wedge",
+        "cherry"
+      ]
     },
     {
       "name": "Cosmopolitan",
       "id": 7,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Vodka": 50
         },
@@ -200,13 +214,15 @@
           "Lime juice": 25
         }
       ],
-      "garnishes": [ "lime wedge" ]
+      "garnishes": [
+        "lime wedge"
+      ]
     },
     {
       "name": "Long Island Iced Tea",
       "id": 8,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Vodka": 25
         },
@@ -232,13 +248,15 @@
           "Cola": 100
         }
       ],
-      "garnishes": [ "lemon wedge" ]
+      "garnishes": [
+        "lemon wedge"
+      ]
     },
     {
       "name": "Tequila Sunrise",
       "id": 9,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Tequila": 50
         },
@@ -249,13 +267,16 @@
           "Grenadine": 10
         }
       ],
-      "garnishes": [ "orange slice", "cherry" ]
+      "garnishes": [
+        "orange slice",
+        "cherry"
+      ]
     },
     {
       "name": "Manhattan",
       "id": 10,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Whiskey": 50
         },
@@ -266,24 +287,36 @@
           "Angostura bitters": 5
         }
       ],
-      "garnishes": [ "cherry" ]
+      "garnishes": [
+        "cherry"
+      ]
     },
     {
       "name": "Old Fashioned",
       "id": 11,
       "type": 1,
-      "ingredients": [
-        { "Whiskey": 50 },
-        { "Sugar": 10 },
-        { "Angostura bitters": 5 }
+      "Ingredients": [
+        {
+          "Whiskey": 50
+        },
+        {
+          "Sugar": 10
+        },
+        {
+          "Angostura bitters": 5
+        }
       ],
-      "garnishes": [ "orange slice", "cherry", "Orange peel" ]
+      "garnishes": [
+        "orange slice",
+        "cherry",
+        "Orange peel"
+      ]
     },
     {
       "name": "Mai Tai",
       "id": 12,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "White rum": 50
         },
@@ -300,13 +333,16 @@
           "Lime juice": 25
         }
       ],
-      "garnishes": [ "lime wedge", "mint sprig" ]
+      "garnishes": [
+        "lime wedge",
+        "mint sprig"
+      ]
     },
     {
       "name": "Black Russian",
       "id": 13,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Vodka": 50
         },
@@ -314,13 +350,15 @@
           "Kahlua": 30
         }
       ],
-      "garnishes": [ "cherry" ]
+      "garnishes": [
+        "cherry"
+      ]
     },
     {
       "name": "Tom Collins",
       "id": 14,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Gin": 50
         },
@@ -334,13 +372,16 @@
           "Soda water": 100
         }
       ],
-      "garnishes": [ "lemon slice", "cherry" ]
+      "garnishes": [
+        "lemon slice",
+        "cherry"
+      ]
     },
     {
       "name": "Gin Fizz",
       "id": 15,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Gin": 50
         },
@@ -354,13 +395,15 @@
           "Soda water": 100
         }
       ],
-      "garnishes": [ "lemon slice" ]
+      "garnishes": [
+        "lemon slice"
+      ]
     },
     {
       "name": "Whiskey Sour",
       "id": 16,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Whiskey": 50
         },
@@ -371,13 +414,16 @@
           "Simple syrup": 10
         }
       ],
-      "garnishes": [ "lemon slice", "cherry" ]
+      "garnishes": [
+        "lemon slice",
+        "cherry"
+      ]
     },
     {
       "name": "Sidecar",
       "id": 17,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Brandy": 50
         },
@@ -388,13 +434,15 @@
           "Lemon juice": 25
         }
       ],
-      "garnishes": [ "lemon twist" ]
+      "garnishes": [
+        "lemon twist"
+      ]
     },
     {
       "name": "Bellini",
       "id": 18,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Prosecco": 100
         },
@@ -402,23 +450,31 @@
           "Peach puree": 50
         }
       ],
-      "garnishes": [ "peach slice" ]
+      "garnishes": [
+        "peach slice"
+      ]
     },
     {
       "name": "Mimosa",
       "id": 19,
       "type": 1,
-      "ingredients": [
-        { "Champagne": 100 },
-        { "Orange juice": 50 }
+      "Ingredients": [
+        {
+          "Champagne": 100
+        },
+        {
+          "Orange juice": 50
+        }
       ],
-      "garnishes": [ "orange slice" ]
+      "garnishes": [
+        "orange slice"
+      ]
     },
     {
       "name": "Sangria",
       "id": 20,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Red wine": 100
         },
@@ -435,13 +491,17 @@
           "Simple syrup": 10
         }
       ],
-      "garnishes": [ "orange slices", "lemon slices", "cinnamon stick" ]
+      "garnishes": [
+        "orange slices",
+        "lemon slices",
+        "cinnamon stick"
+      ]
     },
     {
       "name": "Martini",
       "id": 21,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Gin": 50
         },
@@ -449,13 +509,15 @@
           "Vermouth": 25
         }
       ],
-      "garnishes": [ "olive" ]
+      "garnishes": [
+        "olive"
+      ]
     },
     {
       "name": "White Russian",
       "id": 22,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Vodka": 50
         },
@@ -463,13 +525,16 @@
           "KahlÃºa": 30
         }
       ],
-      "garnishes": [ "heavy cream", "cherry" ]
+      "garnishes": [
+        "heavy cream",
+        "cherry"
+      ]
     },
     {
       "name": "Pina Colada",
       "id": 23,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "White rum": 50
         },
@@ -480,13 +545,16 @@
           "Pineapple juice": 50
         }
       ],
-      "garnishes": [ "pineapple wedge", "cherry" ]
+      "garnishes": [
+        "pineapple wedge",
+        "cherry"
+      ]
     },
     {
       "name": "Mint Julep",
       "id": 24,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Bourbon": 50
         },
@@ -494,13 +562,16 @@
           "Simple syrup": 10
         }
       ],
-      "garnishes": [ "mint leaves", "mint sprig" ]
+      "garnishes": [
+        "mint leaves",
+        "mint sprig"
+      ]
     },
     {
       "name": "Strawberry Daiquiri",
       "id": 25,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "White rum": 50
         },
@@ -514,13 +585,15 @@
           "Simple syrup": 10
         }
       ],
-      "garnishes": [ "lime wedge" ]
+      "garnishes": [
+        "lime wedge"
+      ]
     },
     {
       "name": "Bloody Mary",
       "id": 26,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Vodka": 50
         },
@@ -534,24 +607,37 @@
           "BloodyIngredient": 10
         }
       ],
-      "garnishes": [ "celery stalk", "lemon wedge", "olive", "salt" ]
+      "garnishes": [
+        "celery stalk",
+        "lemon wedge",
+        "olive",
+        "salt"
+      ]
     },
     {
       "name": "Blue Lagoon",
       "id": 27,
       "type": 1,
-      "ingredients": [
-        { "Vodka": 50 },
-        { "Blue Curacao": 25 },
-        { "Lemonade": 100 }
+      "Ingredients": [
+        {
+          "Vodka": 50
+        },
+        {
+          "Blue Curacao": 25
+        },
+        {
+          "Lemonade": 100
+        }
       ],
-      "garnishes": [ "lemon wedge" ]
+      "garnishes": [
+        "lemon wedge"
+      ]
     },
     {
       "name": "Sex on the Beach",
       "id": 28,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Vodka": 50
         },
@@ -565,13 +651,15 @@
           "Cranberry juice": 50
         }
       ],
-      "garnishes": [ "orange slice" ]
+      "garnishes": [
+        "orange slice"
+      ]
     },
     {
       "name": "Mai Tai",
       "id": 29,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "White rum": 50
         },
@@ -588,23 +676,33 @@
           "Lime juice": 25
         }
       ],
-      "garnishes": [ "lime wedge", "mint sprig", "cherry" ]
+      "garnishes": [
+        "lime wedge",
+        "mint sprig",
+        "cherry"
+      ]
     },
     {
       "name": "Salty Dog",
       "id": 30,
       "type": 1,
-      "ingredients": [
-        { "Gin": 50 },
-        { "Grapefruit juice": 100 }
+      "Ingredients": [
+        {
+          "Gin": 50
+        },
+        {
+          "Grapefruit juice": 100
+        }
       ],
-      "garnishes": [ "salt rim" ]
+      "garnishes": [
+        "salt rim"
+      ]
     },
     {
       "name": "Pisco Sour",
       "id": 31,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Pisco": 50
         },
@@ -615,13 +713,16 @@
           "Simple syrup": 10
         }
       ],
-      "garnishes": [ "lime wedge", "Egg white" ]
+      "garnishes": [
+        "lime wedge",
+        "Egg white"
+      ]
     },
     {
       "name": "Gimlet",
       "id": 32,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Gin": 50
         },
@@ -632,13 +733,15 @@
           "Simple syrup": 10
         }
       ],
-      "garnishes": [ "lime wedge" ]
+      "garnishes": [
+        "lime wedge"
+      ]
     },
     {
       "name": "Gin and Tonic",
       "id": 33,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Gin": 50
         },
@@ -646,13 +749,15 @@
           "Tonic water": 150
         }
       ],
-      "garnishes": [ "lime wedge" ]
+      "garnishes": [
+        "lime wedge"
+      ]
     },
     {
       "name": "Boulevardier",
       "id": 34,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Bourbon": 50
         },
@@ -663,13 +768,15 @@
           "Vermouth": 25
         }
       ],
-      "garnishes": [ "orange peel" ]
+      "garnishes": [
+        "orange peel"
+      ]
     },
     {
       "name": "Negroni",
       "id": 35,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Gin": 50
         },
@@ -680,13 +787,15 @@
           "Vermouth": 25
         }
       ],
-      "garnishes": [ "orange peel" ]
+      "garnishes": [
+        "orange peel"
+      ]
     },
     {
       "name": "Hurricane Royale",
       "id": 36,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Dark rum": 45
         },
@@ -712,19 +821,30 @@
       "name": "Gin Gin Mule",
       "id": 37,
       "type": 1,
-      "ingredients": [
-        { "Gin": 50 },
-        { "Lime juice": 25 },
-        { "Simple syrup": 10 },
-        { "Ginger beer": 100 }
+      "Ingredients": [
+        {
+          "Gin": 50
+        },
+        {
+          "Lime juice": 25
+        },
+        {
+          "Simple syrup": 10
+        },
+        {
+          "Ginger beer": 100
+        }
       ],
-      "garnishes": [ "lime wedge", "mint sprig" ]
+      "garnishes": [
+        "lime wedge",
+        "mint sprig"
+      ]
     },
     {
       "name": "French 75",
       "id": 38,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Gin": 50
         },
@@ -738,13 +858,15 @@
           "Champagne": 100
         }
       ],
-      "garnishes": [ "lemon peel" ]
+      "garnishes": [
+        "lemon peel"
+      ]
     },
     {
       "name": "Corpse Reviver #2",
       "id": 39,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Gin": 50
         },
@@ -761,13 +883,15 @@
           "Absinthe": 10
         }
       ],
-      "garnishes": [ "lemon peel" ]
+      "garnishes": [
+        "lemon peel"
+      ]
     },
     {
       "name": "Sour Apple Martini",
       "id": 40,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Vodka": 50
         },
@@ -778,13 +902,15 @@
           "Lemon juice": 25
         }
       ],
-      "garnishes": [ "apple slice" ]
+      "garnishes": [
+        "apple slice"
+      ]
     },
     {
       "name": "Blue Hawaiian",
       "id": 41,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "White rum": 50
         },
@@ -798,13 +924,16 @@
           "Coconut cream": 50
         }
       ],
-      "garnishes": [ "pineapple wedge", "cherry" ]
+      "garnishes": [
+        "pineapple wedge",
+        "cherry"
+      ]
     },
     {
       "name": "Sloe Gin Fizz",
       "id": 42,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Sloe gin": 50
         },
@@ -818,13 +947,15 @@
           "Club soda": 100
         }
       ],
-      "garnishes": [ "lemon slice" ]
+      "garnishes": [
+        "lemon slice"
+      ]
     },
     {
       "name": "Dirty Martini",
       "id": 43,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Vodka": 50
         },
@@ -835,13 +966,15 @@
           "Olive brine": 10
         }
       ],
-      "garnishes": [ "olive" ]
+      "garnishes": [
+        "olive"
+      ]
     },
     {
       "name": "Harvey Wallbanger",
       "id": 44,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Vodka": 50
         },
@@ -852,24 +985,35 @@
           "Galliano": 25
         }
       ],
-      "garnishes": [ "orange slice" ]
+      "garnishes": [
+        "orange slice"
+      ]
     },
     {
       "name": "Lemon Drop Martini",
       "id": 45,
       "type": 1,
-      "ingredients": [
-        { "Vodka": 50 },
-        { "Lemon juice": 25 },
-        { "Simple syrup": 10 }
+      "Ingredients": [
+        {
+          "Vodka": 50
+        },
+        {
+          "Lemon juice": 25
+        },
+        {
+          "Simple syrup": 10
+        }
       ],
-      "garnishes": [ "sugar rim", "lemon wedge" ]
+      "garnishes": [
+        "sugar rim",
+        "lemon wedge"
+      ]
     },
     {
       "name": "Rusty Nail",
       "id": 46,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Drambuie": 50
         },
@@ -877,13 +1021,15 @@
           "Scotch": 50
         }
       ],
-      "garnishes": [ "lemon peel" ]
+      "garnishes": [
+        "lemon peel"
+      ]
     },
     {
       "name": "Virgin Daiquiri",
       "id": 47,
       "type": 0,
-      "ingredients": [
+      "Ingredients": [
         {
           "Strawberry puree": 50
         },
@@ -894,13 +1040,15 @@
           "Simple syrup": 10
         }
       ],
-      "garnishes": [ "strawberry" ]
+      "garnishes": [
+        "strawberry"
+      ]
     },
     {
       "name": "Virgin Gin Fizz",
       "id": 48,
       "type": 0,
-      "ingredients": [
+      "Ingredients": [
         {
           "Lemon juice": 25
         },
@@ -911,13 +1059,16 @@
           "Club soda": 100
         }
       ],
-      "garnishes": [ "lemon slice", "Egg white" ]
+      "garnishes": [
+        "lemon slice",
+        "Egg white"
+      ]
     },
     {
       "name": "Brandy Alexander",
       "id": 49,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Brandy": 50
         },
@@ -928,13 +1079,15 @@
           "Heavy cream": 50
         }
       ],
-      "garnishes": [ "nutmeg" ]
+      "garnishes": [
+        "nutmeg"
+      ]
     },
     {
       "name": "Rum Runner",
       "id": 50,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "White rum": 50
         },
@@ -951,13 +1104,16 @@
           "Pineapple juice": 50
         }
       ],
-      "garnishes": [ "cherry", "orange slice" ]
+      "garnishes": [
+        "cherry",
+        "orange slice"
+      ]
     },
     {
       "name": "Gin Rickey",
       "id": 51,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Gin": 50
         },
@@ -968,13 +1124,15 @@
           "Club soda": 100
         }
       ],
-      "garnishes": [ "lime wedge" ]
+      "garnishes": [
+        "lime wedge"
+      ]
     },
     {
       "name": "B-52",
       "id": 52,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Kahlua": 25
         },
@@ -985,13 +1143,15 @@
           "Grand Marnier": 25
         }
       ],
-      "garnishes": [ "orange peel" ]
+      "garnishes": [
+        "orange peel"
+      ]
     },
     {
       "name": "Sazerac",
       "id": 53,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Rye whiskey": 50
         },
@@ -1005,24 +1165,35 @@
           "Peychaud's bitters": 1
         }
       ],
-      "garnishes": [ "lemon twist" ]
+      "garnishes": [
+        "lemon twist"
+      ]
     },
     {
       "name": "Virgin Mojito",
       "id": 54,
       "type": 0,
-      "ingredients": [
-        { "Lime juice": 25 },
-        { "Simple syrup": 10 },
-        { "Club soda": 100 }
+      "Ingredients": [
+        {
+          "Lime juice": 25
+        },
+        {
+          "Simple syrup": 10
+        },
+        {
+          "Club soda": 100
+        }
       ],
-      "garnishes": [ "mint leaves", "lime wedge" ]
+      "garnishes": [
+        "mint leaves",
+        "lime wedge"
+      ]
     },
     {
       "name": "Virgin Pina Colada",
       "id": 55,
       "type": 0,
-      "ingredients": [
+      "Ingredients": [
         {
           "Coconut cream": 50
         },
@@ -1030,13 +1201,16 @@
           "Pineapple juice": 50
         }
       ],
-      "garnishes": [ "pineapple wedge", "cherry" ]
+      "garnishes": [
+        "pineapple wedge",
+        "cherry"
+      ]
     },
     {
       "name": "Virgin Margarita",
       "id": 56,
       "type": 0,
-      "ingredients": [
+      "Ingredients": [
         {
           "Orange juice": 50
         },
@@ -1044,13 +1218,15 @@
           "Lime juice": 25
         }
       ],
-      "garnishes": [ "lime wedge" ]
+      "garnishes": [
+        "lime wedge"
+      ]
     },
     {
       "name": "Moscow Mule",
       "id": 57,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Vodka": 50
         },
@@ -1061,13 +1237,15 @@
           "Ginger beer": 100
         }
       ],
-      "garnishes": [ "lime wedge" ]
+      "garnishes": [
+        "lime wedge"
+      ]
     },
     {
       "name": "Kamikaze",
       "id": 58,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Vodka": 50
         },
@@ -1078,13 +1256,15 @@
           "Lime juice": 25
         }
       ],
-      "garnishes": [ "lime wedge" ]
+      "garnishes": [
+        "lime wedge"
+      ]
     },
     {
       "name": "Irish Coffee",
       "id": 59,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Irish whiskey": 50
         },
@@ -1104,7 +1284,7 @@
       "name": "Singapore Sling",
       "id": 60,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Gin": 50
         },
@@ -1127,13 +1307,16 @@
           "Angostura bitters": 5
         }
       ],
-      "garnishes": [ "cherry", "pineapple wedge" ]
+      "garnishes": [
+        "cherry",
+        "pineapple wedge"
+      ]
     },
     {
       "name": "Lemon Drop",
       "id": 61,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Vodka": 50
         },
@@ -1144,13 +1327,16 @@
           "Lemon juice": 25
         }
       ],
-      "garnishes": [ "sugar rim", "lemon wedge" ]
+      "garnishes": [
+        "sugar rim",
+        "lemon wedge"
+      ]
     },
     {
       "name": "Negroni Sbagliato",
       "id": 62,
       "type": "1",
-      "ingredients": [
+      "Ingredients": [
         {
           "Campari": 30
         },
@@ -1161,13 +1347,15 @@
           "Sparkling wine": 40
         }
       ],
-      "garnishes": [ "orange peel" ]
+      "garnishes": [
+        "orange peel"
+      ]
     },
     {
       "name": "Espresso Martini",
       "id": 63,
       "type": "1",
-      "ingredients": [
+      "Ingredients": [
         {
           "Vodka": 45
         },
@@ -1178,13 +1366,15 @@
           "Espresso": 30
         }
       ],
-      "garnishes": [ "coffee beans" ]
+      "garnishes": [
+        "coffee beans"
+      ]
     },
     {
       "name": "Lavender Collins",
       "id": 64,
       "type": "1",
-      "ingredients": [
+      "Ingredients": [
         {
           "Gin": 45
         },
@@ -1198,13 +1388,16 @@
           "Soda water": 60
         }
       ],
-      "garnishes": [ "lemon wedge", "sprig of lavender" ]
+      "garnishes": [
+        "lemon wedge",
+        "sprig of lavender"
+      ]
     },
     {
       "name": "Vesper Martini",
       "id": 68,
       "type": "1",
-      "ingredients": [
+      "Ingredients": [
         {
           "Gin": 60
         },
@@ -1215,13 +1408,15 @@
           "Lillet Blanc": 15
         }
       ],
-      "garnishes": [ "lemon twist" ]
+      "garnishes": [
+        "lemon twist"
+      ]
     },
     {
       "name": "Jack Rose",
       "id": 69,
       "type": "1",
-      "ingredients": [
+      "Ingredients": [
         {
           "Applejack": 45
         },
@@ -1232,13 +1427,15 @@
           "Grenadine": 15
         }
       ],
-      "garnishes": [ "apple slice" ]
+      "garnishes": [
+        "apple slice"
+      ]
     },
     {
       "name": "Ramos Gin Fizz",
       "id": 70,
       "type": "1",
-      "ingredients": [
+      "Ingredients": [
         {
           "Gin": 45
         },
@@ -1261,13 +1458,17 @@
           "Club soda": 60
         }
       ],
-      "garnishes": [ "orange slice", "cherry", "Egg white" ]
+      "garnishes": [
+        "orange slice",
+        "cherry",
+        "Egg white"
+      ]
     },
     {
       "name": "Virgin Mary",
       "id": 71,
       "type": 0,
-      "ingredients": [
+      "Ingredients": [
         {
           "Tomato juice": 120
         },
@@ -1281,13 +1482,19 @@
           "Hot sauce": 2.5
         }
       ],
-      "garnishes": [ "celery stalk", "lemon wedge", "olive", "Ground black pepper", "Salt" ]
+      "garnishes": [
+        "celery stalk",
+        "lemon wedge",
+        "olive",
+        "Ground black pepper",
+        "Salt"
+      ]
     },
     {
       "name": "Espresso Tonic",
       "id": 72,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Vodka": 45
         },
@@ -1298,13 +1505,15 @@
           "Tonic water": 90
         }
       ],
-      "garnishes": [ "lemon wedge" ]
+      "garnishes": [
+        "lemon wedge"
+      ]
     },
     {
       "name": "Paloma",
       "id": 73,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Tequila": 45
         },
@@ -1321,13 +1530,15 @@
           "Soda water": 60
         }
       ],
-      "garnishes": [ "lime wedge" ]
+      "garnishes": [
+        "lime wedge"
+      ]
     },
     {
       "name": "Sour Appletini",
       "id": 74,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Vodka": 45
         },
@@ -1338,13 +1549,15 @@
           "Lemon juice": 15
         }
       ],
-      "garnishes": [ "apple slice" ]
+      "garnishes": [
+        "apple slice"
+      ]
     },
     {
       "name": "Ginger Beer Mojito",
       "id": 75,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "White rum": 45
         },
@@ -1358,13 +1571,16 @@
           "Ginger beer": 90
         }
       ],
-      "garnishes": [ "Mint leaves", "lime wedge" ]
+      "garnishes": [
+        "Mint leaves",
+        "lime wedge"
+      ]
     },
     {
       "name": "Peanut Butter and Jelly Martini",
       "id": 76,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Vodka": 45
         },
@@ -1375,13 +1591,15 @@
           "Raspberry liqueur": 15
         }
       ],
-      "garnishes": [ "peanut butter cups" ]
+      "garnishes": [
+        "peanut butter cups"
+      ]
     },
     {
       "name": "Cucumber Gimlet",
       "id": 77,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Gin": 45
         },
@@ -1392,13 +1610,15 @@
           "Simple syrup": 15
         }
       ],
-      "garnishes": [ "cucumber ribbon" ]
+      "garnishes": [
+        "cucumber ribbon"
+      ]
     },
     {
       "name": "Blackberry Mojito",
       "id": 78,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "White rum": 45
         },
@@ -1409,13 +1629,18 @@
           "Simple syrup": 15
         }
       ],
-      "garnishes": [ "mint sprig", "lime wedge", "blackberries", "Mint leaves" ]
+      "garnishes": [
+        "mint sprig",
+        "lime wedge",
+        "blackberries",
+        "Mint leaves"
+      ]
     },
     {
       "name": "Spiced Rum Punch",
       "id": 79,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Spiced rum": 45
         },
@@ -1435,13 +1660,17 @@
           "Angostura bitters": 2.5
         }
       ],
-      "garnishes": [ "orange slices", "lime wedges", "maraschino cherries" ]
+      "garnishes": [
+        "orange slices",
+        "lime wedges",
+        "maraschino cherries"
+      ]
     },
     {
       "name": "Peach Iced Tea",
       "id": 80,
       "type": 0,
-      "ingredients": [
+      "Ingredients": [
         {
           "Peach nectar": 90
         },
@@ -1449,13 +1678,15 @@
           "Iced tea": 180
         }
       ],
-      "garnishes": [ "peach slices" ]
+      "garnishes": [
+        "peach slices"
+      ]
     },
     {
       "name": "Strawberry Basil Smash",
       "id": 81,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Vodka": 45
         },
@@ -1466,13 +1697,18 @@
           "Simple syrup": 15
         }
       ],
-      "garnishes": [ "strawberries", "basil leaves", "lime wedge", "Basil leaves" ]
+      "garnishes": [
+        "strawberries",
+        "basil leaves",
+        "lime wedge",
+        "Basil leaves"
+      ]
     },
     {
       "name": "Pink Lady",
       "id": 82,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Gin": 45
         },
@@ -1486,13 +1722,16 @@
           "Simple syrup": 15
         }
       ],
-      "garnishes": [ "cherry", "Egg white" ]
+      "garnishes": [
+        "cherry",
+        "Egg white"
+      ]
     },
     {
       "name": "Ginger Spritz",
       "id": 83,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Vodka": 45
         },
@@ -1506,13 +1745,16 @@
           "Soda water": 60
         }
       ],
-      "garnishes": [ "ginger slices", "lime wedge" ]
+      "garnishes": [
+        "ginger slices",
+        "lime wedge"
+      ]
     },
     {
       "name": "Blueberry Mojito",
       "id": 84,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "White rum": 45
         },
@@ -1523,13 +1765,18 @@
           "Simple syrup": 15
         }
       ],
-      "garnishes": [ "mint sprig", "lime wedge", "blueberries", "Mint leaves" ]
+      "garnishes": [
+        "mint sprig",
+        "lime wedge",
+        "blueberries",
+        "Mint leaves"
+      ]
     },
     {
       "name": "Grapefruit Margarita",
       "id": 85,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Tequila": 45
         },
@@ -1543,13 +1790,16 @@
           "Lime juice": 15
         }
       ],
-      "garnishes": [ "grapefruit wedge", "salt rim" ]
+      "garnishes": [
+        "grapefruit wedge",
+        "salt rim"
+      ]
     },
     {
       "name": "Caribbean Sunset",
       "id": 86,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Dark rum": 45
         },
@@ -1563,13 +1813,16 @@
           "Grenadine": 15
         }
       ],
-      "garnishes": [ "orange slice", "cherry" ]
+      "garnishes": [
+        "orange slice",
+        "cherry"
+      ]
     },
     {
       "name": "Peach Bellini",
       "id": 87,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Prosecco": 180
         },
@@ -1577,13 +1830,15 @@
           "Peach puree": 60
         }
       ],
-      "garnishes": [ "peach slice" ]
+      "garnishes": [
+        "peach slice"
+      ]
     },
     {
       "name": "Cranberry Mojito",
       "id": 88,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "White rum": 45
         },
@@ -1604,12 +1859,11 @@
         "Mint leaves"
       ]
     },
-
     {
       "name": "Grasshopper",
       "id": 89,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Creme de menthe": 30
         },
@@ -1628,7 +1882,7 @@
       "name": "Mango Margarita",
       "id": 90,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Tequila": 45
         },
@@ -1642,13 +1896,16 @@
           "Simple syrup": 15
         }
       ],
-      "garnishes": [ "lime wedge", "mango slice" ]
+      "garnishes": [
+        "lime wedge",
+        "mango slice"
+      ]
     },
     {
       "name": "Raspberry Lemonade Spritz",
       "id": 91,
       "type": 0,
-      "ingredients": [
+      "Ingredients": [
         {
           "Lemonade": 60
         },
@@ -1659,13 +1916,16 @@
           "Club soda": 90
         }
       ],
-      "garnishes": [ "raspberries", "lemon wedge" ]
+      "garnishes": [
+        "raspberries",
+        "lemon wedge"
+      ]
     },
     {
       "name": "Aperol Spritz",
       "id": 92,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Aperol": 60
         },
@@ -1676,13 +1936,15 @@
           "Soda water": 30
         }
       ],
-      "garnishes": [ "Orange slice" ]
+      "garnishes": [
+        "Orange slice"
+      ]
     },
     {
       "name": "Aviation",
       "id": 93,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Gin": 60
         },
@@ -1696,13 +1958,15 @@
           "Creme de violette": 7.5
         }
       ],
-      "garnishes": [ "Lemon twist" ]
+      "garnishes": [
+        "Lemon twist"
+      ]
     },
     {
       "name": "Bee's Knees",
       "id": 94,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Gin": 60
         },
@@ -1713,13 +1977,15 @@
           "Honey syrup": 15
         }
       ],
-      "garnishes": [ "Lemon twist" ]
+      "garnishes": [
+        "Lemon twist"
+      ]
     },
     {
       "name": "Blackberry Bramble",
       "id": 95,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Gin": 60
         },
@@ -1733,13 +1999,16 @@
           "Creme de mure": 15
         }
       ],
-      "garnishes": [ "Blackberries", "Lemon slice" ]
+      "garnishes": [
+        "Blackberries",
+        "Lemon slice"
+      ]
     },
     {
       "name": "Bramble",
       "id": 96,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Gin": 45
         },
@@ -1753,13 +2022,16 @@
           "Creme de mure": 15
         }
       ],
-      "garnishes": [ "Blackberries", "Lemon slice" ]
+      "garnishes": [
+        "Blackberries",
+        "Lemon slice"
+      ]
     },
     {
       "name": "Caipirinha",
       "id": 97,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Cachaca": 60
         },
@@ -1767,13 +2039,16 @@
           "Simple syrup": 15
         }
       ],
-      "garnishes": [ "Lime wheel", "Lime wedges 4" ]
+      "garnishes": [
+        "Lime wheel",
+        "Lime wedges 4"
+      ]
     },
     {
       "name": "Campari Spritz",
       "id": 98,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Campari": 45
         },
@@ -1784,13 +2059,15 @@
           "Soda water": 30
         }
       ],
-      "garnishes": [ "Orange slice" ]
+      "garnishes": [
+        "Orange slice"
+      ]
     },
     {
       "name": "Clover Club",
       "id": 99,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Gin": 60
         },
@@ -1804,13 +2081,16 @@
           "Egg white": 15
         }
       ],
-      "garnishes": [ "Raspberry", "Lemon twist" ]
+      "garnishes": [
+        "Raspberry",
+        "Lemon twist"
+      ]
     },
     {
       "name": "Dark 'n' Stormy",
       "id": 100,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Dark rum": 60
         },
@@ -1821,13 +2101,15 @@
           "Lime juice": 15
         }
       ],
-      "garnishes": [ "Lime wedge" ]
+      "garnishes": [
+        "Lime wedge"
+      ]
     },
     {
       "name": "Brown Derby",
       "id": 101,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Bourbon": 60
         },
@@ -1838,13 +2120,15 @@
           "Grapefruit juice": 30
         }
       ],
-      "garnishes": [ "Grapefruit twist" ]
+      "garnishes": [
+        "Grapefruit twist"
+      ]
     },
     {
       "name": "Death in the Afternoon",
       "id": 102,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Absinthe": 30
         },
@@ -1858,7 +2142,7 @@
       "name": "Elderflower Martini",
       "id": 103,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Vodka": 60
         },
@@ -1875,7 +2159,7 @@
       "name": "French Martini",
       "id": 104,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Vodka": 45
         },
@@ -1886,13 +2170,15 @@
           "Pineapple juice": 60
         }
       ],
-      "garnishes": [ "Raspberry" ]
+      "garnishes": [
+        "Raspberry"
+      ]
     },
     {
       "name": "Gibson",
       "id": 105,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Gin": 60
         },
@@ -1900,13 +2186,15 @@
           "Dry vermouth": 15
         }
       ],
-      "garnishes": [ "Pickled onion" ]
+      "garnishes": [
+        "Pickled onion"
+      ]
     },
     {
       "name": "Greyhound Gin",
       "id": 106,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Gin": 60
         },
@@ -1914,13 +2202,15 @@
           "Grapefruit juice": 120
         }
       ],
-      "garnishes": [ "Grapefruit wedge" ]
+      "garnishes": [
+        "Grapefruit wedge"
+      ]
     },
     {
       "name": "Greyhound Vodka",
       "id": 107,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Vodka": 60
         },
@@ -1928,13 +2218,15 @@
           "Grapefruit juice": 120
         }
       ],
-      "garnishes": [ "Grapefruit wedge" ]
+      "garnishes": [
+        "Grapefruit wedge"
+      ]
     },
     {
       "name": "Hemingway Daiquiri",
       "id": 108,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "White rum": 60
         },
@@ -1951,13 +2243,15 @@
           "Simple syrup": 7.5
         }
       ],
-      "garnishes": [ "Lime wheel" ]
+      "garnishes": [
+        "Lime wheel"
+      ]
     },
     {
       "name": "Hurricane",
       "id": 109,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Dark rum": 60
         },
@@ -1977,13 +2271,16 @@
           "Grenadine": 15
         }
       ],
-      "garnishes": [ "Orange slice", "Cherry" ]
+      "garnishes": [
+        "Orange slice",
+        "Cherry"
+      ]
     },
     {
       "name": "Irish Car Bomb",
       "id": 110,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Irish whiskey": 45
         },
@@ -1991,13 +2288,15 @@
           "Baileys Irish Cream": 30
         }
       ],
-      "garnishes": [ "Guinness stout 1" ]
+      "garnishes": [
+        "Guinness stout 1"
+      ]
     },
     {
       "name": "Jungle Bird",
       "id": 111,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Dark rum": 45
         },
@@ -2014,13 +2313,15 @@
           "Simple syrup": 15
         }
       ],
-      "garnishes": [ "Pineapple wedge" ]
+      "garnishes": [
+        "Pineapple wedge"
+      ]
     },
     {
       "name": "Kentucky Mule",
       "id": 112,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Bourbon": 45
         },
@@ -2031,13 +2332,15 @@
           "Ginger beer": 120
         }
       ],
-      "garnishes": [ "Lime wheel" ]
+      "garnishes": [
+        "Lime wheel"
+      ]
     },
     {
       "name": "Kir Royale",
       "id": 113,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Creme de cassis": 15
         },
@@ -2045,13 +2348,15 @@
           "Champagne": 120
         }
       ],
-      "garnishes": [ "Lemon twist" ]
+      "garnishes": [
+        "Lemon twist"
+      ]
     },
     {
       "name": "Lemoncello Collins",
       "id": 114,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Lemoncello": 60
         },
@@ -2065,13 +2370,15 @@
           "Soda water": 90
         }
       ],
-      "garnishes": [ "Lemon wedge" ]
+      "garnishes": [
+        "Lemon wedge"
+      ]
     },
     {
       "name": "Lemon Drop Martini",
       "id": 115,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Vodka": 60
         },
@@ -2085,13 +2392,16 @@
           "Simple syrup": 15
         }
       ],
-      "garnishes": [ "Sugar rim", "Lemon twist" ]
+      "garnishes": [
+        "Sugar rim",
+        "Lemon twist"
+      ]
     },
     {
       "name": "Mai Tai Royale",
       "id": 116,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Dark rum": 45
         },
@@ -2111,13 +2421,16 @@
           "Champagne": 60
         }
       ],
-      "garnishes": [ "Mint sprig", "Pineapple wedge" ]
+      "garnishes": [
+        "Mint sprig",
+        "Pineapple wedge"
+      ]
     },
     {
       "name": "Margarita Verde",
       "id": 117,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Tequila": 60
         },
@@ -2131,13 +2444,17 @@
           "Cucumber juice": 30
         }
       ],
-      "garnishes": [ "Cucumber slice", "Salt rim", "Green hot sauce 3mil" ]
+      "garnishes": [
+        "Cucumber slice",
+        "Salt rim",
+        "Green hot sauce 3mil"
+      ]
     },
     {
       "name": "Mezcal Margarita",
       "id": 118,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Mezcal": 60
         },
@@ -2151,13 +2468,16 @@
           "Cointreau": 15
         }
       ],
-      "garnishes": [ "Salt rim", "Lime wheel" ]
+      "garnishes": [
+        "Salt rim",
+        "Lime wheel"
+      ]
     },
     {
       "name": "Moscow Mule Royale",
       "id": 119,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Vodka": 60
         },
@@ -2168,13 +2488,15 @@
           "Champagne": 60
         }
       ],
-      "garnishes": [ "Lime wheel, Ginger beer 90mil" ]
+      "garnishes": [
+        "Lime wheel, Ginger beer 90mil"
+      ]
     },
     {
       "name": "Mudslide",
       "id": 120,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Vodka": 30
         },
@@ -2185,13 +2507,15 @@
           "Baileys Irish Cream": 30
         }
       ],
-      "garnishes": [ "chocolate shavings" ]
+      "garnishes": [
+        "chocolate shavings"
+      ]
     },
     {
       "name": "Paper Plane",
       "id": 121,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Bourbon": 22.5
         },
@@ -2205,13 +2529,15 @@
           "Amaretto": 22.5
         }
       ],
-      "garnishes": [ "lemon twist" ]
+      "garnishes": [
+        "lemon twist"
+      ]
     },
     {
       "name": "Penicillin",
       "id": 122,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Blended Scotch": 60
         },
@@ -2225,13 +2551,16 @@
           "Ginger syrup": 15
         }
       ],
-      "garnishes": [ "candied ginger", "Islay Scotch float" ]
+      "garnishes": [
+        "candied ginger",
+        "Islay Scotch float"
+      ]
     },
     {
       "name": "Pineapple Margarita",
       "id": 123,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Tequila": 45
         },
@@ -2245,13 +2574,16 @@
           "Triple sec": 15
         }
       ],
-      "garnishes": [ "pineapple wedge", "salt rim" ]
+      "garnishes": [
+        "pineapple wedge",
+        "salt rim"
+      ]
     },
     {
       "name": "Pink Margarita",
       "id": 124,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Tequila": 60
         },
@@ -2268,13 +2600,16 @@
           "Pomegranate juice": 15
         }
       ],
-      "garnishes": [ "grapefruit slice", "salt rim" ]
+      "garnishes": [
+        "grapefruit slice",
+        "salt rim"
+      ]
     },
     {
       "name": "Red Snapper",
       "id": 125,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Gin": 45
         },
@@ -2285,13 +2620,20 @@
           "Lemon juice": 15
         }
       ],
-      "garnishes": [ "celery stick", "lemon wedge", "pinch Black pepper", "pinch Salt", "dash Tabasco sauce", "dash Worcestershire sauce" ]
+      "garnishes": [
+        "celery stick",
+        "lemon wedge",
+        "pinch Black pepper",
+        "pinch Salt",
+        "dash Tabasco sauce",
+        "dash Worcestershire sauce"
+      ]
     },
     {
       "name": "Rosemary Gin Fizz",
       "id": 126,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Gin": 45
         },
@@ -2305,13 +2647,16 @@
           "Club soda": 60
         }
       ],
-      "garnishes": [ "lemon wheel", "rosemary sprig" ]
+      "garnishes": [
+        "lemon wheel",
+        "rosemary sprig"
+      ]
     },
     {
       "name": "Rum and Coke",
       "id": 127,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Dark rum": 45
         },
@@ -2319,13 +2664,15 @@
           "Cola": 120
         }
       ],
-      "garnishes": [ "lime wedge" ]
+      "garnishes": [
+        "lime wedge"
+      ]
     },
     {
       "name": "Rusty Nail Royale",
       "id": 128,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Scotch": 45
         },
@@ -2339,13 +2686,16 @@
           "Angostura bitters": 1
         }
       ],
-      "garnishes": [ "lemon twist", "Angostura bitters" ]
+      "garnishes": [
+        "lemon twist",
+        "Angostura bitters"
+      ]
     },
     {
       "name": "Salty Dog Royale",
       "id": 129,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Vodka": 45
         },
@@ -2359,13 +2709,16 @@
           "Simple syrup": 15
         }
       ],
-      "garnishes": [ "grapefruit twist", "rim glass with salt" ]
+      "garnishes": [
+        "grapefruit twist",
+        "rim glass with salt"
+      ]
     },
     {
       "name": "Sea Breeze",
       "id": 130,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Vodka": 45
         },
@@ -2379,13 +2732,15 @@
           "Lime juice": 15
         }
       ],
-      "garnishes": [ "lime wedge" ]
+      "garnishes": [
+        "lime wedge"
+      ]
     },
     {
       "name": "Sherry Cobbler",
       "id": 131,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Sherry": 60
         },
@@ -2393,13 +2748,18 @@
           "Simple syrup": 15
         }
       ],
-      "garnishes": [ "strawberry", "mint sprig", "seasonal fruit", "Pineapple chunk" ]
+      "garnishes": [
+        "strawberry",
+        "mint sprig",
+        "seasonal fruit",
+        "Pineapple chunk"
+      ]
     },
     {
       "name": "Sidecar Royale",
       "id": 132,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Cognac": 45
         },
@@ -2413,13 +2773,15 @@
           "Champagne": 60
         }
       ],
-      "garnishes": [ "orange twist" ]
+      "garnishes": [
+        "orange twist"
+      ]
     },
     {
       "name": "Singapore Sling Royale",
       "id": 133,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Gin": 45
         },
@@ -2436,13 +2798,16 @@
           "Soda water": 60
         }
       ],
-      "garnishes": [ "pineapple wedge", "maraschino cherry" ]
+      "garnishes": [
+        "pineapple wedge",
+        "maraschino cherry"
+      ]
     },
     {
       "name": "Snowball",
       "id": 134,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Advocaat": 60
         },
@@ -2453,13 +2818,16 @@
           "Lime juice": 15
         }
       ],
-      "garnishes": [ "lime wedge", "nutmeg" ]
+      "garnishes": [
+        "lime wedge",
+        "nutmeg"
+      ]
     },
     {
       "name": "Southside",
       "id": 135,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Gin": 45
         },
@@ -2470,13 +2838,15 @@
           "Simple syrup": 15
         }
       ],
-      "garnishes": [ "mint sprig" ]
+      "garnishes": [
+        "mint sprig"
+      ]
     },
     {
       "name": "Sparkling Margarita",
       "id": 136,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Tequila": 45
         },
@@ -2490,13 +2860,16 @@
           "Prosecco": 60
         }
       ],
-      "garnishes": [ "lime wedge", "salt rim" ]
+      "garnishes": [
+        "lime wedge",
+        "salt rim"
+      ]
     },
     {
       "name": "Spicy Margarita",
       "id": 137,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Tequila": 45
         },
@@ -2507,13 +2880,16 @@
           "Cointreau": 20
         }
       ],
-      "garnishes": [ "jalapeno slice", "salt rim" ]
+      "garnishes": [
+        "jalapeno slice",
+        "salt rim"
+      ]
     },
     {
       "name": "Spiked Lemonade",
       "id": 138,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Vodka": 45
         },
@@ -2529,7 +2905,7 @@
       "name": "Spring Fling",
       "id": 139,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Gin": 60
         },
@@ -2552,7 +2928,7 @@
       "name": "St. Germain Spritz",
       "id": 140,
       "type": 0,
-      "ingredients": [
+      "Ingredients": [
         {
           "St-Germain": 45
         },
@@ -2571,7 +2947,7 @@
       "name": "Summer Breeze",
       "id": 141,
       "type": 0,
-      "ingredients": [
+      "Ingredients": [
         {
           "Vodka": 45
         },
@@ -2590,7 +2966,7 @@
       "name": "Summer Sangria",
       "id": 142,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Red wine": 75
         },
@@ -2610,7 +2986,7 @@
       "name": "Sunset Boulevard",
       "id": 143,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Bourbon": 45
         },
@@ -2632,7 +3008,7 @@
       "name": "Swedish Fish Martini",
       "id": 144,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Vodka": 60
         },
@@ -2654,7 +3030,7 @@
       "name": "The Last Word",
       "id": 145,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Gin": 22.5
         },
@@ -2676,7 +3052,7 @@
       "name": "The Southside Fizz",
       "id": 146,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Gin": 45
         },
@@ -2698,7 +3074,7 @@
       "name": "Tiki Punch",
       "id": 147,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Dark rum": 60
         },
@@ -2724,7 +3100,7 @@
       "name": "Toasted Almond",
       "id": 148,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Amaretto": 45
         },
@@ -2743,7 +3119,7 @@
       "name": "Tokyo Tea",
       "id": 149,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Vodka": 22.5
         },
@@ -2774,7 +3150,7 @@
       "name": "Top Shelf Margarita",
       "id": 150,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Tequila": 45
         },
@@ -2788,13 +3164,16 @@
           "Agave nectar": 10
         }
       ],
-      "garnishes": [ "Lime wheel", "Salt rim" ]
+      "garnishes": [
+        "Lime wheel",
+        "Salt rim"
+      ]
     },
     {
       "name": "Tropical Sunset",
       "id": 151,
       "type": 0,
-      "ingredients": [
+      "Ingredients": [
         {
           "Pineapple juice": 90
         },
@@ -2808,13 +3187,16 @@
           "Grenadine": 10
         }
       ],
-      "garnishes": [ "Pineapple chunk", "Cherry" ]
+      "garnishes": [
+        "Pineapple chunk",
+        "Cherry"
+      ]
     },
     {
       "name": "Tuxedo",
       "id": 152,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Gin": 45
         },
@@ -2822,13 +3204,18 @@
           "Vermouth": 20
         }
       ],
-      "garnishes": [ "Lemon twist", "Cherry", "Orange bitters", "Maraschino liqueur 5mil" ]
+      "garnishes": [
+        "Lemon twist",
+        "Cherry",
+        "Orange bitters",
+        "Maraschino liqueur 5mil"
+      ]
     },
     {
       "name": "Vanilla Lemonade",
       "id": 153,
       "type": 0,
-      "ingredients": [
+      "Ingredients": [
         {
           "Lemonade": 120
         },
@@ -2836,13 +3223,16 @@
           "Vanilla syrup": 30
         }
       ],
-      "garnishes": [ "Lemon wheel", "Mint sprig" ]
+      "garnishes": [
+        "Lemon wheel",
+        "Mint sprig"
+      ]
     },
     {
       "name": "Vieux Carre",
       "id": 154,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Rye whiskey": 30
         },
@@ -2853,13 +3243,19 @@
           "Sweet vermouth": 30
         }
       ],
-      "garnishes": [ "Lemon twist", "Cherry", "Angostura bitters", "Peychaud's bitters", "Benedictine" ]
+      "garnishes": [
+        "Lemon twist",
+        "Cherry",
+        "Angostura bitters",
+        "Peychaud's bitters",
+        "Benedictine"
+      ]
     },
     {
       "name": "Watermelon Margarita",
       "id": 155,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Watermelon juice": 60
         },
@@ -2876,13 +3272,17 @@
           "Agave syrup": 7.5
         }
       ],
-      "garnishes": [ "watermelon slice", "lime wedge", "salt rim" ]
+      "garnishes": [
+        "watermelon slice",
+        "lime wedge",
+        "salt rim"
+      ]
     },
     {
       "name": "Whiskey Smash",
       "id": 156,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Bourbon whiskey": 60
         },
@@ -2893,13 +3293,16 @@
           "Simple syrup": 22.5
         }
       ],
-      "garnishes": [ "mint sprig", "lemon wheel" ]
+      "garnishes": [
+        "mint sprig",
+        "lemon wheel"
+      ]
     },
     {
       "name": "White Lady",
       "id": 157,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Gin": 45
         },
@@ -2910,13 +3313,16 @@
           "Lemon juice": 22.5
         }
       ],
-      "garnishes": [ "lemon twist", "Egg white" ]
+      "garnishes": [
+        "lemon twist",
+        "Egg white"
+      ]
     },
     {
       "name": "Zombie",
       "id": 158,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "White rum": 30
         },
@@ -2945,13 +3351,16 @@
           "Absinthe": 7.5
         }
       ],
-      "garnishes": [ "mint sprig", "pineapple leaves" ]
+      "garnishes": [
+        "mint sprig",
+        "pineapple leaves"
+      ]
     },
     {
       "name": "Americano",
       "id": 159,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Campari": 30
         },
@@ -2962,13 +3371,15 @@
           "Club soda": 60
         }
       ],
-      "garnishes": [ "orange twist" ]
+      "garnishes": [
+        "orange twist"
+      ]
     },
     {
       "name": "Amaretto Sour",
       "id": 160,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Amaretto": 60
         },
@@ -2979,13 +3390,16 @@
           "Simple syrup": 15
         }
       ],
-      "garnishes": [ "Cherry", "Orange slice" ]
+      "garnishes": [
+        "Cherry",
+        "Orange slice"
+      ]
     },
     {
       "name": "Angel Face",
       "id": 161,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Gin": 45
         },
@@ -3002,7 +3416,7 @@
       "name": "Between the Sheets",
       "id": 162,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Cognac": 30
         },
@@ -3024,7 +3438,7 @@
       "name": "Black Russian Royale",
       "id": 163,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Vodka": 45
         },
@@ -3041,7 +3455,7 @@
       "name": "Blue Margarita",
       "id": 164,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Tequila": 45
         },
@@ -3064,7 +3478,7 @@
       "name": "Boulevardier Royale",
       "id": 165,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Bourbon": 45
         },
@@ -3086,7 +3500,7 @@
       "name": "Brandy Sour",
       "id": 166,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Brandy": 60
         },
@@ -3109,7 +3523,7 @@
       "name": "Bullshot",
       "id": 167,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Vodka": 45
         },
@@ -3132,7 +3546,7 @@
       "name": "Caesar",
       "id": 168,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Vodka": 45
         },
@@ -3160,7 +3574,7 @@
       "name": "Cherry Bomb",
       "id": 169,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Cherry liqueur": 45
         },
@@ -3176,7 +3590,7 @@
       "name": "Chocolate Martini",
       "id": 170,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Vodka": 45
         },
@@ -3195,7 +3609,7 @@
       "name": "Cointreau Fizz",
       "id": 171,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Cointreau": 45
         },
@@ -3214,7 +3628,7 @@
       "name": "Cuba Libre",
       "id": 172,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Rum": 45
         },
@@ -3233,7 +3647,7 @@
       "name": "Derby",
       "id": 173,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Bourbon": 60
         },
@@ -3252,7 +3666,7 @@
       "name": "Dirty Shirley",
       "id": 174,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Vodka": 45
         },
@@ -3271,7 +3685,7 @@
       "name": "Dutch Mule",
       "id": 175,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Gin": 45
         },
@@ -3290,7 +3704,7 @@
       "name": "French 75 Royale",
       "id": 176,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Gin": 45
         },
@@ -3312,7 +3726,7 @@
       "name": "French Connection",
       "id": 177,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Cognac": 45
         },
@@ -3328,7 +3742,7 @@
       "name": "Gin Martini",
       "id": 178,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Gin": 60
         },
@@ -3345,7 +3759,7 @@
       "name": "Golden Margarita",
       "id": 179,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Tequila": 60
         },
@@ -3365,7 +3779,7 @@
       "name": "Grasshopper",
       "id": 180,
       "type": 1,
-      "ingredients": [
+      "Ingredients": [
         {
           "Creme de menthe": 30
         },
@@ -3379,7 +3793,6 @@
       "garnishes": [
         "Mint sprig"
       ]
-    }
-
+    },
   ]
 }

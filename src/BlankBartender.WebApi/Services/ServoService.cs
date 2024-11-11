@@ -33,10 +33,13 @@ namespace BlankBartender.WebApi.Services
 
         public ServoService()
         {
+
+#if !DEBUG
             i2cDevice = I2cDevice.Create(i2cConnection);
             pca = new Pca9685(i2cDevice, 50);
             plaformPwmChannel = pca.CreatePwmChannel(7);
             stirrerPwmChannel = pca.CreatePwmChannel(1);
+#endif
         }
 
         public void MovePlatformToStirrer()

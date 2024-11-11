@@ -31,7 +31,7 @@ namespace BlankBartender.WebApi.Services
                     Name = d["name"].ToString(),
                     Id = byte.Parse(d["id"].ToString()),
                     Type = byte.Parse(d["type"].ToString()),
-                    Ingradients = d["ingredients"].Children<JObject>().Select(ing => new
+                    Ingredients = d["Ingredients"].Children<JObject>().Select(ing => new
                     {
                         Key = ing.Properties().First().Name,
                         Value = decimal.Parse(ing.Properties().First().Value.ToString()),
@@ -73,7 +73,7 @@ namespace BlankBartender.WebApi.Services
                     Name = d["name"].ToString(),
                     Id = int.Parse(d["id"].ToString()),
                     Type = byte.Parse(d["type"].ToString()),
-                    Ingradients = d["ingredients"].Children<JObject>().Select(ing => new
+                    Ingredients = d["Ingredients"].Children<JObject>().Select(ing => new
                     {
                         Key = ing.Properties().First().Name,
                         Value = decimal.Parse(ing.Properties().First().Value.ToString()),
@@ -82,12 +82,65 @@ namespace BlankBartender.WebApi.Services
                 }).ToList();
 
                 var pumpAlcohols = _pumps.Select(x => x.Value).ToList();
-                var availableDrinks = _drinks.Where(cocktail => cocktail.Ingradients.All(ingredient => pumpAlcohols.Contains(ingredient.Key)));
+                var availableDrinks = _drinks.Where(cocktail => cocktail.Ingredients.All(ingredient => pumpAlcohols.Contains(ingredient.Key)));
                 Console.WriteLine($"Success getting avaiable cocktails");
                 return availableDrinks;
             }
             return null;
         }
 
+        public void AddCocktail(Drink newDrink)
+        {
+            Console.WriteLine($"Adding new cocktail: {newDrink.Name}");
+            JObject drinkJsonObject;
+
+            if (System.IO.File.Exists(drinkFilePath))
+            {
+                _drinkConfigJson = System.IO.File.ReadAllText(drinkFilePath);
+                if (!string.IsNullOrEmpty(_drinkConfigJson))
+                {
+                    drinkJsonObject = JObject.Parse(_drinkConfigJson);
+                }
+                else
+                {
+                    drinkJsonObject = new JObject();
+                    drinkJsonObject["drinks"] = new JArray();
+                }
+            }
+            else
+            {
+                drinkJsonObject = new JObject();
+                drinkJsonObject["drinks"] = new JArray();
+            }
+
+            JArray drinksArray = (JArray)drinkJsonObject["drinks"];
+            int newMaxId = drinksArray
+                                .Select(d => (int)d["id"])
+                                .DefaultIfEmpty(0)
+                                .Max() + 1;
+
+            JObject newDrinkObject = new JObject
+            {
+                ["name"] = newDrink.Name,
+                ["id"] = newMaxId,
+                ["type"] = newDrink.Type,
+                ["Ingredients"] = new JArray(
+                    newDrink.Ingredients.Select(ing => new JObject { [ing.Key] = ing.Value })
+                ),
+
+            };
+            if (newDrink.Garnishes != null && newDrink.Garnishes.Any(g => !string.IsNullOrEmpty(g)))
+            {
+                newDrinkObject["garnishes"] = new JArray(newDrink.Garnishes.Where(g => !string.IsNullOrEmpty(g)));
+            }
+
+            // Add the new drink to the drinks array
+            drinksArray.Add(newDrinkObject);
+
+            // Save the updated JSON back to the file
+            System.IO.File.WriteAllText(drinkFilePath, drinkJsonObject.ToString());
+
+            Console.WriteLine("Cocktail added successfully");
+        }
     }
 }

@@ -43,25 +43,65 @@ namespace BlankBartender.WebApi.Controllers
 
             _liquidsFilePath = Path.Combine(Directory.GetCurrentDirectory(), "ConfigurationData", _liquidsConfigFileName);
             _pumpsFilePath = Path.Combine(Directory.GetCurrentDirectory(), "ConfigurationData", _pumpConfigFileName);
-            ReadCurrentLiquids();
+            AllLiquids();
             ReadCurrentPumpConfiguration();
 
         }
 
         [Route("liquids")]
-        public ActionResult ReadCurrentLiquids()
+        public ActionResult AllLiquids()
         {
             if (System.IO.File.Exists(_liquidsFilePath))
             {
                 var liquidsConfigJson = System.IO.File.ReadAllText(_liquidsFilePath);
 
-                liquids = JsonConvert.DeserializeObject<List<string>>(liquidsConfigJson);
+                liquids = JsonConvert.DeserializeObject<List<string>>(liquidsConfigJson)?
+                    .OrderBy(liquid => liquid)
+                    .ToList();
             }
             //TODO give propper exception
             return new JsonResult(new
             {
                 Liquids = liquids
             });
+        }
+
+        [Route("liquids/available")]
+        public ActionResult ReadAvailableLiquids()
+        {
+            if (System.IO.File.Exists(_pumpsFilePath))
+            {
+                _pumpsConfigJson = System.IO.File.ReadAllText(_pumpsFilePath);
+            }
+            JObject pumpJsonObject = JObject.Parse(_pumpsConfigJson);
+
+            IEnumerable<string>? pumpliquids = pumpJsonObject["pumps"]
+                .Select(pump =>  pump["value"].ToString())
+                .OrderBy(pump => pump)
+                .ToList();
+
+            return new JsonResult(new
+            {
+                Liquids = pumpliquids
+            });
+        }
+
+        [Route("liquids/add")]
+        [HttpPut]
+        public ActionResult AddLiquid(string removeLiquid)
+        {
+            _settingsService.AddLiquid(removeLiquid);
+
+            return new JsonResult(new { });
+        }
+
+        [Route("liquids/remove")]
+        [HttpDelete]
+        public ActionResult RemoveLiquid(string removeLiquid)
+        {
+            _settingsService.RemoveLiquid(removeLiquid);
+
+            return new JsonResult(new { });
         }
 
         [Route("pump")]
@@ -80,6 +120,7 @@ namespace BlankBartender.WebApi.Controllers
                 FlowRate = decimal.Parse(p["flowRate"].ToString()),
                 Value = p["value"].ToString()
             }).ToList();
+
             return new JsonResult(new
             {
                 _pumpsConfiguration.Pumps

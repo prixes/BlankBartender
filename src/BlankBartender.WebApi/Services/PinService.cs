@@ -10,8 +10,10 @@ namespace BlankBartender.WebApi.Services
 
         public PinService() 
         {
+#if !DEBUG
             gpioController = new GpioController();
             Console.WriteLine("Pin service initialized");
+#endif
         }
         public void SwitchPin(int pin, bool on)
         {

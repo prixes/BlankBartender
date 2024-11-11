@@ -1,5 +1,5 @@
 {
-  "x-generator": "NSwag v14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))",
+  "x-generator": "NSwag v14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))",
   "openapi": "3.0.0",
   "info": {
     "title": "My Title",
@@ -11,7 +11,90 @@
         "tags": [
           "Configuration"
         ],
-        "operationId": "Configuration_ReadCurrentLiquids",
+        "operationId": "Configuration_AllLiquids",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Configuration/liquids/available": {
+      "get": {
+        "tags": [
+          "Configuration"
+        ],
+        "operationId": "Configuration_ReadAvailableLiquids",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Configuration/liquids/add": {
+      "put": {
+        "tags": [
+          "Configuration"
+        ],
+        "operationId": "Configuration_AddLiquid",
+        "parameters": [
+          {
+            "name": "removeLiquid",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Configuration/liquids/remove": {
+      "delete": {
+        "tags": [
+          "Configuration"
+        ],
+        "operationId": "Configuration_RemoveLiquid",
+        "parameters": [
+          {
+            "name": "removeLiquid",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
         "responses": {
           "200": {
             "description": "",
@@ -429,6 +512,39 @@
           }
         }
       }
+    },
+    "/Drink/cocktail/create": {
+      "post": {
+        "tags": [
+          "Drink"
+        ],
+        "operationId": "Drink_AddCocktail",
+        "requestBody": {
+          "x-name": "newDrink",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Drink"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -464,7 +580,7 @@
         "properties": {
           "id": {
             "type": "integer",
-            "format": "byte"
+            "format": "int32"
           },
           "name": {
             "type": "string"
@@ -473,7 +589,7 @@
             "type": "integer",
             "format": "byte"
           },
-          "ingradients": {
+          "ingredients": {
             "type": "object",
             "additionalProperties": {
               "type": "number",
@@ -485,6 +601,7 @@
           },
           "garnishes": {
             "type": "array",
+            "nullable": true,
             "items": {
               "type": "string"
             }

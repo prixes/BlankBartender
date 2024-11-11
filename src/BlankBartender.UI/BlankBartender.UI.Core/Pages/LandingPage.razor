@@ -1,0 +1,48 @@
+﻿@page "/"
+
+@using Microsoft.AspNetCore.Components.Routing
+@using MudBlazor
+
+<MudStack AlignItems="AlignItems.Center" Spacing="0">
+    <MudText Color="Color.Primary" Typo="Typo.h4" Align="Align.Center" GutterBottom="true">
+        Blank Bartender
+    </MudText>
+    <MudItem xs="3">
+        <MudNavLink Href="" Match="NavLinkMatch.All" Class="nav-link align-content-center" ActiveClass="active-nav-link">
+            <MudStack AlignItems="AlignItems.Center" Spacing="0" Row>
+                <MudText Color="Color.Primary" Typo="Typo.h6">Gallery</MudText>
+               @*  <MudIconButton Icon="@Icons.Material.Filled.MenuBook" Size="Size.Small" Color="Color.Primary" /> *@
+            </MudStack>
+        </MudNavLink>
+    </MudItem>
+    <MudItem xs="3">
+        <MudNavLink Href="alcoholic-cocktails" Class="nav-link align-content-center" ActiveClass="active-nav-link">
+            <MudStack AlignItems="AlignItems.Center" Spacing="0" Row>
+                <MudText Color="Color.Primary" Typo="Typo.h6">Alcoholic</MudText>
+                @* <MudIconButton Icon="@Icons.Material.Filled.LocalBar" Size="Size.Small" Color="Color.Primary" /> *@
+            </MudStack>
+        </MudNavLink>
+    </MudItem>
+    <MudItem xs="3">
+        <MudNavLink Href="non-alcoholic-cocktails" Class="nav-link align-content-center" ActiveClass="active-nav-link">
+            <MudStack AlignItems="AlignItems.Center" Spacing="0" Row>
+                <MudText Color="Color.Primary" Typo="Typo.h6">Non-Alcoholic</MudText>
+              @*   <MudIconButton Icon="@Icons.Material.Filled.NoDrinks" Size="Size.Small" Color="Color.Primary" /> *@
+            </MudStack>
+        </MudNavLink>
+    </MudItem>
+    <MudItem xs="3">
+        <MudNavLink Href="/cocktail/create" Class="nav-link align-content-center" ActiveClass="active-nav-link">
+            <MudStack AlignItems="AlignItems.Center" Spacing="0">
+                <MudText Color="Color.Primary" Typo="Typo.h6">Mix your own</MudText>
+            </MudStack>
+        </MudNavLink>
+    </MudItem>
+    <MudItem xs="3">
+        <MudNavLink Href="maintenance" Class="nav-link align-content-center" ActiveClass="active-nav-link">
+            <MudStack AlignItems="AlignItems.Center" Spacing="0">
+                <MudText Color="Color.Primary" Typo="Typo.h6">Maintenance</MudText>
+            </MudStack>
+        </MudNavLink>
+    </MudItem>
+</MudStack>

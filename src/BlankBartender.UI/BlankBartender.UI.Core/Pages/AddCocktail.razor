@@ -1,0 +1,115 @@
+﻿@page "/cocktail/create"
+<MudStack AlignItems="AlignItems.Center" Justify="Justify.Center" Class="header-container mt-4" Row>
+    <div class="title-container">
+        <MudText Color="Color.Primary" Typo="Typo.h5" Align="Align.Center">
+            Create new cocktail
+        </MudText>
+    </div>
+    <MudSwitch @bind-Value="useAvailableLiquids"
+               @bind-Value:after="OnLiquidPoolChange"
+               Label="@(useAvailableLiquids ? "avaiable liquids" : "all liquids")" 
+               Color="Color.Success" 
+               UncheckedColor="Color.Error" />
+
+</MudStack>
+
+<MudStack AlignItems="AlignItems.Center" Spacing="3" Class="justify-space-between mud-width-full justify-center m-4">
+    @if (drink != null && drink.Ingredients != null && drink.Ingredients.Count > 0)
+    {
+        @foreach (var ingredient in drink.Ingredients)
+            {
+            <MudGrid Spacing="4" Class="justify-center pa-3">
+                <MudItem xs="10" sm="10">
+                    <MudStack AlignItems="AlignItems.Center" Class="justify-center pa-3" Row>
+                        <MudText Align="Align.Center">@ingredient.Key: @ingredient.Value.ToString() ml</MudText>
+                        <MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Primary" Size="Size.Small" Variant="Variant.Filled" OnClick="@(() => RemoveIngredient(ingredient.Key) )" />
+                    </MudStack>
+                </MudItem>
+                <MudItem xs="10" sm="10">
+                    <MudSlider @bind-Value="drink.Ingredients[ingredient.Key]" Min="1" Max="200" Size="Size.Medium" ValueLabel="true" ValueLabelFormat=@("0 ml") />
+                </MudItem>
+            </MudGrid>
+        }
+    }
+    @if (liquids != null)
+    {
+        if (!openPopup)
+        {
+            <MudStack AlignItems="AlignItems.Center" Style="width:80vw" Class="justify-center mt-4" Row>
+                <MudAutocomplete @bind-Value="currentLiquid"
+                                 SearchFunc="@( (value, searchString) => Task.FromResult(string.IsNullOrEmpty(value) || value == currentLiquid ? liquids : liquids.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase))))"
+                                 Label=@(string.IsNullOrEmpty(currentLiquid) ? "Select liquid" : "Pending liquid add")
+                                 Clearable="true"
+                                 Strict="true">
+                    <NoItemsTemplate>
+                        <MudText Align="Align.Center" Class="px-4 py-1">
+                            No items found
+                        </MudText>
+                    </NoItemsTemplate>
+                </MudAutocomplete>
+@*                 <MudSelect T="string"
+                           Label="Select new liquid"
+                           AnchorOrigin="Origin.BottomCenter"
+                           @bind-Value="currentLiquid"
+                           SearchFunc="SearchItems"
+                           Searchable="true"
+                           Color="color">
+
+                    @foreach (var liquid in liquids)
+                    {
+                        <MudSelectItem T="string" Value="liquid">@liquid</MudSelectItem>
+                    }
+                </MudSelect> *@
+                @if (currentLiquid != null)
+                {
+                    <MudIconButton Icon="@Icons.Material.Filled.Add"
+                                   Disabled="@(currentLiquid == null)"
+                                   Color="@((drink.IsProcessing ? Color.Warning : Color.Primary))"
+                                   Variant="Variant.Filled"
+                                   OnClick="AddIngredient" />
+                }
+            </MudStack>
+        }
+
+        if (drink.Ingredients.Count > 0)
+        {
+            <MudStack AlignItems="AlignItems.Center">
+                @if (useAvailableLiquids && ((!drink.IsProcessing && !_statusService.isProcessing) || (drink.IsProcessing && _statusService.isProcessing)))
+                {
+                    <MudButton OnClick="@(async () => await ProcessCustomDrink(drink))"
+                               Disabled="@_statusService.isProcessing"
+                               Color="@((drink.IsProcessing ? Color.Warning : Color.Primary))"
+                               Variant="Variant.Filled">
+                        @(drink.IsProcessing ? "Processing" : "Make")
+                    </MudButton>
+                }
+
+                @if ((!drink.IsProcessing && !_statusService.isProcessing))
+                {
+                    @if (!openPopup)
+                    {
+                        <MudButton OnClick="@( () => openPopup = true)"
+                                   Disabled="@_statusService.isProcessing"
+                                   Color="@((drink.IsProcessing ? Color.Warning : Color.Primary))"
+                                   Variant="Variant.Filled">
+                            Save cocktail
+                        </MudButton>
+                    }
+                    else
+                    {
+                        <MudTextField @bind-Value="drink.Name" Label="Please enter cocktail name" Style="width:300px" Variant="Variant.Text"></MudTextField>
+                        <MudButton OnClick="@(() => SaveCocktail(drink))"
+                                   Disabled="@_statusService.isProcessing"
+                                   Color="@((drink.IsProcessing ? Color.Warning : Color.Primary))"
+                                   Variant="Variant.Filled">
+                            Save
+                        </MudButton>
+                    }
+                }
+
+            </MudStack>
+        }
+
+    }
+
+</MudStack>

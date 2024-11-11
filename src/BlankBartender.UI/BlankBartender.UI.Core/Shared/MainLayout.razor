@@ -1,13 +1,113 @@
 ﻿@inherits LayoutComponentBase
+@inject IJSRuntime JS
+@inject NavigationManager NavigationManager
+@using MudBlazor
+<MudThemeProvider Theme="@Theme.AppTheme" />
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
 
 <div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
-
     <main>
         <article class="content px-4">
+            @if (CurrentUri != "")
+            {
+                <MudStack AlignItems="AlignItems.Center" Spacing="0" Style="position: absolute; top: 20px; left: 25px; ">
+                    <MudIconButton Icon="@Icons.Material.Filled.ArrowBackIos" Color="Color.Secondary" Size="Size.Large" OnClick="GoBack" />
+                </MudStack>
+            }
             @Body
         </article>
     </main>
+   
 </div>
+<div class="bottom-nav">
+    <NavMenu />
+</div>  
+@code {
+
+    private async Task GoBack()
+    {
+        await JS.InvokeVoidAsync("goBack");
+    }
+    private string CurrentUri => NavigationManager.Uri.Replace(NavigationManager.BaseUri, "");
+}
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+
+<style>
+    .mud-primary-text {
+        color: var(--mud-palette-text-primary) !important;
+    }
+
+    .mud-secondary-text {
+        color: var(--mud-palette-text-secondary) !important;
+    }
+
+    .cocktailImage {
+        max-width: 100vw;
+        height: auto;
+        max-height: 15vh;
+        width: auto;
+        object-fit: cover;
+        transform: scale(1.3);
+        margin-right: -15px;
+    }
+
+    .focusedImage {
+        max-height: 30vh;
+        max-width: 30vh;
+        transform: scale(1.5);
+    }
+
+    body {
+        background-image: url('images/tile.jpg');
+        background-repeat: repeat;
+        background-size: 100%;
+        background-color: rgba(0, 0, 0, 0.75);
+        background-blend-mode: overlay;
+    }
+
+    .popover{
+        background-image: url('images/tile.jpg');
+        background-repeat: repeat;
+        background-size: 100%;
+        background-color: rgba(0, 0, 0, 0.75);
+        background-blend-mode: overlay;
+        width: 100vh;
+        height: 35vh;
+    }
+
+    .mud-popover {
+        background-image: url('images/tile.jpg');
+        background-repeat: repeat;
+        background-size: 100%;
+        background-color: rgba(94, 57, 186, 0.3) !important;
+        background-blend-mode: overlay;
+    }
+
+    .page {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        position: relative;
+        padding: 15px;
+    }
+
+        main {
+            flex: 1;
+            padding-bottom: 60px;
+        }
+    
+    .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        z-index: 1000;
+    }
+
+</style>

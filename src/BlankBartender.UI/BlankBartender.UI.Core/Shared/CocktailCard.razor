@@ -1,0 +1,119 @@
+﻿@using Microsoft.Extensions.Configuration
+@using MudBlazor
+@using System.Collections.Generic
+
+<MudStack Spacing="4" AlignItems="AlignItems.Center" Class="mt-2" Row>
+    <MudImage Src="@currentSrc" Alt="images/cocktail.png" Class="img-fluid cocktailImage" @onerror="FallbackImage" @onclick="TogglePreview" />
+    <MudContainer>
+        <MudText Color="@Color.Tertiary" Typo="Typo.h6" Class="mb-2">@Name.ToUpper()</MudText>
+        <MudText Color="@Color.Secondary" Typo="Typo.body1">
+            @string.Join(", ", Ingredients.Select(i => $"{i.Key}"/*{i.Value}ml*/))
+        </MudText>
+        @if (Garnishes.Count > 0)
+        {
+            <div style="display: flex; align-items: center;">
+                <MudText Color="Color.Primary" Typo="Typo.body1">
+                    Garnish:&nbsp;
+                </MudText>
+                <MudText Color="Color.Secondary" Typo="Typo.body1">
+                    @string.Join(", ", Garnishes.Where(g => !string.IsNullOrEmpty(g)))
+                </MudText>
+            </div>
+        }
+    </MudContainer>
+    @if (ShowActions)
+    {
+        <MudStack AlignItems="AlignItems.Center" Spacing="3">
+            <MudGrid Spacing="5" Class="justify-center">
+                @if (!IsProcessing)
+                {
+                    <MudItem>
+                        <MudButton Disabled="@IsProcessing" OnClick="@OnProcess" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small">
+                            <MudText>Make</MudText>
+                        </MudButton>
+                    </MudItem>
+                    <MudItem>
+                        <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" OnClick="OnTune">
+                            <MudText>Tune</MudText>
+                        </MudButton>
+                    </MudItem>
+                }
+            </MudGrid>
+        </MudStack>
+    }
+    <MudPopover Class="popover" Open="@onPreview" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" @onclick="TogglePreview">
+        <MudStack Spacing="4" AlignItems="AlignItems.Center" Class="mt-2" Row>
+            <MudImage Src="@currentSrc" Alt="images/cocktail.png" Class="img-fluid cocktailImage focusedImage" @onerror="FallbackImage" />
+            <MudStack Spacing="4" AlignItems="AlignItems.Center" Class="mt-2">
+
+                <MudText Color="@Color.Tertiary" Typo="Typo.h6" Class="mb-2">@Name.ToUpper()</MudText>
+
+                @foreach (var ingredient in Ingredients)
+                {
+                    <MudText Color="@Color.Secondary" Typo="Typo.body1">
+                        @ingredient.Key.ToString()
+                        @ingredient.Value.ToString()ml
+                    </MudText>
+                }
+                @if (Garnishes.Count > 0)
+                {
+                    <div style="display: flex; align-items: center;">
+                        <MudText Color="Color.Primary" Typo="Typo.body1">
+                            Garnish:&nbsp;
+                        </MudText>
+                        <MudText Color="Color.Secondary" Typo="Typo.body1">
+                            @string.Join(", ", Garnishes.Where(g => !string.IsNullOrEmpty(g)))
+                        </MudText>
+                    </div>
+                }
+                @if (ShowActions)
+                {
+                    <MudStack AlignItems="AlignItems.Center" Spacing="3">
+                        <MudGrid Spacing="5" Class="justify-center">
+                            @if (!IsProcessing)
+                            {
+                                <MudItem>
+                                    <MudButton Disabled="@IsProcessing" OnClick="@OnProcess" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small">
+                                        <MudText>Make</MudText>
+                                    </MudButton>
+                                </MudItem>
+                                <MudItem>
+                                    <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" OnClick="OnTune">
+                                        <MudText>Tune</MudText>
+                                    </MudButton>
+                                </MudItem>
+                            }
+                        </MudGrid>
+                    </MudStack>
+                }
+            </MudStack>
+        </MudStack>
+    </MudPopover>
+</MudStack>
+
+@code {
+    [Parameter] public int Id { get; set; }
+    [Parameter] public string Name { get; set; }
+    [Parameter] public Dictionary<string, decimal> Ingredients { get; set; } = new();
+    [Parameter] public List<string> Garnishes { get; set; } = new();
+    [Parameter] public bool ShowActions { get; set; } = true;
+    [Parameter] public bool IsProcessing { get; set; }
+    [Parameter] public EventCallback OnProcess { get; set; }
+    [Parameter] public EventCallback OnTune { get; set; }
+
+    private bool onPreview { get; set; }
+    private string currentSrc = string.Empty;
+    private void TogglePreview() => onPreview = !onPreview;
+
+    [Inject] private IConfiguration Configuration { get; set; }
+
+    protected override void OnInitialized()
+    {
+        currentSrc = $"{Configuration["ApiUrl"]}/images/cocktails/{Id}.png";
+    }
+
+    private void FallbackImage()
+    {
+        currentSrc = "images/cocktail.png";
+    }
+}

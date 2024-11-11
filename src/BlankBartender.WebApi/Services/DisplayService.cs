@@ -15,6 +15,7 @@ namespace BlankBartender.WebApi.Services
 
         public DisplayService()
         {
+#if !DEBUG
             i2c = I2cDevice.Create(new I2cConnectionSettings(2, 0x27));
             driver = new Pcf8574(i2c);
             lcd = new Lcd2004(registerSelectPin: 0,
@@ -24,10 +25,12 @@ namespace BlankBartender.WebApi.Services
                                         backlightBrightness: 0.1f,
                                         readWritePin: 1,
                                         controller: new GpioController(PinNumberingScheme.Logical, driver));
+#endif
         }
 
         public async Task PrepareStartDisplay(string name)
         {
+#if !DEBUG
             lcd.Clear();
             lcd.SetCursorPosition(0, 0);
             Write($"Start making");
@@ -37,6 +40,7 @@ namespace BlankBartender.WebApi.Services
             lcd.Clear();
             lcd.SetCursorPosition(0, 0);
             Write($"{name}");
+#endif
         }
 
         public async Task Clear()

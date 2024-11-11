@@ -6,5 +6,7 @@ namespace BlankBartender.WebApi.Services.Interfaces
     {
         public SettingsValues GetMachineSettings();
         public Task SetMachineSettings(bool useCameraAI, bool useStitter);
+        public void AddLiquid(string newLiquid);
+        public void RemoveLiquid(string liquidToRemove);
     }
 }

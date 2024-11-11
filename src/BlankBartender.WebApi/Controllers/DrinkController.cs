@@ -49,8 +49,11 @@ public class DrinkController : ControllerBase
     [Route("available/all/")]
     public ActionResult GetAvailableDrinks()
     {
+
+#if !DEBUG
         _lightsService.TurnLight("green", true);
         _displayService.MachineReadyForUse();
+#endif
         _drinks = _cocktailService.GetAvaiableCocktails();
         return new JsonResult(new
         {
@@ -61,8 +64,10 @@ public class DrinkController : ControllerBase
     [Route("all/")]
     public ActionResult GetDrinks()
     {
+#if !DEBUG
         _lightsService.TurnLight("green", true);
         _displayService.MachineReadyForUse();
+#endif
         _drinks = _cocktailService.GetAllCocktails();
         return new JsonResult(new
         {
@@ -176,7 +181,7 @@ public class DrinkController : ControllerBase
 
         Console.WriteLine($"Received request for {drink.Name}");
 
-        var recipe = drink.Ingradients.Select(ingridient =>
+        var recipe = drink.Ingredients.Select(ingridient =>
         {
             var pump = _pumps.FirstOrDefault(x => x.Value == ingridient.Key);
             var time = ingridient.Value * 1000 / pump.FlowRate;
@@ -213,7 +218,7 @@ public class DrinkController : ControllerBase
 
         Console.WriteLine($"Received request for {drink.Name}");
 
-        var recipe = drink.Ingradients.Select(ingridient =>
+        var recipe = drink.Ingredients.Select(ingridient =>
         {
             var pump = _pumps.FirstOrDefault(x => x.Value == ingridient.Key);
             var time = ingridient.Value * 1000 / pump.FlowRate;
@@ -235,6 +240,21 @@ public class DrinkController : ControllerBase
 
         Console.WriteLine($"Start pouring");
         return await ProcessDrink(recipe, drink.Name);
+    }
+
+    [HttpPost]
+    [Route("cocktail/create")]
+    public async Task<ActionResult> AddCocktail(Drink newDrink)
+    {
+        try
+        {
+            _cocktailService.AddCocktail(newDrink);
+        }
+        catch (Exception ex)
+        {
+            return Problem(ex.Message);
+        }
+        return Ok();
     }
 
     private async Task CocktailDoneLightsAndDisplay()

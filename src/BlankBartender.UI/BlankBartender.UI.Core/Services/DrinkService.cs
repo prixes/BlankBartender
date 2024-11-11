@@ -41,7 +41,12 @@ namespace BlankBartender.UI.Core.Services
             return true;
         }
 
-
+        public async Task<bool> SaveCocktail(Drink drink)
+        {
+            var response = await _drinkClient.AddCocktailAsync(drink);
+            await RequestHandler.ValidateResponseAsync(response);
+            return true;
+        }
         //      public async Task<IEnumerable<Drink>> GetAll()
         //{
         //	var cancellationToken = new CancellationToken();
