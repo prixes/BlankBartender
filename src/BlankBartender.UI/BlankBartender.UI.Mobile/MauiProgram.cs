@@ -2,10 +2,9 @@
 using BlankBartender.UI.Core.Services;
 using BlankBartender.UI.Mobile.Services;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Maui.Controls;
-using Microsoft.Maui.Controls.Xaml;
 using MudBlazor.Services;
 using System.Reflection;
+using IImageSourceService = BlankBartender.UI.Core.Interfaces.IImageSourceService;
 
 namespace BlankBartender.UI.Mobile;
 
@@ -43,7 +42,9 @@ public static class MauiProgram
         builder.Services.AddScoped<IDrinkService, DrinkService>();
         builder.Services.AddScoped<IPlatformService, PlatformService>();
         builder.Services.AddScoped<IStatusService, StatusService>();
+        builder.Services.AddSingleton<IImageSourceService, MobileImageSourceService>();
         builder.Services.AddMudServices();
+
 
         var app = builder.Build();
 

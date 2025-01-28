@@ -26,6 +26,7 @@ builder.Services.AddScoped<IConfigurationClient>(_ => new ConfigurationClient(ap
 builder.Services.AddScoped<IConfigurationService, ConfigurationService>();
 builder.Services.AddScoped<IDrinkService, DrinkService>();
 builder.Services.AddScoped<IStatusService, StatusService>();
+builder.Services.AddSingleton<IImageSourceService, WebImageSourceService>();
 builder.Services.AddMudServices();
 
 await builder.Build().RunAsync();

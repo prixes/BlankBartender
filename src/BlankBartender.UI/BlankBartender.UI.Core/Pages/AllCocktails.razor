@@ -1,30 +1,35 @@
 ﻿@page "/catalog"
 
-<MudContainer MaxWidth="MaxWidth.Large">
-    <HeaderWithSearch Title="Cocktail catalog" SearchQuery="@_searchQuery" SearchQueryChanged="OnSearchQueryChanged" />
+<MudStack>
+    <MudStack Spacing="4">
 
-    @if (_drinks == null)
-    {
-        <MudStack AlignItems="AlignItems.Center" Spacing="0">
-            <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
-            <MudAlert Severity="Severity.Info">Loading...</MudAlert>
-        </MudStack>
-    }
-    else if (_filteredDrinks == null || !_filteredDrinks.Any())
-    {
-        <MudStack AlignItems="AlignItems.Center" Spacing="0">
-            <MudAlert Severity="Severity.Info">Results not found</MudAlert>
-        </MudStack>
-    }
-    else
-    {
-        @foreach (var drink in _filteredDrinks)
+        <HeaderWithSearch Title="Cocktail catalog" SearchQuery="@_searchQuery" SearchQueryChanged="OnSearchQueryChanged" />
+
+        @if (_drinks == null)
         {
-            <CocktailCard Id="@drink.Id"
-                          Name="@drink.Name"
-                          Ingredients="drink.Ingredients"
-                          Garnishes="drink.Garnishes"
-                          ShowActions="false" />
+            <MudStack AlignItems="AlignItems.Center" Spacing="0">
+                <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                <MudAlert Severity="Severity.Info">Loading...</MudAlert>
+            </MudStack>
         }
-    }
-</MudContainer>
+        else if (_filteredDrinks == null || !_filteredDrinks.Any())
+        {
+            <MudStack AlignItems="AlignItems.Center" Spacing="0">
+                <MudAlert Severity="Severity.Info">Results not found</MudAlert>
+            </MudStack>
+        }
+        else
+        {
+            <MudStack Class="mt-0 gap-6">
+                @foreach (var drink in _filteredDrinks)
+                {
+                    <CocktailCard Id="@drink.Id"
+                                  Name="@drink.Name"
+                                  Ingredients="drink.Ingredients"
+                                  Garnishes="drink.Garnishes"
+                                  ShowActions="false" />
+                }
+            </MudStack>
+        }
+    </MudStack>
+</MudStack>

@@ -9,21 +9,21 @@
 
 <div class="page">
     <main>
-        <article class="content px-4">
+        <article class="content">
             @if (CurrentUri != "")
             {
-                <MudStack AlignItems="AlignItems.Center" Spacing="0" Style="position: absolute; top: 20px; left: 25px; ">
-                    <MudIconButton Icon="@Icons.Material.Filled.ArrowBackIos" Color="Color.Secondary" Size="Size.Large" OnClick="GoBack" />
+                <MudStack AlignItems="AlignItems.Center" Spacing="0" Class="mt-1 ml-1" Style="position: absolute;">
+                    <MudIconButton Icon="@Icons.Material.Filled.ArrowBackIosNew" Color="Color.Secondary" Size="Size.Medium" OnClick="GoBack" Class="back-button" />
                 </MudStack>
             }
             @Body
         </article>
     </main>
-   
+
 </div>
 <div class="bottom-nav">
     <NavMenu />
-</div>  
+</div>
 @code {
 
     private async Task GoBack()
@@ -49,12 +49,12 @@
     }
 
     .cocktailImage {
-        max-width: 100vw;
+        max-width: 15vw;
         height: auto;
         max-height: 15vh;
         width: auto;
         object-fit: cover;
-        transform: scale(1.3);
+        transform: scale(1.6);
         margin-right: -15px;
     }
 
@@ -64,30 +64,18 @@
         transform: scale(1.5);
     }
 
+    /*     body {
+            background-image: url('images/tile.jpg');
+            background-repeat: repeat;
+            background-size: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            background-blend-mode: overlay;
+        } */
     body {
-        background-image: url('images/tile.jpg');
-        background-repeat: repeat;
+        background-image: linear-gradient(rgba(15, 15, 15, 0.85), rgba(15, 15, 15, 0.85)), url('images/tile.jpg');
         background-size: 100%;
-        background-color: rgba(0, 0, 0, 0.75);
-        background-blend-mode: overlay;
-    }
-
-    .popover{
-        background-image: url('images/tile.jpg');
         background-repeat: repeat;
-        background-size: 100%;
-        background-color: rgba(0, 0, 0, 0.75);
-        background-blend-mode: overlay;
-        width: 100vh;
-        height: 35vh;
-    }
-
-    .mud-popover {
-        background-image: url('images/tile.jpg');
-        background-repeat: repeat;
-        background-size: 100%;
-        background-color: rgba(94, 57, 186, 0.3) !important;
-        background-blend-mode: overlay;
+        background-blend-mode: normal; 
     }
 
     .page {
@@ -98,11 +86,32 @@
         padding: 15px;
     }
 
-        main {
-            flex: 1;
-            padding-bottom: 60px;
-        }
-    
+    main {
+        flex: 1;
+        padding-bottom: 60px;
+    }
+
+    .back-button {
+        background-color: rgba(var(--mud-palette-secondary-rgb), 0.03) !important;
+        border-radius: 50%;
+        z-index: 2;
+    }
+
+    .popover {
+        background-image: linear-gradient(rgba(15, 15, 15, 0.85), rgba(15, 15, 15, 0.85)), url('images/tile.jpg');
+        background-size: 100%;
+        background-repeat: repeat;
+        background-blend-mode: normal;
+        width: 50vh;
+        height: 35vh;
+    }
+
+    .mud-popover {
+        background-image: linear-gradient(rgba(15, 15, 15, 0.85), rgba(94, 57, 186, 0.15), rgba(15, 15, 15, 0.85)), url('images/tile.jpg');
+        background-size: 100%;
+        background-repeat: repeat;
+        background-blend-mode: normal;
+    }
     .bottom-nav {
         position: fixed;
         bottom: 0;

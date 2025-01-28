@@ -1,7 +1,7 @@
 ﻿@page "/non-alcoholic-cocktails"
 
 <MudContainer MaxWidth="MaxWidth.Large">
-    <HeaderWithSearch Title="Non-alcoholic Cocktails" SearchQuery="@_searchQuery" SearchQueryChanged="OnSearchQueryChanged" />
+    <HeaderWithSearch Title="Non-alcoholic" SearchQuery="@_searchQuery" SearchQueryChanged="OnSearchQueryChanged" />
 
 
     @if (_statusService.isProcessing)
@@ -30,16 +30,18 @@
     }
     else
     {
-        @foreach (var drink in _filteredDrinks)
-        {
-            <CocktailCard Id="@drink.Id"
-                          Name="@drink.Name"
-                          Ingredients="drink.Ingredients"
-                          Garnishes="drink.Garnishes"
-                          ShowActions="true"
-                          IsProcessing="@_statusService.isProcessing"
-                          OnProcess="@(async () => await Process(drink))"
-                          OnTune="@(async () => NavigateToCustomCocktailPage(drink))" />
-        }
+        <MudStack Class="mt-0 gap-5">
+            @foreach (var drink in _filteredDrinks)
+            {
+                <CocktailCard Id="@drink.Id"
+                              Name="@drink.Name"
+                              Ingredients="drink.Ingredients"
+                              Garnishes="drink.Garnishes"
+                              ShowActions="true"
+                              IsProcessing="@_statusService.isProcessing"
+                              OnProcess="@(async () => await Process(drink))"
+                              OnTune="@(async () => NavigateToCustomCocktailPage(drink))" />
+            }
+        </MudStack>
     }
 </MudContainer>

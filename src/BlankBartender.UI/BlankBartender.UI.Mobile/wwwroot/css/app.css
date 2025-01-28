@@ -1,4 +1,4 @@
-﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+﻿/*@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
 body {
     background: url('/images/background.jpg');
@@ -93,24 +93,24 @@ a, .btn-link {
     content: "An error has occurred."
   }
 
-.table {
+.table {*/
   /*    background: radial-gradient(circle farthest-corner at center, #3C4B57 0%, #1C262B 100%);
     opacity: 0.5;*/
-  background: rgb(0 0 0 / 75%);
+  /*background: rgb(0 0 0 / 75%);
   color: white;
-}
+}*/
 
 
 /*Feedback Page*/
-.feedback-container {
+/*.feedback-container {
   background: rgb(0 0 0 / 50%);
   color: #fff;
   padding: 50px;
-}
+}*/
 
 /*Loading overlay*/
 
-.loader {
+/*.loader {
   position: absolute;
   top: calc(50% - 32px);
   left: calc(50% - 32px);
@@ -189,6 +189,6 @@ a, .btn-link {
 
 .garnishes {
   color:#d4c9ff;
-}
+}*/
 
 

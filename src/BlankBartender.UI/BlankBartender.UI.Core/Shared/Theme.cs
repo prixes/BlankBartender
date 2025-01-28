@@ -43,10 +43,11 @@ namespace BlankBartender.UI.Core.Shared
             },
             Typography = new Typography()
             {
-                //Body1 = new Body1
-                //{
-                //    FontFamily = new[] { "Koulen", "Arial", "sans-serif" }
-                //},
+                Body1 = new Body1
+                {
+                    FontFamily = new[] { "Koulen", "Arial", "sans-serif" },
+                    FontSize = "13px",
+                },
                 H5 = new H5()
                 {
                     FontFamily = ["Istok Web", "Arial", "sans-serif"],
@@ -55,7 +56,7 @@ namespace BlankBartender.UI.Core.Shared
                 {
                     FontFamily = ["Koulen", "Arial", "sans-serif"],
                     FontWeight = 400,
-                    FontSize = "20px",
+                    FontSize = "16px",
                     LetterSpacing = "-0.5px",
                 }
                 // Add more for H3, H4, Body1, Body2, etc., as needed.

@@ -7,23 +7,28 @@
             @Title
         </MudText>
     </div>
-    <div class="search-container @( _isSearchOpen ? "slide-in" : "slide-out")">
-        <MudTextField Class="search-input" Value="@SearchQuery" ValueChanged="OnSearchQueryChanged" Variant="Variant.Outlined"
-                      Immediate="true" T="string" Adornment="Adornment.End"
-                      AdornmentColor="Color.Primary"
-                      @onfocusout="HandleFocusOut"
-                      @onmouseover="ExpandSearch"
-                      @onmouseleave="HandleMouseLeave"
-                      @onfocusin="HandleFocusIn" />
-    </div>
-    <MudIconButton Icon="@Icons.Material.Filled.Search"
-                   Color="Color.Primary"
-                   Size="Size.Small"
-                   Variant="Variant.Filled"
-                   OnClick="ToggleSearch"
-                   @onfocusout="HandleFocusOut"
-                   @onmouseover="ExpandSearch"
-                   @onfocusin="HandleFocusIn" />
+    @if (SearchQuery != "")
+    {
+        <div class="search-container @( _isSearchOpen ? "slide-in" : "slide-out")">
+            <MudTextField Class="search-input" Value="@SearchQuery" ValueChanged="OnSearchQueryChanged" Variant="Variant.Outlined"
+                          Immediate="true" T="string" Adornment="Adornment.End"
+                          Placeholder="Input name or ingredient"
+                          AdornmentColor="Color.Primary"
+                          @onfocusout="HandleFocusOut"
+                          @onmouseover="ExpandSearch"
+                          @onmouseleave="HandleMouseLeave"
+                          @onfocusin="HandleFocusIn"
+                          @ref="InputSearch" />
+        </div>
+        <MudIconButton Icon="@Icons.Material.Filled.Search"
+                       Color="Color.Primary"
+                       Size="Size.Small"
+                       Variant="Variant.Filled"
+                       OnClick="ToggleSearch"
+                       @onmouseover="ExpandSearch"
+                       @onfocusin="HandleFocusIn" />
+    }
+
 </MudStack>
 
 <style>
@@ -44,6 +49,7 @@
 
     .title-container {
         padding-top: 10px;
+        padding-left: 20px;
     }
 
         .title-container.slide-out {
@@ -85,6 +91,8 @@
 
     [Parameter]
     public EventCallback<string> SearchQueryChanged { get; set; }
+    
+    MudTextField<string> InputSearch = new MudTextField<string>();
 
     private bool _isSearchOpen;
     private bool _searchQueryFocused;
@@ -117,9 +125,10 @@
         StateHasChanged();
     }
 
-    private void ToggleSearch()
+    private async Task ToggleSearch()
     {
         _isSearchOpen = !_isSearchOpen;
+        await InputSearch.FocusAsync();
         StateHasChanged();
     }
 

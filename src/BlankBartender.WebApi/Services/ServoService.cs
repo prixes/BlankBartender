@@ -13,14 +13,14 @@ namespace BlankBartender.WebApi.Services
 
         const int platformServoMin = 102;
         const int platformServoMid = 307;
-        const int platformServoMax = 512;
+        const int platformServoMax = 530;
 
         I2cConnectionSettings i2cConnection = new I2cConnectionSettings(3, 0x40);
         I2cDevice i2cDevice;
         Pca9685 pca;
 
         double t, easedValue, dutyCycle;
-        const int loopCountPlatform = 1500;
+        const int loopCountPlatform = 1400;
         const double platformSeconds = 1.5;
         const int loopCountArmDown = 100;
         const int loopCountArmUp = 100;

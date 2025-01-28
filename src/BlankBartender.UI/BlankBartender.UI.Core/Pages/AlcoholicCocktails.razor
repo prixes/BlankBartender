@@ -1,23 +1,16 @@
 ﻿@page "/alcoholic-cocktails"
 
-<MudContainer MaxWidth="MaxWidth.Large">
-    <MudStack Spacing="2">
+<MudStack>
+    <MudStack Spacing="4">
 
         <HeaderWithSearch Title="Alcoholic Cocktails" SearchQuery="@_searchQuery" SearchQueryChanged="OnSearchQueryChanged" />
-
-        @*         <MudText Color="@Color.Primary" Typo="Typo.h5" Align="Align.Center" GutterBottom="true">
-        Alcoholic Cocktails
-        <SearchComponent SearchQuery="@_searchQuery" SearchQueryChanged="OnSearchQueryChanged" />
-        </MudText> *@
-
-
 
         @if (_statusService.isProcessing)
         {
             <MudStack AlignItems="AlignItems.Center" Spacing="0">
                 <MudAlert Severity="Severity.Warning">
                     Machine is busy please wait
-                   
+
                 </MudAlert>
                 <MudProgressCircular Class="ms-n1" Size="Size.Small" Color="Color.Warning" Indeterminate="true" />
             </MudStack>
@@ -38,66 +31,21 @@
         }
         else
         {
-            @foreach (var drink in _filteredDrinks)
-            {
-                <CocktailCard Id="@drink.Id"
-                              Name="@drink.Name"
-                              Ingredients="drink.Ingredients"
-                              Garnishes="drink.Garnishes"
-                              ShowActions="true"
-                              IsProcessing="@_statusService.isProcessing"
-                              OnProcess="@(async () => await Process(drink))"
-                              OnTune="@(async () => NavigateToCustomCocktailPage(drink))" />
-                @*                 <MudStack Spacing="4" AlignItems="AlignItems.Center" Class="mt-2" Row>
-        <MudImage Src="images/cocktail.png" Alt="images/cocktail.png" Class="img-fluid cocktailImage" />
-        <MudContainer>
-        <MudText Color="@Color.Tertiary" Typo="Typo.h6" Class="mb-2">@drink.Name.ToUpper()</MudText>
-        <MudText Color="@Color.Secondary" Typo="Typo.body1">
-        @string.Join(", ", drink.Ingredients.Select(i => $"{i.Key}"/*{i.Value}ml*/))
-        </MudText>
-        @if (drink.Garnishes.Count > 0)
-        {
-        <div style="display: flex; align-items: center;">
-        <MudText Color="Color.Primary" Typo="Typo.body1">
-        Garnish:&nbsp;
-        </MudText>
-        <MudText Color="Color.Secondary" Typo="Typo.body1">
-        @if (drink.Garnishes.Count > 0)
-        {
-        @string.Join(", ", drink.Garnishes)
-        }
-        </MudText>
-        </div>
-        }
-        </MudContainer>
-        <MudStack AlignItems="AlignItems.Center" Spacing="3">
-        <MudGrid Spacing="5" Class="justify-center">
-        <MudItem>
-        <MudButton Disabled="@_statusService.isProcessing" OnClick="@(async () => await Process(drink))" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small">
-        @if (@_statusService.isProcessing)
-        {
-        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
-        <MudText Class="ms-2">Processing</MudText>
-        }
-        else
-        {
-        <MudText>Make</MudText>
-        }
-        </MudButton>
-        </MudItem>
-        <MudItem>
-        @if (!_statusService.isProcessing)
-        {
-        <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" OnClick="@(() => NavigateToCustomCocktailPage(drink))">
-        <MudText>Tune</MudText>  @* Icon="@Icons.Material.Filled.Build Size=" Size.Medium" aria-label="Customize" *@
-                @*  </MudButton>
-        }
-        </MudItem>
-        </MudGrid>
-        </MudStack>
-        </MudStack> *@
-            }
+            <MudStack Class="mt-0 gap-5">
+                @foreach (var drink in _filteredDrinks)
+                {
+                    <CocktailCard Id="@drink.Id"
+                                  Name="@drink.Name"
+                                  Ingredients="drink.Ingredients"
+                                  Garnishes="drink.Garnishes"
+                                  ShowActions="true"
+                                  IsProcessing="@_statusService.isProcessing"
+                                  OnProcess="@(async () => await Process(drink))"
+                                  OnTune="@(async () => NavigateToCustomCocktailPage(drink))" />
+
+                }
+            </MudStack>
         }
     </MudStack>
-</MudContainer>
+</MudStack>
 
