@@ -26,17 +26,17 @@ namespace BlankBartender.WebApi.Services
             {
                 JObject drinkJsonObject = JObject.Parse(_drinkConfigJson);
 
-                _drinks = drinkJsonObject["drinks"].Select(d => new Drink
+                _drinks = drinkJsonObject["drinks"].Select(drink => new Drink
                 {
-                    Name = d["name"].ToString(),
-                    Id = byte.Parse(d["id"].ToString()),
-                    Type = byte.Parse(d["type"].ToString()),
-                    Ingredients = d["Ingredients"].Children<JObject>().Select(ing => new
+                    Name = drink["name"].ToString(),
+                    Id = byte.Parse(drink["id"].ToString()),
+                    Type = byte.Parse(drink["type"].ToString()),
+                    Ingredients = drink["Ingredients"].Children<JObject>().Select(ing => new
                     {
                         Key = ing.Properties().First().Name,
                         Value = decimal.Parse(ing.Properties().First().Value.ToString()),
                     }).ToDictionary(k => k.Key, v => v.Value),
-                    Garnishes = d["garnishes"].Values<string>().ToList()
+                    Garnishes = drink["garnishes"].Values<string>().ToList()
                 }).ToList();
 
                 Console.WriteLine($"Success getting all cocktails");
@@ -61,24 +61,24 @@ namespace BlankBartender.WebApi.Services
                 JObject drinkJsonObject = JObject.Parse(_drinkConfigJson);
                 JObject pumpJsonObject = JObject.Parse(_pumpConfigJson);
 
-                _pumps = pumpJsonObject["pumps"].Select(p => new Pump
+                _pumps = pumpJsonObject["pumps"].Select(pump => new Pump
                 {
-                    Number = int.Parse(p["number"].ToString()),
-                    Pin = short.Parse(p["pin"].ToString()),
-                    Value = p["value"].ToString()
+                    Number = int.Parse(pump["number"].ToString()),
+                    Pin = short.Parse(pump["pin"].ToString()),
+                    Value = pump["value"].ToString()
                 }).ToList();
 
-                _drinks = drinkJsonObject["drinks"].Select(d => new Drink
+                _drinks = drinkJsonObject["drinks"].Select(drink => new Drink
                 {
-                    Name = d["name"].ToString(),
-                    Id = int.Parse(d["id"].ToString()),
-                    Type = byte.Parse(d["type"].ToString()),
-                    Ingredients = d["Ingredients"].Children<JObject>().Select(ing => new
+                    Name = drink["name"].ToString(),
+                    Id = int.Parse(drink["id"].ToString()),
+                    Type = byte.Parse(drink["type"].ToString()),
+                    Ingredients = drink["Ingredients"].Children<JObject>().Select(ing => new
                     {
                         Key = ing.Properties().First().Name,
                         Value = decimal.Parse(ing.Properties().First().Value.ToString()),
                     }).ToDictionary(k => k.Key, v => v.Value),
-                    Garnishes = d["garnishes"].Values<string>().ToList()
+                    Garnishes = drink["garnishes"].Values<string>().ToList()
                 }).ToList();
 
                 var pumpAlcohols = _pumps.Select(x => x.Value).ToList();
