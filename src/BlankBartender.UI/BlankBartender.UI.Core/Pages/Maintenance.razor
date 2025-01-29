@@ -1,125 +1,130 @@
 ﻿@page "/Maintenance"
 
-        <MudStack AlignItems="AlignItems.Center" Class="justify-space-between mud-width-full justify-center m-4">
-            <HeaderWithSearch Title="Maintenance" />
-            <MudStack Class="d-flex align-center justify-center flex-grow-1 gap-6 mb-5" Row>
+<MudStack AlignItems="AlignItems.Center" Class="justify-space-between mud-width-full justify-center m-4">
+    <HeaderWithSearch Title="Maintenance" />
+    <MudStack Class="d-flex align-center justify-center mb-3" Row>
 
-                <MudSwitch @bind-Value="UseCameraAI"
-                           @bind-Value:after="(async () => await UpdateSettings())"
-                           Label="@(UseCameraAI ? "Use Camera AI" : "No Camera AI")"
-                           Color="Color.Success"
-                           UncheckedColor="Color.Error" />
+        <MudSwitch @bind-Value="UseCameraAI"
+                   @bind-Value:after="(async () => await UpdateSettings())"
+                   Label="@(UseCameraAI ? "Use Camera AI" : "No Camera AI")"
+                   Color="Color.Success"
+                   UncheckedColor="Color.Error" />
 
-                <br />
-                <MudSwitch @bind-Value="UseStirrer"
-                           @bind-Value:after="(async () => await UpdateSettings())"
-                           Label="@(UseStirrer ? "Use Stirrer" : "Not using Stirrer")"
-                           Color="Color.Success"
-                           UncheckedColor="Color.Error" />
+        <br />
+        <MudSwitch @bind-Value="UseStirrer"
+                   @bind-Value:after="(async () => await UpdateSettings())"
+                   Label="@(UseStirrer ? "Use Stirrer" : "Not using Stirrer")"
+                   Color="Color.Success"
+                   UncheckedColor="Color.Error" />
 
-            </MudStack>
-            @if (!isRemoveLiquid)
-            {
-                @if (!isAddLiquid)
-                {
-                    <MudButton OnClick="@( () => isAddLiquid = true)"
-                               Color="Color.Primary"
-                               Variant="Variant.Filled">
-                        Add liquid
-                    </MudButton>
-                }
-                else
-                {
-                    <MudStack AlignItems="AlignItems.Center" Style="width:300px" Class="justify-center" Row>
-                        <MudTextField @bind-Value="liquidName" Label="Please enter cocktail name" Style="width:300px" Variant="Variant.Text"></MudTextField>
-                        <MudButton OnClick="@(() => AddLiquid())"
-                                   Color="Color.Primary"
-                                   Variant="Variant.Filled">
-                            Confirm adding
-                        </MudButton>
-                    </MudStack>
-                }
-            }
+    </MudStack>
+    <MudStack Class="d-flex align-center justify-center flex-grow-1 gap-6" Row>
+        @if (!isRemoveLiquid)
+        {
             @if (!isAddLiquid)
             {
-                @if (!isRemoveLiquid)
-                {
-                    <MudButton OnClick="@( () => isRemoveLiquid = true)"
+                <MudButton OnClick="@( () => isAddLiquid = true)"
+                           Color="Color.Primary"
+                           Variant="Variant.Filled"
+                           Size="Size.Small">
+                    Add liquid
+                </MudButton>
+            }
+            else
+            {
+                <MudStack AlignItems="AlignItems.Center" Style="width:300px" Class="justify-center" Row>
+                    <MudTextField @bind-Value="liquidName" Label="Please enter cocktail name" Style="width:300px" Variant="Variant.Text"></MudTextField>
+                    <MudButton OnClick="@(() => AddLiquid())"
                                Color="Color.Primary"
-                               Variant="Variant.Filled">
-                        Remove liquid
+                               Variant="Variant.Filled"
+                               Size="Size.Small">
+                        Confirm adding
                     </MudButton>
-                }
-                else
-                {
-                    <MudStack AlignItems="AlignItems.Center" Class="justify-center" Row>
-                        <MudSelect T="string"
-                                   Label="Select liquid to remove"
-                                   AnchorOrigin="Origin.BottomCenter"
-                                   @bind-Value="liquidName"
-                                   SearchFunc="SearchItems"
-                                   Searchable="true">
-                            @if (liquids != null)
+                </MudStack>
+            }
+        }
+        @if (!isAddLiquid)
+        {
+            @if (!isRemoveLiquid)
+            {
+                <MudButton OnClick="@( () => isRemoveLiquid = true)"
+                           Color="Color.Primary"
+                           Variant="Variant.Filled"
+                           Size="Size.Small">
+                    Remove liquid
+                </MudButton>
+            }
+            else
+            {
+                <MudStack AlignItems="AlignItems.Center" Class="justify-center" Row>
+                    <MudSelect T="string"
+                               Label="Select liquid to remove"
+                               AnchorOrigin="Origin.BottomCenter"
+                               @bind-Value="liquidName"
+                               SearchFunc="SearchItems"
+                               Searchable="true">
+                        @if (liquids != null)
+                        {
+                            @foreach (var liquid in liquids)
                             {
-                                @foreach (var liquid in liquids)
-                                {
-                                    <MudSelectItem T="string" Value="liquid">@liquid</MudSelectItem>
-                                }
+                                <MudSelectItem T="string" Value="liquid">@liquid</MudSelectItem>
                             }
-                        </MudSelect>
-                        <MudButton OnClick="@(() => RemoveLiquid())"
-                                   Color="Color.Primary"
-                                   Variant="Variant.Filled">
-                            Confirm remove
-                        </MudButton>
-                    </MudStack>
-                }
-
+                        }
+                    </MudSelect>
+                    <MudButton OnClick="@(() => RemoveLiquid())"
+                               Color="Color.Primary"
+                               Variant="Variant.Filled"
+                               Size="Size.Small">
+                        Confirm remove
+                    </MudButton>
+                </MudStack>
             }
 
-            <MudStack Class="d-flex align-center justify-center flex-grow-1 gap-6" Row>
-                <MudButton Variant="Variant.Filled" Color="Color.Primary"
-                           OnClick="@(async () => await StartPumps())">
-                    Start Pumps
-                </MudButton>
-                <MudButton Variant="Variant.Filled" Color="Color.Primary"
-                           OnClick="@(async () => await StopPumps())">
-                    Stop Pumps
-                </MudButton>
-                <MudButton Variant="Variant.Filled" Color="Color.Primary"
-                           OnClick="@(async () => await InitializeLiquidFlow())">
-                    Initialize
-                </MudButton>
+        }
+    </MudStack>
 
-            </MudStack>
+    <MudText Color="Color.Primary" Typo="Typo.body1" Align="Align.Center" GutterBottom="true">
+        Pump control
+    </MudText>
+    <MudStack Class="d-flex align-center justify-center flex-grow-1" Row>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small"
+                   OnClick="@(async () => await StartPumps())">
+            Start All
+        </MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small"
+                   OnClick="@(async () => await StopPumps())">
+            Stop All
+        </MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small"
+                   OnClick="@(async () => await InitializeLiquidFlow())">
+            Initialize
+        </MudButton>
 
-            <MudStack StretchItems="@StretchItems.All" Class="gap-11" Row>
-                <MudItem xs="1">
-                    <MudPaper>Pump Number</MudPaper>
-                </MudItem>
-                <MudItem xs="1">
-                    <MudPaper>Hardware pin</MudPaper>
-                </MudItem>
-                <MudItem xs="9">
-                    <MudPaper>Liquid</MudPaper>
-                </MudItem>
-                <MudItem xs="1">
-                    <MudPaper>Actions</MudPaper>
-                </MudItem>
-            </MudStack>
+    </MudStack>
+
+    <MudSimpleTable Class="my-fixed-table align-center justify-center " Style="width: 100%;">
+        <thead>
+            <tr>
+                <th style="width:8%">Pump Number</th>
+                <th style="width:8%">Hardware pin</th>
+                <th style="width:54%">Liquid</th>
+                <th style="width:30%">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
             @if (pumps != null)
             {
                 @foreach (var pump in pumps)
                 {
-                    <MudGrid Justify="Justify.Center">
-                        <MudItem>
+                    <tr>
+                        <td>
                             <MudPaper>@pump.Number</MudPaper>
-                        </MudItem>
-                        <MudItem>
+                        </td>
+                        <td>
                             <MudPaper>@pump.Pin</MudPaper>
-                        </MudItem>
-                        <MudItem>
-                            <MudPaper>
+                        </td>
+                        <td class="p-2">
+                            <MudItem Class="d-flex margin-autocomplete">
                                 @if (selectedLiquids[pump.Number - 1] != @pump.Value)
                                 {
                                     <MudIconButton Icon="@Icons.Material.Outlined.Refresh"
@@ -132,16 +137,17 @@
                                                  SearchFunc="@( (value, searchString) => Task.FromResult(string.IsNullOrEmpty(value) || value == pump.Value ? liquids : liquids.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase))))"
                                                  Label=@(@selectedLiquids[pump.Number - 1] == pump.Value ? "Current liquid" : "Pending change")
                                                  Strict="true"
-                                                 Class="@((selectedLiquids[pump.Number - 1] != @pump.Value) ? "pending" : null)">
+                                                 Style="max-width:150px"
+                                                 Class="@((selectedLiquids[pump.Number - 1] != @pump.Value) ? "pending" : "m-2")">
                                     <NoItemsTemplate>
                                         <MudText Align="Align.Center" Class="px-4 py-1">
                                             No items found
                                         </MudText>
                                     </NoItemsTemplate>
                                 </MudAutocomplete>
-                            </MudPaper>
-                        </MudItem>
-                        <MudItem>
+                            </MudItem>
+                        </td>
+                        <td>
                             <MudPaper>
                                 @if (selectedLiquids[pump.Number - 1] != @pump.Value)
                                 {
@@ -149,25 +155,187 @@
                                                IconColor="Color.Warning"
                                                Variant="Variant.Filled"
                                                Color="Color.Primary"
+                                               Size="Size.Small"
                                                OnClick="@(async () => await PumpLiquidChange(pump.Number, selectedLiquids[pump.Number - 1]))">
-                                        <MudText>@(isProcessing ? "Saving changes" : "Save")</MudText>
+                                        <MudText>@(isProcessing ? "Saving changes" : "SAVE")</MudText>
                                     </MudButton>
                                 }
                                 else
                                 {
                                     <MudButton Variant="Variant.Filled"
                                                Color="Color.Primary"
+                                               Size="Size.Small"
                                                OnClick="@(async () => await PumpStateSwitch(pump.Number - 1))">
-                                        @(isProcessing ? "Saving changes" : (pumpsSwitch[pump.Number - 1] ? "Stop" : "Start"))
+                                        @(isProcessing ? "Saving changes" : (pumpsSwitch[pump.Number - 1] ? "STOP" : "START"))
                                     </MudButton>
                                 }
                             </MudPaper>
-                        </MudItem>
-                    </MudGrid>
+                        </td>
+                    </tr>
                 }
 
             }
+        </tbody>
+    </MudSimpleTable>
+
+    <MudTable Items="@pumps" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@(pumps != null)" LoadingProgressColor="Color.Info">
+        <HeaderContent>
+            <MudTh>Pump Number</MudTh>
+            <MudTh>Hardware pin</MudTh>
+            <MudTh>Liquid</MudTh>
+            <MudTh>Actions</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Pump Number">@context.Number</MudTd>
+            <MudTd DataLabel="Hardware pin">@context.Pin</MudTd>
+            <MudTd DataLabel="Liquid">
+                <MudPaper Class="d-flex">
+                    @if (selectedLiquids[context.Number - 1] != @context.Value)
+                    {
+                        <MudIconButton Icon="@Icons.Material.Outlined.Refresh"
+                                       Color="Color.Warning"
+                                       Size="Size.Medium"
+                                       OnClick="() => selectedLiquids[context.Number - 1] = context.Value">
+                        </MudIconButton>
+
+                    }
+                    <MudAutocomplete @bind-Value="selectedLiquids[context.Number - 1]"
+                                     SearchFunc="@( (value, searchString) => Task.FromResult(string.IsNullOrEmpty(value) || value == context.Value ? liquids : liquids.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase))))"
+                                     Label=@(@selectedLiquids[context.Number - 1] == context.Value ? "Current liquid" : "Pending change")
+                                     Strict="true"
+                                     Style="max-width:150px"
+                                     Class="@((selectedLiquids[context.Number - 1] != @context.Value) ? "pending" : null)">
+                        <NoItemsTemplate>
+                            <MudText Align="Align.Center" Class="px-4 py-1">
+                                No items found
+                            </MudText>
+                        </NoItemsTemplate>
+                    </MudAutocomplete>
+                </MudPaper>
+            </MudTd>
+            <MudTd DataLabel="Actions">
+                <MudPaper>
+                    @if (selectedLiquids[context.Number - 1] != @context.Value)
+                    {
+                        <MudButton StartIcon="@Icons.Material.Outlined.Save"
+                                   IconColor="Color.Warning"
+                                   Variant="Variant.Filled"
+                                   Color="Color.Primary"
+                                   OnClick="@(async () => await PumpLiquidChange(context.Number, selectedLiquids[context.Number - 1]))">
+                            <MudText>@(isProcessing ? "Saving changes" : "Save")</MudText>
+                        </MudButton>
+                    }
+                    else
+                    {
+                        <MudButton Variant="Variant.Filled"
+                                   Color="Color.Primary"
+                                   OnClick="@(async () => await PumpStateSwitch(context.Number - 1))">
+                            @(isProcessing ? "Saving changes" : (pumpsSwitch[context.Number - 1] ? "Stop" : "Start"))
+                        </MudButton>
+                    }
+                </MudPaper>
+            </MudTd>
+        </RowTemplate>
+    </MudTable>
+    <MudStack StretchItems="@StretchItems.All" Class="gap-11" Row>
+        <MudItem xs="1">
+            <MudText Typo="Typo.caption">
+                Pump Number
+            </MudText>
+        </MudItem>
+        <MudItem xs="1">
+            <MudText Typo="Typo.caption">
+                Hardware pin
+            </MudText>
+        </MudItem>
+        <MudItem xs="9">
+            <MudText Typo="Typo.caption">
+                Liquid
+            </MudText>
+        </MudItem>
+        <MudItem xs="1">
+            <MudText Typo="Typo.caption">
+                Actions
+            </MudText>
+        </MudItem>
+    </MudStack>
+    @if (pumps != null)
+    {
+        @foreach (var pump in pumps)
+        {
+            <MudGrid Justify="Justify.Center">
+                <MudItem>
+                    <MudPaper>@pump.Number</MudPaper>
+                </MudItem>
+                <MudItem>
+                    <MudPaper>@pump.Pin</MudPaper>
+                </MudItem>
+                <MudItem>
+                    <MudPaper Class="d-flex">
+                        @if (selectedLiquids[pump.Number - 1] != @pump.Value)
+                        {
+                            <MudIconButton Icon="@Icons.Material.Outlined.Refresh"
+                                           Color="Color.Warning"
+                                           Size="Size.Small"
+                                           OnClick="() => selectedLiquids[pump.Number - 1] = pump.Value">
+                            </MudIconButton>
+                        }
+                        <MudAutocomplete @bind-Value="selectedLiquids[pump.Number - 1]"
+                                         SearchFunc="@( (value, searchString) => Task.FromResult(string.IsNullOrEmpty(value) || value == pump.Value ? liquids : liquids.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase))))"
+                                         Label=@(@selectedLiquids[pump.Number - 1] == pump.Value ? "Current liquid" : "Pending change")
+                                         Strict="true"
+                                         Style="max-width:150px"
+                                         Class="@((selectedLiquids[pump.Number - 1] != @pump.Value) ? "pending" : null)">
+                            <NoItemsTemplate>
+                                <MudText Align="Align.Center" Class="px-4 py-1">
+                                    No items found
+                                </MudText>
+                            </NoItemsTemplate>
+                        </MudAutocomplete>
+                    </MudPaper>
+                </MudItem>
+                <MudItem>
+                    <MudPaper>
+                        @if (selectedLiquids[pump.Number - 1] != @pump.Value)
+                        {
+                            <MudButton StartIcon="@Icons.Material.Outlined.Save"
+                                       IconColor="Color.Warning"
+                                       Variant="Variant.Filled"
+                                       Color="Color.Primary"
+                                       OnClick="@(async () => await PumpLiquidChange(pump.Number, selectedLiquids[pump.Number - 1]))">
+                                <MudText>@(isProcessing ? "Saving changes" : "Save")</MudText>
+                            </MudButton>
+                        }
+                        else
+                        {
+                            <MudButton Variant="Variant.Filled"
+                                       Color="Color.Primary"
+                                       OnClick="@(async () => await PumpStateSwitch(pump.Number - 1))">
+                                @(isProcessing ? "Saving changes" : (pumpsSwitch[pump.Number - 1] ? "Stop" : "Start"))
+                            </MudButton>
+                        }
+                    </MudPaper>
+                </MudItem>
+            </MudGrid>
+        }
+
+    }
 
 
-        </MudStack>
+</MudStack>
 
+
+
+<style>
+    .my-fixed-table table {
+        table-layout: fixed;
+    }
+    .mud-input-adornment > .mud-button-root {
+        display: none;
+    }
+
+    .margin-autocomplete {
+        margin-left: 1rem; /* or any size you want */
+        margin-right: 0px;
+    }
+</style>

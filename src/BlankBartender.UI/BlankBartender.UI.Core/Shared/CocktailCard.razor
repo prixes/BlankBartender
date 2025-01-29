@@ -11,14 +11,14 @@
         </MudText>
         @if (Garnishes.Count > 0)
         {
-            <div style="display: flex; align-items: center;">
+            <MudItem Class="mt-2" style="display: flex;">
                 <MudText Color="Color.Primary" Typo="Typo.body1">
                     Garnish:&nbsp;
                 </MudText>
                 <MudText Color="Color.Secondary" Typo="Typo.body1">
                     @string.Join(", ", Garnishes.Where(g => !string.IsNullOrEmpty(g)))
                 </MudText>
-            </div>
+            </MudItem>
         }
     </MudContainer>
     @if (ShowActions)
@@ -50,7 +50,7 @@
             <MudStack Spacing="2" AlignItems="AlignItems.Center" Class="mt-2">
 
                 <MudText Color="@Color.Tertiary" Typo="Typo.h6" Class="mb-2">@Name.ToUpper()</MudText>
-                <MudItem style="display: flex; align-items: center;">
+                <MudItem>
                     @foreach (var ingredient in Ingredients)
                     {
                         <MudText Color="@Color.Secondary" Typo="Typo.body1">
@@ -61,7 +61,7 @@
                 </MudItem>
                 @if (Garnishes.Count > 0)
                 {
-                    <MudItem style="display: flex; align-items: center;">
+                    <MudItem>
                         <MudText Color="Color.Primary" Typo="Typo.body1">
                             Garnish:&nbsp;
                         </MudText>
