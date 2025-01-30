@@ -21,7 +21,7 @@ namespace BlankBartender.UI.Core.Pages
 
         public string SliderFormat { get; set; }
 
-        private string imageSrc = "/images/cocktail.png";
+        public string imageSrc = "/images/cocktail.png";
         [Inject] private IConfiguration Configuration { get; set; }
         [Inject] private IImageSourceService ImageService { get; set; }
 

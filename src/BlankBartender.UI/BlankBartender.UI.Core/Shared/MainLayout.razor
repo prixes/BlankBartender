@@ -12,8 +12,8 @@
         <article class="content">
             @if (CurrentUri != "")
             {
-                <MudStack AlignItems="AlignItems.Center" Spacing="0" Class="mt-1 ml-1" Style="position: absolute;">
-                    <MudIconButton Icon="@Icons.Material.Filled.ArrowBackIosNew" Color="Color.Secondary" Size="Size.Medium" OnClick="GoBack" Class="back-button" />
+                <MudStack AlignItems="AlignItems.Center" Spacing="0" Class="back-button">
+                    <MudIconButton Icon="@Icons.Material.Filled.ArrowBackIosNew" Color="Color.Secondary" Size="Size.Medium" OnClick="GoBack" />
                 </MudStack>
             }
             @Body
@@ -92,9 +92,11 @@
     }
 
     .back-button {
-        background-color: rgba(var(--mud-palette-secondary-rgb), 0.03) !important;
+        background: radial-gradient( circle at center, rgba(var(--mud-palette-secondary-rgb), 0.20) 0%, rgba(var(--mud-palette-secondary-rgb), 0.03) 55%, rgba(15, 15, 15, 0) 100% ) !important;
         border-radius: 50%;
+        position: absolute;
         z-index: 2;
+        margin: 0.2rem;
     }
 
     .popover {

@@ -1,106 +1,96 @@
 ﻿@page "/custom/cocktail/{Model}"
 @inject ISnackbar Snackbar
 
-<MudStack>
-    <MudStack>
 
-        <MudStack AlignItems="AlignItems.Center" Justify="Justify.Center" Row Class="header-container">
-            <div class="title-container">
-                <MudText Color="@Color.Tertiary" Typo="Typo.h5" Align="Align.Center" GutterBottom="true">
-                    Customize @drink.Name
+<MudStack Spacing="4">
+    <MudStack AlignItems="AlignItems.Center" Justify="Justify.Center" Class="header-container" Row>
+        <MudItem>
+            <MudText Color="Color.Tertiary" Typo="Typo.h5" Align="Align.Center" Class="title-container">
+                Customize
+                @drink.Name
+            </MudText>
+        </MudItem>
+        <MudItem>
+            <MudIconButton Icon="@Icons.Material.Filled.Refresh" OnClick="ResetValues" Color="Color.Tertiary" Size="Size.Large" />
+        </MudItem>
+
+    </MudStack>
+
+
+
+    @if (_statusService.isProcessing)
+    {
+        <MudAlert Severity="Severity.Warning">Machine is busy please wait</MudAlert>
+    }
+
+    <MudStack AlignItems="AlignItems.Center">
+
+        <MudImage Src="@imageSrc" @onerror="FallbackImage" Class="img-fluid cocktailImageFocused" />
+        <MudStack AlignItems="AlignItems.Center" Justify="Justify.Center" Spacing="3">
+            <MudItem xs="9" sm="9" Class="py-3">
+                <MudText Color="Color.Secondary" Typo="Typo.body1">
+                    @string.Join(", ", drink.Ingredients.Select(ingredient => ingredient.Key))
                 </MudText>
-            </div>
-            <MudItem Style="position:absolute; left:85%; top:4%">
-                <MudIconButton Icon="@Icons.Material.Filled.Refresh" OnClick="ResetValues" Color="Color.Tertiary" Size="Size.Large" />
+                @if (drink.Garnishes.Count > 0)
+                {
+                    <MudText Color="Color.Primary" Typo="Typo.body2">
+                        Garnish:
+                    </MudText>
+                    <MudText Color="Color.Secondary" Typo="Typo.body2">
+                        @string.Join(", ", drink.Garnishes.Where(g => !string.IsNullOrEmpty(g)))
+                    </MudText>
+                }
             </MudItem>
-
-
-
-
         </MudStack>
 
-
-
-        @if (_statusService.isProcessing)
+        @foreach (var ingredient in drink.Ingredients)
         {
-            <MudAlert Severity="Severity.Warning">Machine is busy please wait</MudAlert>
-        }
-
-        <MudStack AlignItems="AlignItems.Center">
-
-            <MudImage Src="@imageSrc" @onerror="FallbackImage" Class="img-fluid cocktailImageFocused" />
-            <MudStack AlignItems="AlignItems.Center" Justify="Justify.Center" Spacing="3">
-                <MudItem xs="10" sm="10" Class="py-2">
-                    <MudText Color="Color.Secondary" Typo="Typo.body1">
-                        @string.Join(", ", drink.Ingredients.Select(ingredient => ingredient.Key))
-                    </MudText>
-                    @if (drink.Garnishes.Count > 0)
-                    {
-                        <MudText Color="Color.Primary" Typo="Typo.body2">
-                            Garnish:
-                        </MudText>
-                        <MudText Color="Color.Secondary" Typo="Typo.body2">
-                            @string.Join(", ", drink.Garnishes.Where(g => !string.IsNullOrEmpty(g)))
-                        </MudText>
-                    }
+            <MudGrid Spacing="3" Class="justify-center m-6">
+                <MudItem xs="9" sm="9">
+                    <MudText>@ingredient.Key: @ingredient.Value.ToString() ml</MudText>
                 </MudItem>
-            </MudStack>
-
-            @foreach (var ingredient in drink.Ingredients)
-            {
-                <MudGrid Spacing="3" Class="justify-center m-6">
-                    <MudItem xs="9" sm="9">
-                        <MudText>@ingredient.Key: @ingredient.Value.ToString() ml</MudText>
-                    </MudItem>
-                    <MudItem Spacing="3" xs="9" sm="9">
-                        <MudSlider @bind-Value="drink.Ingredients[ingredient.Key]" Min="1" Max="200" Size="Size.Large" ValueLabel="true" ValueLabelFormat=@("0 ml") />
-                        @* @onchange="val => UpdateValue(ingredient.Key, (decimal)val)" *@
-                    </MudItem>
-                </MudGrid>
-            }
-
-            <MudGrid Spacing="3" Justify="Justify.Center">
-                <MudItem>
-                    @if ((!drink.IsProcessing && !_statusService.isProcessing) || (drink.IsProcessing && _statusService.isProcessing))
-                    {
-                        <MudButton Disabled="@_statusService.isProcessing" Color="@((drink.IsProcessing ? Color.Warning : Color.Primary))" Variant="Variant.Filled" OnClick="@(async () => await ProcessCustomDrink(drink))">
-                            @(drink.IsProcessing ? "Processing" : "Make")
-                        </MudButton>
-                    }
+                <MudItem Spacing="3" xs="9" sm="9">
+                    <MudSlider @bind-Value="drink.Ingredients[ingredient.Key]" Min="1" Max="200" Size="Size.Large" ValueLabel="true" ValueLabelFormat=@("0 ml") />
+                    @* @onchange="val => UpdateValue(ingredient.Key, (decimal)val)" *@
                 </MudItem>
             </MudGrid>
-        </MudStack>
-
-        @if (drink.Garnishes.Count > 0)
-        {
-            <MudText>
-                Drink can be garnished with the following Ingredients: @string.Join(", ", drink.Garnishes)
-            </MudText>
         }
+
+        <MudGrid Spacing="3" Justify="Justify.Center">
+            <MudItem>
+                @if ((!drink.IsProcessing && !_statusService.isProcessing) || (drink.IsProcessing && _statusService.isProcessing))
+                {
+                    <MudButton Disabled="@_statusService.isProcessing" Color="@((drink.IsProcessing ? Color.Warning : Color.Primary))" Variant="Variant.Filled" OnClick="@(async () => await ProcessCustomDrink(drink))">
+                        @(drink.IsProcessing ? "Processing" : "Make")
+                    </MudButton>
+                }
+            </MudItem>
+        </MudGrid>
     </MudStack>
+
+    @if (drink.Garnishes.Count > 0)
+    {
+        <MudText>
+            Drink can be garnished with the following Ingredients: @string.Join(", ", drink.Garnishes)
+        </MudText>
+    }
 </MudStack>
 
 <style>
     .header-container {
-        position: relative;
-        display: flex;
         align-items: center;
         justify-content: center;
     }
 
-    .title-container {
-        overflow: hidden;
-        display: inline-block;
-        vertical-align: middle;
-        white-space: nowrap;
-    }
 
     .title-container {
-        padding-top: 15px;
-        padding-left: 10px;
+        padding-left: 4.5rem;
+        max-width: 200px;
     }
 
     .cocktailImageFocused {
+        margin-top: -2rem;
+        margin-bottom: -2rem;
         max-width: 15vw;
         max-height: 15vh;
         max-height: 30vh;

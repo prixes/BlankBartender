@@ -7,14 +7,15 @@
         <MudSwitch @bind-Value="UseCameraAI"
                    @bind-Value:after="(async () => await UpdateSettings())"
                    Label="@(UseCameraAI ? "Use Camera AI" : "No Camera AI")"
+                   Size="Size.Small"
                    Color="Color.Success"
                    UncheckedColor="Color.Error" />
 
-        <br />
         <MudSwitch @bind-Value="UseStirrer"
                    @bind-Value:after="(async () => await UpdateSettings())"
                    Label="@(UseStirrer ? "Use Stirrer" : "Not using Stirrer")"
                    Color="Color.Success"
+                   Size="Size.Small"
                    UncheckedColor="Color.Error" />
 
     </MudStack>
@@ -102,13 +103,13 @@
 
     </MudStack>
 
-    <MudSimpleTable Class="my-fixed-table align-center justify-center " Style="width: 100%;">
+    <MudSimpleTable>
         <thead>
             <tr>
-                <th style="width:8%">Pump Number</th>
-                <th style="width:8%">Hardware pin</th>
-                <th style="width:54%">Liquid</th>
-                <th style="width:30%">Actions</th>
+                <th style="width:8%; padding: 0px">Pump No</th>
+                <th style="width:5%; padding-left: 1.25rem">HW pin</th>
+                <th style="width:62%; padding-left: 2.25rem">Liquid</th>
+                <th style="width:25%; padding-left: 1rem">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -117,13 +118,13 @@
                 @foreach (var pump in pumps)
                 {
                     <tr>
-                        <td>
+                        <td style="padding-left: 0.5rem">
                             <MudPaper>@pump.Number</MudPaper>
                         </td>
                         <td>
                             <MudPaper>@pump.Pin</MudPaper>
                         </td>
-                        <td class="p-2">
+                        <td >
                             <MudItem Class="d-flex margin-autocomplete">
                                 @if (selectedLiquids[pump.Number - 1] != @pump.Value)
                                 {
@@ -137,7 +138,6 @@
                                                  SearchFunc="@( (value, searchString) => Task.FromResult(string.IsNullOrEmpty(value) || value == pump.Value ? liquids : liquids.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase))))"
                                                  Label=@(@selectedLiquids[pump.Number - 1] == pump.Value ? "Current liquid" : "Pending change")
                                                  Strict="true"
-                                                 Style="max-width:150px"
                                                  Class="@((selectedLiquids[pump.Number - 1] != @pump.Value) ? "pending" : "m-2")">
                                     <NoItemsTemplate>
                                         <MudText Align="Align.Center" Class="px-4 py-1">
@@ -147,8 +147,8 @@
                                 </MudAutocomplete>
                             </MudItem>
                         </td>
-                        <td>
-                            <MudPaper>
+                        <td style="padding-left: 0.25rem">
+                            <MudStack AlignItems="AlignItems.Center" >
                                 @if (selectedLiquids[pump.Number - 1] != @pump.Value)
                                 {
                                     <MudButton StartIcon="@Icons.Material.Outlined.Save"
@@ -157,7 +157,7 @@
                                                Color="Color.Primary"
                                                Size="Size.Small"
                                                OnClick="@(async () => await PumpLiquidChange(pump.Number, selectedLiquids[pump.Number - 1]))">
-                                        <MudText>@(isProcessing ? "Saving changes" : "SAVE")</MudText>
+                                        @(isProcessing ? "Saving changes" : "SAVE")
                                     </MudButton>
                                 }
                                 else
@@ -169,7 +169,7 @@
                                         @(isProcessing ? "Saving changes" : (pumpsSwitch[pump.Number - 1] ? "STOP" : "START"))
                                     </MudButton>
                                 }
-                            </MudPaper>
+                            </MudStack>
                         </td>
                     </tr>
                 }
@@ -327,15 +327,21 @@
 
 
 <style>
-    .my-fixed-table table {
+    .mud-simple-table table {
         table-layout: fixed;
+    }
+
+    .mud-simple-table table * tr > td, 
+    .mud-simple-table table * tr th {
+        table-layout: fixed;
+        border-bottom: none !important;
     }
     .mud-input-adornment > .mud-button-root {
         display: none;
     }
 
     .margin-autocomplete {
-        margin-left: 1rem; /* or any size you want */
+        margin-left: 1.25rem; /* or any size you want */
         margin-right: 0px;
     }
 </style>
