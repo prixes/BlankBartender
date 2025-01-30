@@ -1,51 +1,49 @@
 ﻿@page "/alcoholic-cocktails"
 
-<MudStack>
-    <MudStack Spacing="4">
+<MudStack Spacing="4">
 
-        <HeaderWithSearch Title="Alcoholic Cocktails" SearchQuery="@_searchQuery" SearchQueryChanged="OnSearchQueryChanged" />
+    <HeaderWithSearch Title="Alcoholic Cocktails" SearchQuery="@_searchQuery" SearchQueryChanged="OnSearchQueryChanged" />
 
-        @if (_statusService.isProcessing)
-        {
-            <MudStack AlignItems="AlignItems.Center" Spacing="0">
-                <MudAlert Severity="Severity.Warning">
-                    Machine is busy please wait
+    @if (_statusService.isProcessing)
+    {
+        <MudStack AlignItems="AlignItems.Center" Spacing="0">
+            <MudAlert Severity="Severity.Warning">
+                Machine is busy please wait
 
-                </MudAlert>
-                <MudProgressCircular Class="ms-n1" Size="Size.Small" Color="Color.Warning" Indeterminate="true" />
-            </MudStack>
-        }
+            </MudAlert>
+            <MudProgressCircular Class="ms-n1" Size="Size.Small" Color="Color.Warning" Indeterminate="true" />
+        </MudStack>
+    }
 
-        @if (_drinks == null)
-        {
-            <MudStack AlignItems="AlignItems.Center" Spacing="0">
-                <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
-                <MudAlert Severity="Severity.Info">Loading...</MudAlert>
-            </MudStack>
-        }
-        else if (_filteredDrinks == null || !_filteredDrinks.Any())
-        {
-            <MudStack AlignItems="AlignItems.Center" Spacing="0">
-                <MudAlert Severity="Severity.Info">Results not found</MudAlert>
-            </MudStack>
-        }
-        else
-        {
-            <MudStack Class="mt-0 gap-5">
-                @foreach (var drink in _filteredDrinks)
-                {
-                    <CocktailCard Id="@drink.Id"
-                                  Name="@drink.Name"
-                                  Ingredients="drink.Ingredients"
-                                  Garnishes="drink.Garnishes"
-                                  ShowActions="true"
-                                  IsProcessing="@_statusService.isProcessing"
-                                  OnProcess="@(async () => await Process(drink))"
-                                  OnTune="@(async () => NavigateToCustomCocktailPage(drink))" />
+    @if (_drinks == null)
+    {
+        <MudStack AlignItems="AlignItems.Center" Spacing="0">
+            <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+            <MudAlert Severity="Severity.Info">Loading...</MudAlert>
+        </MudStack>
+    }
+    else if (_filteredDrinks == null || !_filteredDrinks.Any())
+    {
+        <MudStack AlignItems="AlignItems.Center" Spacing="0">
+            <MudAlert Severity="Severity.Info">Results not found</MudAlert>
+        </MudStack>
+    }
+    else
+    {
+        <MudStack Class="mt-0 gap-5">
+            @foreach (var drink in _filteredDrinks)
+            {
+                <CocktailCard Id="@drink.Id"
+                              Name="@drink.Name"
+                              Ingredients="drink.Ingredients"
+                              Garnishes="drink.Garnishes"
+                              ShowActions="true"
+                              IsProcessing="@_statusService.isProcessing"
+                              OnProcess="@(async () => await Process(drink))"
+                              OnTune="@(async () => NavigateToCustomCocktailPage(drink))" />
 
-                }
-            </MudStack>
-        }
-    </MudStack>
+            }
+        </MudStack>
+    }
 </MudStack>
 
