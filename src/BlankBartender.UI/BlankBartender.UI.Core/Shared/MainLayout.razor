@@ -7,6 +7,7 @@
 <MudDialogProvider />
 <MudSnackbarProvider />
 
+
 <div class="page">
     <main>
         <article class="content">
@@ -59,23 +60,17 @@
     }
 
     .focusedImage {
-        max-height: 30vh;
-        max-width: 30vh;
-        transform: scale(1.5);
+        max-height: 20vh;
+        max-width: 20vh;
+        transform: scale(1.7);
     }
 
-    /*     body {
-            background-image: url('images/tile.jpg');
-            background-repeat: repeat;
-            background-size: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            background-blend-mode: overlay;
-        } */
     body {
-        background-image: linear-gradient(rgba(15, 15, 15, 0.85), rgba(15, 15, 15, 0.85)), url('images/tile.jpg');
+        background-image: linear-gradient(rgba(35, 35, 35, 0.75), rgba(35, 35, 35   , 0.75)), url('images/tile.jpg');
         background-size: 100%;
         background-repeat: repeat;
-        background-blend-mode: normal; 
+        background-blend-mode: normal;
+        overflow-x: hidden;
     }
 
     .page {
@@ -92,7 +87,7 @@
     }
 
     .back-button {
-        background: radial-gradient( circle at center, rgba(var(--mud-palette-secondary-rgb), 0.20) 0%, rgba(var(--mud-palette-secondary-rgb), 0.03) 55%, rgba(15, 15, 15, 0) 100% ) !important;
+        background: radial-gradient( circle at center, rgba(var(--mud-palette-secondary-rgb), 0.10) 0%, rgba(var(--mud-palette-secondary-rgb), 0.04) 45%, rgba(35, 35, 35, 0) 100% ) !important;
         border-radius: 50%;
         position: absolute;
         z-index: 2;
@@ -100,16 +95,16 @@
     }
 
     .popover {
-        background-image: linear-gradient(rgba(15, 15, 15, 0.85), rgba(15, 15, 15, 0.85)), url('images/tile.jpg');
+        background-image: linear-gradient(rgba(35, 35, 35, 0.65), rgba(35, 35, 35, 0.65)), url('images/tile.jpg');
         background-size: 100%;
         background-repeat: repeat;
         background-blend-mode: normal;
         width: 50vh;
-        height: 35vh;
+        height: 25vh;
     }
 
     .mud-popover {
-        background-image: linear-gradient(rgba(15, 15, 15, 0.85), rgba(94, 57, 186, 0.15), rgba(15, 15, 15, 0.85)), url('images/tile.jpg');
+        background-image: linear-gradient(rgba(35, 35, 35, 0.65), rgba(94, 57, 186, 0.15), rgba(35, 35, 35, 0.65)), url('images/tile.jpg');
         background-size: 100%;
         background-repeat: repeat;
         background-blend-mode: normal;

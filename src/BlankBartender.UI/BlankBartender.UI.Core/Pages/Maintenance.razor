@@ -1,6 +1,7 @@
 ﻿@page "/Maintenance"
 
-<MudStack AlignItems="AlignItems.Center" Class="justify-space-between mud-width-full justify-center m-4">
+<MudStack Spacing="4">
+
     <HeaderWithSearch Title="Maintenance" />
     <MudStack Class="d-flex align-center justify-center mb-3" Row>
 
@@ -178,148 +179,6 @@
         </tbody>
     </MudSimpleTable>
 
-    <MudTable Items="@pumps" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@(pumps != null)" LoadingProgressColor="Color.Info">
-        <HeaderContent>
-            <MudTh>Pump Number</MudTh>
-            <MudTh>Hardware pin</MudTh>
-            <MudTh>Liquid</MudTh>
-            <MudTh>Actions</MudTh>
-        </HeaderContent>
-        <RowTemplate>
-            <MudTd DataLabel="Pump Number">@context.Number</MudTd>
-            <MudTd DataLabel="Hardware pin">@context.Pin</MudTd>
-            <MudTd DataLabel="Liquid">
-                <MudPaper Class="d-flex">
-                    @if (selectedLiquids[context.Number - 1] != @context.Value)
-                    {
-                        <MudIconButton Icon="@Icons.Material.Outlined.Refresh"
-                                       Color="Color.Warning"
-                                       Size="Size.Medium"
-                                       OnClick="() => selectedLiquids[context.Number - 1] = context.Value">
-                        </MudIconButton>
-
-                    }
-                    <MudAutocomplete @bind-Value="selectedLiquids[context.Number - 1]"
-                                     SearchFunc="@( (value, searchString) => Task.FromResult(string.IsNullOrEmpty(value) || value == context.Value ? liquids : liquids.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase))))"
-                                     Label=@(@selectedLiquids[context.Number - 1] == context.Value ? "Current liquid" : "Pending change")
-                                     Strict="true"
-                                     Style="max-width:150px"
-                                     Class="@((selectedLiquids[context.Number - 1] != @context.Value) ? "pending" : null)">
-                        <NoItemsTemplate>
-                            <MudText Align="Align.Center" Class="px-4 py-1">
-                                No items found
-                            </MudText>
-                        </NoItemsTemplate>
-                    </MudAutocomplete>
-                </MudPaper>
-            </MudTd>
-            <MudTd DataLabel="Actions">
-                <MudPaper>
-                    @if (selectedLiquids[context.Number - 1] != @context.Value)
-                    {
-                        <MudButton StartIcon="@Icons.Material.Outlined.Save"
-                                   IconColor="Color.Warning"
-                                   Variant="Variant.Filled"
-                                   Color="Color.Primary"
-                                   OnClick="@(async () => await PumpLiquidChange(context.Number, selectedLiquids[context.Number - 1]))">
-                            <MudText>@(isProcessing ? "Saving changes" : "Save")</MudText>
-                        </MudButton>
-                    }
-                    else
-                    {
-                        <MudButton Variant="Variant.Filled"
-                                   Color="Color.Primary"
-                                   OnClick="@(async () => await PumpStateSwitch(context.Number - 1))">
-                            @(isProcessing ? "Saving changes" : (pumpsSwitch[context.Number - 1] ? "Stop" : "Start"))
-                        </MudButton>
-                    }
-                </MudPaper>
-            </MudTd>
-        </RowTemplate>
-    </MudTable>
-    <MudStack StretchItems="@StretchItems.All" Class="gap-11" Row>
-        <MudItem xs="1">
-            <MudText Typo="Typo.caption">
-                Pump Number
-            </MudText>
-        </MudItem>
-        <MudItem xs="1">
-            <MudText Typo="Typo.caption">
-                Hardware pin
-            </MudText>
-        </MudItem>
-        <MudItem xs="9">
-            <MudText Typo="Typo.caption">
-                Liquid
-            </MudText>
-        </MudItem>
-        <MudItem xs="1">
-            <MudText Typo="Typo.caption">
-                Actions
-            </MudText>
-        </MudItem>
-    </MudStack>
-    @if (pumps != null)
-    {
-        @foreach (var pump in pumps)
-        {
-            <MudGrid Justify="Justify.Center">
-                <MudItem>
-                    <MudPaper>@pump.Number</MudPaper>
-                </MudItem>
-                <MudItem>
-                    <MudPaper>@pump.Pin</MudPaper>
-                </MudItem>
-                <MudItem>
-                    <MudPaper Class="d-flex">
-                        @if (selectedLiquids[pump.Number - 1] != @pump.Value)
-                        {
-                            <MudIconButton Icon="@Icons.Material.Outlined.Refresh"
-                                           Color="Color.Warning"
-                                           Size="Size.Small"
-                                           OnClick="() => selectedLiquids[pump.Number - 1] = pump.Value">
-                            </MudIconButton>
-                        }
-                        <MudAutocomplete @bind-Value="selectedLiquids[pump.Number - 1]"
-                                         SearchFunc="@( (value, searchString) => Task.FromResult(string.IsNullOrEmpty(value) || value == pump.Value ? liquids : liquids.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase))))"
-                                         Label=@(@selectedLiquids[pump.Number - 1] == pump.Value ? "Current liquid" : "Pending change")
-                                         Strict="true"
-                                         Style="max-width:150px"
-                                         Class="@((selectedLiquids[pump.Number - 1] != @pump.Value) ? "pending" : null)">
-                            <NoItemsTemplate>
-                                <MudText Align="Align.Center" Class="px-4 py-1">
-                                    No items found
-                                </MudText>
-                            </NoItemsTemplate>
-                        </MudAutocomplete>
-                    </MudPaper>
-                </MudItem>
-                <MudItem>
-                    <MudPaper>
-                        @if (selectedLiquids[pump.Number - 1] != @pump.Value)
-                        {
-                            <MudButton StartIcon="@Icons.Material.Outlined.Save"
-                                       IconColor="Color.Warning"
-                                       Variant="Variant.Filled"
-                                       Color="Color.Primary"
-                                       OnClick="@(async () => await PumpLiquidChange(pump.Number, selectedLiquids[pump.Number - 1]))">
-                                <MudText>@(isProcessing ? "Saving changes" : "Save")</MudText>
-                            </MudButton>
-                        }
-                        else
-                        {
-                            <MudButton Variant="Variant.Filled"
-                                       Color="Color.Primary"
-                                       OnClick="@(async () => await PumpStateSwitch(pump.Number - 1))">
-                                @(isProcessing ? "Saving changes" : (pumpsSwitch[pump.Number - 1] ? "Stop" : "Start"))
-                            </MudButton>
-                        }
-                    </MudPaper>
-                </MudItem>
-            </MudGrid>
-        }
-
-    }
 
 
 </MudStack>
@@ -341,7 +200,7 @@
     }
 
     .margin-autocomplete {
-        margin-left: 1.25rem; /* or any size you want */
+        margin-left: 1.25rem;
         margin-right: 0px;
     }
 </style>

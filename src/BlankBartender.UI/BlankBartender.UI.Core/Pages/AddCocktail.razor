@@ -2,7 +2,7 @@
 <MudStack Spacing="4">
     <MudStack Class="header-container" Row>
         <MudItem>
-            <MudText Color="Color.Primary" Typo="Typo.h5" Align="Align.Center">
+            <MudText Color="Color.Tertiary" Typo="Typo.h4" Align="Align.Center">
                 Create new cocktail
             </MudText>
         </MudItem>
@@ -19,19 +19,17 @@
 
     </MudStack>
 
-    <MudStack AlignItems="AlignItems.Center" Class="justify-space-between mud-width-full justify-center m-4">
+    <MudStack Spacing="6" AlignItems="AlignItems.Center" Class="justify-space-between mud-width-full justify-center">
         @if (drink != null && drink.Ingredients != null && drink.Ingredients.Count > 0)
         {
             @foreach (var ingredient in drink.Ingredients)
             {
-                <MudGrid Spacing="3" Class="justify-center pa-1">
+                <MudGrid Class="justify-center">
                     <MudItem xs="10" sm="10">
-                        <MudStack AlignItems="AlignItems.Center" Class="justify-center pa-3" Row>
+                        <MudStack AlignItems="AlignItems.Center" Class="justify-center mb-1" Row>
                             <MudText Align="Align.Center" Typo="Typo.body2">@ingredient.Key: @ingredient.Value.ToString() ml</MudText>
                             <MudIconButton Icon="@Icons.Material.Filled.Remove" Color="Color.Error" Size="Size.Small" OnClick="@(() => RemoveIngredient(ingredient.Key) )" />
                         </MudStack>
-                    </MudItem>
-                    <MudItem xs="10" sm="10">
                         <MudSlider @bind-Value="drink.Ingredients[ingredient.Key]" Min="1" Max="200" Size="Size.Medium" ValueLabel="true" ValueLabelFormat=@("0 ml") />
                     </MudItem>
                 </MudGrid>
@@ -53,19 +51,6 @@
                             </MudText>
                         </NoItemsTemplate>
                     </MudAutocomplete>
-                    @*                 <MudSelect T="string"
-            Label="Select new liquid"
-            AnchorOrigin="Origin.BottomCenter"
-            @bind-Value="currentLiquid"
-            SearchFunc="SearchItems"
-            Searchable="true"
-            Color="color">
-
-            @foreach (var liquid in liquids)
-            {
-            <MudSelectItem T="string" Value="liquid">@liquid</MudSelectItem>
-            }
-            </MudSelect> *@
                     @if (currentLiquid != null)
                     {
                         <MudIconButton Icon="@Icons.Material.Filled.Add"
@@ -79,8 +64,21 @@
 
             if (drink.Ingredients.Count > 0)
             {
-                <MudStack AlignItems="AlignItems.Center">
-                    @if (useAvailableLiquids && ((!drink.IsProcessing && !_statusService.isProcessing) || (drink.IsProcessing && _statusService.isProcessing)))
+                <MudStack AlignItems="AlignItems.Center" Row>
+                    @if ((!drink.IsProcessing && !_statusService.isProcessing))
+                    {
+                        @if (!openPopup)
+                        {
+                            <MudButton OnClick="@( () => openPopup = true)"
+                                       Disabled="@_statusService.isProcessing"
+                                       Color="@((drink.IsProcessing ? Color.Warning : Color.Primary))"
+                                       Variant="Variant.Outlined">
+                                Save
+                            </MudButton>
+                        }
+                    }
+
+                    @if (!openPopup && useAvailableLiquids && ((!drink.IsProcessing && !_statusService.isProcessing) || (drink.IsProcessing && _statusService.isProcessing)))
                     {
                         <MudButton OnClick="@(async () => await ProcessCustomDrink(drink))"
                                    Disabled="@_statusService.isProcessing"
@@ -89,31 +87,20 @@
                             @(drink.IsProcessing ? "Processing" : "Make")
                         </MudButton>
                     }
-
-                    @if ((!drink.IsProcessing && !_statusService.isProcessing))
-                    {
-                        @if (!openPopup)
-                        {
-                            <MudButton OnClick="@( () => openPopup = true)"
-                                       Disabled="@_statusService.isProcessing"
-                                       Color="@((drink.IsProcessing ? Color.Warning : Color.Primary))"
-                                       Variant="Variant.Filled">
-                                Save cocktail
-                            </MudButton>
-                        }
-                        else
-                        {
-                            <MudTextField @bind-Value="drink.Name" Label="Please enter cocktail name" Style="width:300px" Variant="Variant.Text"></MudTextField>
-                            <MudButton OnClick="@(() => SaveCocktail(drink))"
-                                       Disabled="@_statusService.isProcessing"
-                                       Color="@((drink.IsProcessing ? Color.Warning : Color.Primary))"
-                                       Variant="Variant.Filled">
-                                Save
-                            </MudButton>
-                        }
-                    }
-
                 </MudStack>
+
+                if (openPopup)
+                {
+                    <MudStack AlignItems="AlignItems.Center">
+                        <MudTextField @bind-Value="drink.Name" Label="Please enter cocktail name" Style="width:300px" Variant="Variant.Text"></MudTextField>
+                        <MudButton OnClick="@(() => SaveCocktail(drink))"
+                                   Disabled="@_statusService.isProcessing"
+                                   Color="@((drink.IsProcessing ? Color.Warning : Color.Primary))"
+                                   Variant="Variant.Filled">
+                            Finalize cocktail
+                        </MudButton>
+                    </MudStack>
+                }
             }
 
         }
@@ -128,6 +115,6 @@
         align-items: center;
         align-self: center;
         justify-content: center;
-        max-width: 210px;
+        max-width: 240px;
     }
 </style>

@@ -43,22 +43,34 @@ namespace BlankBartender.UI.Core.Shared
             },
             Typography = new Typography()
             {
+                Default = new Default
+                {
+                    FontFamily =  ["Roboto", "sans-serif"],
+                },
+                Body2 = new Body2()
+                {
+                    FontFamily = ["Koulen", "sans-serif"],
+                    FontWeight = 400,
+                    FontSize = "13px",
+                },
                 Body1 = new Body1
                 {
-                    FontFamily = new[] { "Koulen", "Arial", "sans-serif" },
+                    FontFamily = ["Roboto", "sans-serif"],
+                    FontWeight = 400,
                     FontSize = "13px",
+                },
+                H4 = new H4()
+                {
+                    FontFamily = ["Istok Web", "Arial", "sans-serif"],
+                    FontSize = "25px",
                 },
                 H5 = new H5()
                 {
-                    FontFamily = ["Istok Web", "Arial", "sans-serif"],
-                },
-                H6 = new H6()
-                {
-                    FontFamily = ["Koulen", "Arial", "sans-serif"],
+                    FontFamily = ["Koulen", "sans-serif"],
                     FontWeight = 400,
-                    FontSize = "16px",
-                    LetterSpacing = "-0.5px",
-                }
+                    FontSize = "22px",
+                },
+
                 // Add more for H3, H4, Body1, Body2, etc., as needed.
 
             }

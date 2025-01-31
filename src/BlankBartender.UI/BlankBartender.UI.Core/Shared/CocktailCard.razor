@@ -2,10 +2,10 @@
 @using MudBlazor
 @using System.Collections.Generic
 
-<MudStack AlignItems="AlignItems.Center" Class="mt-0" Row>
+<MudStack AlignItems="AlignItems.Center" Row>
     <MudImage Src="@currentSrc" Alt="images/cocktail.png" Class="img-fluid cocktailImage" @onclick="TogglePreview" @onerror="FallbackImage" />
     <MudContainer Style="padding-right: 0px">
-        <MudText Color="@Color.Tertiary" Typo="Typo.h6" Class="mb-2">@Name.ToUpper()</MudText>
+        <MudText Color="@Color.Tertiary" Typo="Typo.h5">@Name.ToUpper()</MudText>
         <MudText Color="@Color.Secondary" Typo="Typo.body1">
             @string.Join(", ", Ingredients.Select(i => $"{i.Key}"/*{i.Value}ml*/))
         </MudText>
@@ -30,13 +30,13 @@
 
                 <MudItem>
                     <MudButton Disabled="@IsProcessing" OnClick="@OnProcess" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small">
-                        <MudText>Make</MudText>
+                        MAKE
                     </MudButton>
                 </MudItem>
 
                 <MudItem>
-                    <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" OnClick="OnTune">
-                        <MudText>Tune</MudText>
+                    <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" OnClick="OnEdit">
+                        EDIT
                     </MudButton>
                 </MudItem>
 
@@ -45,23 +45,20 @@
         }
     }
     <MudPopover Class="popover" Open="@onPreview" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" @onclick="TogglePreview">
-        <MudStack Spacing="2" AlignItems="AlignItems.Center" Class="mt-2" Row>
-            <MudImage Src="@currentSrc" Alt="images/cocktail.png" Class="img-fluid cocktailImage focusedImage" @onerror="FallbackImage" />
-            <MudStack Spacing="2" AlignItems="AlignItems.Center" Class="mt-2">
+        <MudStack Spacing="2" AlignItems="AlignItems.Center" Class="mt-2" StretchItems="StretchItems.Middle" Row>
+            <MudItem>
+                <MudImage Src="@currentSrc" Alt="images/cocktail.png" Class="img-fluid cocktailImage focusedImage" @onerror="FallbackImage" />
+            </MudItem>
+            
 
-                <MudText Color="@Color.Tertiary" Typo="Typo.h6" Class="mb-2">@Name.ToUpper()</MudText>
-                <MudItem>
-                    @foreach (var ingredient in Ingredients)
-                    {
-                        <MudText Color="@Color.Secondary" Typo="Typo.body1">
-                            @ingredient.Key.ToString()
-                            @ingredient.Value.ToString()ml
-                        </MudText>
-                    }
-                </MudItem>
+            <MudContainer Style="max-width: 20vh; margin: 0px; padding:0px">
+                <MudText Color="@Color.Tertiary" Typo="Typo.h5">@Name.ToUpper()</MudText>
+                <MudText Color="@Color.Secondary" Typo="Typo.body1">
+                    @string.Join(", ", Ingredients.Select(i => $"{i.Key}"/*{i.Value}ml*/))
+                </MudText>
                 @if (Garnishes.Count > 0)
                 {
-                    <MudItem>
+                    <MudItem Class="mt-2" style="display: flex; margin: 0px; padding:0px;">
                         <MudText Color="Color.Primary" Typo="Typo.body1">
                             Garnish:&nbsp;
                         </MudText>
@@ -70,29 +67,36 @@
                         </MudText>
                     </MudItem>
                 }
-                <MudSpacer /><MudSpacer />
-                @if (ShowActions)
+            </MudContainer>
+            @if (ShowActions)
+            {
+                @if (!IsProcessing)
                 {
-                    <MudStack Spacing="3" Class="justify-center" Row="true">
-                        @if (!IsProcessing)
-                        {
-                            <MudItem>
-                                <MudButton Disabled="@IsProcessing" OnClick="@OnProcess" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small">
-                                    <MudText>Make</MudText>
-                                </MudButton>
-                            </MudItem>
-                            <MudItem>
-                                <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" OnClick="OnTune">
-                                    <MudText>Tune</MudText>
-                                </MudButton>
-                            </MudItem>
-                        }
+                    <MudStack AlignItems="AlignItems.Center" Style="margin-left: -0.5rem">
+                        <MudItem>
+                            <MudButton Disabled="@IsProcessing" OnClick="@OnProcess" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small">
+                                MAKE
+                            </MudButton>
+                        </MudItem>
+
+                        <MudItem>
+                            <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" OnClick="OnEdit">
+                                EDIT
+                            </MudButton>
+                        </MudItem>
                     </MudStack>
                 }
-            </MudStack>
+            }
         </MudStack>
     </MudPopover>
 </MudStack>
+
+<style>
+    .mud-button {
+        padding: 4px !important;
+        min-width: 50px;
+    }
+</style>
 
 @code {
     [Parameter] public int Id { get; set; }
@@ -102,7 +106,7 @@
     [Parameter] public bool ShowActions { get; set; } = true;
     [Parameter] public bool IsProcessing { get; set; }
     [Parameter] public EventCallback OnProcess { get; set; }
-    [Parameter] public EventCallback OnTune { get; set; }
+    [Parameter] public EventCallback OnEdit { get; set; }
 
     private bool onPreview { get; set; }
     private string currentSrc = "/images/cocktail.png";

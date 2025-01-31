@@ -2,13 +2,14 @@
 @inject IJSRuntime JS
 
 <MudStack AlignItems="AlignItems.Center" Justify="Justify.Center" Row Class="header-container">
-    <div class="title-container @( _isSearchOpen ? "slide-out" : "slide-in")">
-        <MudText Color="Color.Primary" Typo="Typo.h5" Align="Align.Center" GutterBottom="true">
-            @Title
-        </MudText>
-    </div>
-    @if (SearchQuery != "")
+    @if (SearchQuery != null)
     {
+        <div class="title-container title-container-search @( _isSearchOpen ? "slide-out" : "slide-in")">
+            <MudText Color="Color.Primary" Typo="Typo.h4" Align="Align.Center" GutterBottom="true">
+                @Title
+            </MudText>
+        </div>
+
         <div class="search-container @( _isSearchOpen ? "slide-in" : "slide-out")">
             <MudTextField Class="search-input" Value="@SearchQuery" ValueChanged="OnSearchQueryChanged" Variant="Variant.Outlined"
                           Immediate="true" T="string" Adornment="Adornment.End"
@@ -20,13 +21,24 @@
                           @onfocusin="HandleFocusIn"
                           @ref="InputSearch" />
         </div>
-        <MudIconButton Icon="@Icons.Material.Filled.Search"
-                       Color="Color.Primary"
-                       Size="Size.Small"
-                       Variant="Variant.Filled"
-                       OnClick="ToggleSearch"
-                       @onmouseover="ExpandSearch"
-                       @onfocusin="HandleFocusIn" />
+        <MudPaper>
+            <MudIconButton Icon="@Icons.Material.Filled.Search"
+                           Color="Color.Primary"
+                           Size="Size.Small"
+                           Variant="Variant.Filled"
+                           OnClick="ToggleSearch"
+                           @onmouseover="ExpandSearch"
+                           @onfocusin="HandleFocusIn" />
+        </MudPaper>
+
+    }
+    else
+    {
+        <div Class="title-container mt-3">
+            <MudText Color="Color.Primary" Typo="Typo.h4" Align="Align.Center" GutterBottom="true">
+                @Title
+            </MudText>
+        </div>
     }
 
 </MudStack>
@@ -47,9 +59,8 @@
         transition: max-width 0.8s ease, opacity 0.8s ease;
     }
 
-    .title-container {
-        padding-top: 10px;
-        padding-left: 20px;
+    .title-container-search {
+        padding: 0.5rem 0.5rem 0rem 3rem;
     }
 
         .title-container.slide-out {
@@ -87,11 +98,11 @@
     public string Title { get; set; } = "Default Title";
 
     [Parameter]
-    public string SearchQuery { get; set; } = "";
+    public string SearchQuery { get; set; }
 
     [Parameter]
     public EventCallback<string> SearchQueryChanged { get; set; }
-    
+
     MudTextField<string> InputSearch = new MudTextField<string>();
 
     private bool _isSearchOpen;

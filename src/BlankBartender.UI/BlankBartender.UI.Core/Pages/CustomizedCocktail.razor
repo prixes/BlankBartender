@@ -5,7 +5,7 @@
 <MudStack Spacing="4">
     <MudStack AlignItems="AlignItems.Center" Justify="Justify.Center" Class="header-container" Row>
         <MudItem>
-            <MudText Color="Color.Tertiary" Typo="Typo.h5" Align="Align.Center" Class="title-container">
+            <MudText Color="Color.Tertiary" Typo="Typo.h4" Align="Align.Center" Class="title-container">
                 Customize
                 @drink.Name
             </MudText>
@@ -43,18 +43,21 @@
             </MudItem>
         </MudStack>
 
-        @foreach (var ingredient in drink.Ingredients)
-        {
-            <MudGrid Spacing="3" Class="justify-center m-6">
+        <MudGrid Spacing="6" Class="justify-center m-6">
+            @foreach (var ingredient in drink.Ingredients)
+            {
+
                 <MudItem xs="9" sm="9">
-                    <MudText>@ingredient.Key: @ingredient.Value.ToString() ml</MudText>
-                </MudItem>
-                <MudItem Spacing="3" xs="9" sm="9">
+                    <MudStack Row>
+                        <MudText Typo="Typo.body1" Color="Color.Secondary">@ingredient.Key:</MudText>
+                        <MudText Typo="Typo.body2">@ingredient.Value.ToString() ml</MudText>
+                    </MudStack>
                     <MudSlider @bind-Value="drink.Ingredients[ingredient.Key]" Min="1" Max="200" Size="Size.Large" ValueLabel="true" ValueLabelFormat=@("0 ml") />
                     @* @onchange="val => UpdateValue(ingredient.Key, (decimal)val)" *@
                 </MudItem>
-            </MudGrid>
-        }
+
+            }
+        </MudGrid>
 
         <MudGrid Spacing="3" Justify="Justify.Center">
             <MudItem>
@@ -85,7 +88,7 @@
 
     .title-container {
         padding-left: 4.5rem;
-        max-width: 200px;
+        max-width: 220px;
     }
 
     .cocktailImageFocused {

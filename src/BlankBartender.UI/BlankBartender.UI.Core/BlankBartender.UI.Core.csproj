@@ -5,12 +5,20 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
+    <Page Include="Shared\MainLayout.razor.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
     <SupportedPlatform Include="browser" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\BlankBartender.Shared\BlankBartender.Shared.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Content Update="Shared\MainLayout.razor">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
     <Content Update="_Imports.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>

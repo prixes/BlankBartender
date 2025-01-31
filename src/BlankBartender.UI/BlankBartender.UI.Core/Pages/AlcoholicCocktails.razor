@@ -40,7 +40,7 @@
                               ShowActions="true"
                               IsProcessing="@_statusService.isProcessing"
                               OnProcess="@(async () => await Process(drink))"
-                              OnTune="@(async () => NavigateToCustomCocktailPage(drink))" />
+                              OnEdit="@(async () => NavigateToCustomCocktailPage(drink))" />
 
             }
         </MudStack>
