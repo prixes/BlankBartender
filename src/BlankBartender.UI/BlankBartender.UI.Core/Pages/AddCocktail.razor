@@ -28,7 +28,7 @@
                     <MudItem xs="10" sm="10">
                         <MudStack AlignItems="AlignItems.Center" Class="justify-center mb-1" Row>
                             <MudText Align="Align.Center" Typo="Typo.body2">@ingredient.Key: @ingredient.Value.ToString() ml</MudText>
-                            <MudIconButton Icon="@Icons.Material.Filled.Remove" Color="Color.Error" Size="Size.Small" OnClick="@(() => RemoveIngredient(ingredient.Key) )" />
+                            <MudIconButton Icon="@Icons.Material.Filled.DeleteForever" Color="Color.Error" Size="Size.Small" OnClick="@(() => RemoveIngredient(ingredient.Key) )" />
                         </MudStack>
                         <MudSlider @bind-Value="drink.Ingredients[ingredient.Key]" Min="1" Max="200" Size="Size.Medium" ValueLabel="true" ValueLabelFormat=@("0 ml") />
                     </MudItem>
