@@ -1,5 +1,6 @@
 using BlankBartender.Shared;
 using BlankBartender.UI.Core.Interfaces;
+using BlankBartender.UI.Core.Services;
 using Microsoft.AspNetCore.Components;
 
 namespace BlankBartender.UI.Core.Pages;
@@ -10,10 +11,11 @@ public partial class Maintenance
     public IConfigurationService _service { get; set; } = default!;
     public bool isProcessing { get; set; } = false;
     public bool isInitializing { get; set; } = false;
-    public bool isAddLiquid { get; set; } = false;
-    public bool isRemoveLiquid { get; set; } = false;
+    public bool showAddLiquid { get; set; } = false;
+    public bool showRemoveLiquid { get; set; } = false;
     
     public IEnumerable<string> liquids;
+    public List<string> allLiquids { get; set; }
     public IEnumerable<Pump> pumps;
     public List<bool> pumpsSwitch { get; set; }
     public List<string> selectedLiquids;
@@ -26,6 +28,7 @@ public partial class Maintenance
     {
         base.OnInitialized();
         liquids = await _service.GetAllLiquids();
+        allLiquids = (List<string>)await _service.GetAllLiquids();
         pumps = await _service.GetPumpConfiguration();
         pumpsSwitch = Enumerable.Repeat(false, pumps.Count()).ToList(); 
         selectedLiquids = pumps.Select(pump => pump.Value).ToList();
@@ -37,13 +40,15 @@ public partial class Maintenance
     protected async Task AddLiquid()
     {
         await _service.AddLiquid(liquidName);
-        liquids = await _service.GetAllLiquids();
+        allLiquids = (List<string>)await _service.GetAllLiquids();
+        showAddLiquid = false;
     }
 
     protected async Task RemoveLiquid()
     {
         await _service.RemoveLiquid(liquidName);
-        liquids = await _service.GetAllLiquids();
+        allLiquids = (List<string>)await _service.GetAllLiquids();
+        showRemoveLiquid = false;
     }
 
     protected async Task StartPumps()

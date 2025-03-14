@@ -26,7 +26,7 @@
             {
                 <MudGrid Class="justify-center">
                     <MudItem xs="10" sm="10">
-                        <MudStack AlignItems="AlignItems.Center" Class="justify-center mb-1" Row>
+                        <MudStack AlignItems="AlignItems.Center" Class="justify-center mb-1" Justify="Justify.SpaceBetween" Row>
                             <MudText Align="Align.Center" Typo="Typo.body2">@ingredient.Key: @ingredient.Value.ToString() ml</MudText>
                             <MudIconButton Icon="@Icons.Material.Filled.DeleteForever" Color="Color.Error" Size="Size.Small" OnClick="@(() => RemoveIngredient(ingredient.Key) )" />
                         </MudStack>

@@ -21,11 +21,11 @@
 
     </MudStack>
     <MudStack Class="d-flex align-center justify-center flex-grow-1 gap-6" Row>
-        @if (!isRemoveLiquid)
+        @if (!showRemoveLiquid)
         {
-            @if (!isAddLiquid)
+            @if (!showAddLiquid)
             {
-                <MudButton OnClick="@( () => isAddLiquid = true)"
+                <MudButton OnClick="@( () => showAddLiquid = true)"
                            Color="Color.Primary"
                            Variant="Variant.Filled"
                            Size="Size.Small">
@@ -34,22 +34,24 @@
             }
             else
             {
-                <MudStack AlignItems="AlignItems.Center" Style="width:300px" Class="justify-center" Row>
-                    <MudTextField @bind-Value="liquidName" Label="Please enter cocktail name" Style="width:300px" Variant="Variant.Text"></MudTextField>
-                    <MudButton OnClick="@(() => AddLiquid())"
-                               Color="Color.Primary"
-                               Variant="Variant.Filled"
-                               Size="Size.Small">
-                        Confirm adding
-                    </MudButton>
+                <MudStack AlignItems="AlignItems.Center" Row>
+                    <MudPaper><MudTextField @bind-Value="liquidName" Label="Please enter liquid name" Variant="Variant.Text"></MudTextField></MudPaper>
+                    <MudPaper>
+                        <MudButton OnClick="@(() => AddLiquid())"
+                                   Color="Color.Primary"
+                                   Variant="Variant.Filled"
+                                   Size="Size.Small">
+                            Confirm
+                        </MudButton>
+                    </MudPaper>
                 </MudStack>
             }
         }
-        @if (!isAddLiquid)
+        @if (!showAddLiquid)
         {
-            @if (!isRemoveLiquid)
+            @if (!showRemoveLiquid)
             {
-                <MudButton OnClick="@( () => isRemoveLiquid = true)"
+                <MudButton OnClick="@( () => showRemoveLiquid = true)"
                            Color="Color.Primary"
                            Variant="Variant.Filled"
                            Size="Size.Small">
@@ -58,27 +60,25 @@
             }
             else
             {
-                <MudStack AlignItems="AlignItems.Center" Class="justify-center" Row>
-                    <MudSelect T="string"
-                               Label="Select liquid to remove"
-                               AnchorOrigin="Origin.BottomCenter"
-                               @bind-Value="liquidName"
-                               SearchFunc="SearchItems"
-                               Searchable="true">
-                        @if (liquids != null)
-                        {
-                            @foreach (var liquid in liquids)
-                            {
-                                <MudSelectItem T="string" Value="liquid">@liquid</MudSelectItem>
-                            }
-                        }
-                    </MudSelect>
+                <MudStack AlignItems="AlignItems.Center" Style="width:80vw" Class="justify-center mt-4" Row>
+                    <MudAutocomplete @bind-Value="liquidName"
+                                     SearchFunc="@( (value, searchString) => Task.FromResult(string.IsNullOrEmpty(value) || value == liquidName ? allLiquids : allLiquids.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase))))"
+                                     Label=@(string.IsNullOrEmpty(liquidName) ? "Select liquid" : "Pending liquid removal")
+                                     Clearable="true"
+                                     Strict="true">
+                        <NoItemsTemplate>
+                            <MudText Align="Align.Center" Class="px-4 py-1">
+                                No items found
+                            </MudText>
+                        </NoItemsTemplate>
+                    </MudAutocomplete>
                     <MudButton OnClick="@(() => RemoveLiquid())"
                                Color="Color.Primary"
                                Variant="Variant.Filled"
                                Size="Size.Small">
                         Confirm remove
                     </MudButton>
+
                 </MudStack>
             }
 
@@ -125,7 +125,7 @@
                         <td>
                             <MudPaper>@pump.Pin</MudPaper>
                         </td>
-                        <td >
+                        <td>
                             <MudItem Class="d-flex margin-autocomplete">
                                 @if (selectedLiquids[pump.Number - 1] != @pump.Value)
                                 {
@@ -149,7 +149,7 @@
                             </MudItem>
                         </td>
                         <td style="padding-left: 0.25rem">
-                            <MudStack AlignItems="AlignItems.Center" >
+                            <MudStack AlignItems="AlignItems.Center">
                                 @if (selectedLiquids[pump.Number - 1] != @pump.Value)
                                 {
                                     <MudButton StartIcon="@Icons.Material.Outlined.Save"
@@ -190,11 +190,12 @@
         table-layout: fixed;
     }
 
-    .mud-simple-table table * tr > td, 
-    .mud-simple-table table * tr th {
-        table-layout: fixed;
-        border-bottom: none !important;
-    }
+        .mud-simple-table table * tr > td,
+        .mud-simple-table table * tr th {
+            table-layout: fixed;
+            border-bottom: none !important;
+        }
+
     .mud-input-adornment > .mud-button-root {
         display: none;
     }
