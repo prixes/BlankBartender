@@ -59,6 +59,12 @@ namespace BlankBartender.UI.Core.Shared
                     FontWeight = 400,
                     FontSize = "13px",
                 },
+                H3 = new H3()
+                {
+                    FontFamily = ["Koulen", "sans-serif"],
+                    FontWeight = 400,
+                    FontSize = "28px",
+                },
                 H4 = new H4()
                 {
                     FontFamily = ["Istok Web", "Arial", "sans-serif"],
@@ -70,7 +76,12 @@ namespace BlankBartender.UI.Core.Shared
                     FontWeight = 400,
                     FontSize = "22px",
                 },
-
+                Button = new Button
+                {
+                    FontFamily = ["Roboto", "sans-serif"],
+                    FontWeight = 400,
+                    FontSize = "13px",
+                }
                 // Add more for H3, H4, Body1, Body2, etc., as needed.
 
             }

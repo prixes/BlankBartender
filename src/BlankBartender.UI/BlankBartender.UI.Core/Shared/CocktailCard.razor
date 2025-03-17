@@ -26,8 +26,6 @@
         @if (!IsProcessing)
         {
             <MudStack AlignItems="AlignItems.Center">
-
-
                 <MudItem>
                     <MudButton Disabled="@IsProcessing" OnClick="@OnProcess" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small">
                         MAKE
@@ -35,7 +33,7 @@
                 </MudItem>
 
                 <MudItem>
-                    <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" OnClick="OnEdit">
+                    <MudButton Color="Color.Primary" Variant="Variant.Outlined" Size="Size.Small" OnClick="OnEdit">
                         EDIT
                     </MudButton>
                 </MudItem>
@@ -44,35 +42,49 @@
             </MudStack>
         }
     }
-    <MudPopover Class="popover" Open="@onPreview" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" @onclick="TogglePreview">
-        <MudStack Spacing="2" AlignItems="AlignItems.Center" Class="mt-2" StretchItems="StretchItems.Middle" Row>
-            <MudItem>
-                <MudImage Src="@currentSrc" Alt="images/cocktail.png" Class="img-fluid cocktailImage focusedImage" @onerror="FallbackImage" />
-            </MudItem>
-            
 
-            <MudContainer Style="max-width: 20vh; margin: 0px; padding:0px">
-                <MudText Color="@Color.Tertiary" Typo="Typo.h5">@Name.ToUpper()</MudText>
-                <MudText Color="@Color.Secondary" Typo="Typo.body1">
-                    @string.Join(", ", Ingredients.Select(i => $"{i.Key}"/*{i.Value}ml*/))
-                </MudText>
-                @if (Garnishes.Count > 0)
+</MudStack>
+
+<MudPopover Class="popover" Open="@onPreview" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" @onclick="TogglePreview">
+    <MudStack Spacing="2" AlignItems="AlignItems.Center" Class="mt-2" StretchItems="StretchItems.Middle" Row>
+        <MudItem>
+            <MudImage Src="@currentSrc" Alt="images/cocktail.png" Class="img-fluid cocktailImage focusedImage" @onerror="FallbackImage" />
+        </MudItem>
+
+
+        <MudContainer Style="min-height:20vh; margin: 0px; padding:0px; gap: 0.5rem">
+            <MudText Color="@Color.Tertiary" Typo="Typo.h3" Style="margin-left: -0.5rem;">
+                @Name.ToUpper()
+            </MudText>
+            <MudStack Style="max-width: 23vh; padding-left: 2.75rem; gap: 0.5rem">
+                @foreach (var ingredient in Ingredients)
                 {
-                    <MudItem Class="mt-2" style="display: flex; margin: 0px; padding:0px;">
-                        <MudText Color="Color.Primary" Typo="Typo.body1">
-                            Garnish:&nbsp;
+                    <MudStack Justify="Justify.SpaceBetween" Row>
+                        <MudText Color="@Color.Secondary" Typo="Typo.body1">
+                            @ingredient.Key
                         </MudText>
-                        <MudText Color="Color.Secondary" Typo="Typo.body1">
-                            @string.Join(", ", Garnishes.Where(g => !string.IsNullOrEmpty(g)))
+                        <MudText Color="@Color.Secondary" Typo="Typo.body1">
+                            @ingredient.Value ml
                         </MudText>
-                    </MudItem>
+                    </MudStack>
                 }
-            </MudContainer>
+            </MudStack>
+            @if (Garnishes.Count > 0)
+            {
+                <MudStack Class="mt-2" Style="display: flex; padding:0px; gap: 0.20rem">
+                    <MudText Color="Color.Primary" Typo="Typo.body1">
+                        Garnish:
+                    </MudText>
+                    <MudText Color="Color.Secondary" Typo="Typo.body1" Style="padding-left: 0.5rem;">
+                        @string.Join(", ", Garnishes.Where(g => !string.IsNullOrEmpty(g)))
+                    </MudText>
+                </MudStack>
+            }
             @if (ShowActions)
             {
                 @if (!IsProcessing)
                 {
-                    <MudStack AlignItems="AlignItems.Center" Style="margin-left: -0.5rem">
+                    <MudStack AlignItems="AlignItems.Center" Style="padding: 1rem; gap: 2rem" Row>
                         <MudItem>
                             <MudButton Disabled="@IsProcessing" OnClick="@OnProcess" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small">
                                 MAKE
@@ -80,22 +92,52 @@
                         </MudItem>
 
                         <MudItem>
-                            <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" OnClick="OnEdit">
+                            <MudButton Color="Color.Primary" Variant="Variant.Outlined" Size="Size.Small" OnClick="OnEdit">
                                 EDIT
                             </MudButton>
                         </MudItem>
                     </MudStack>
                 }
             }
-        </MudStack>
-    </MudPopover>
-</MudStack>
+        </MudContainer>
 
+    </MudStack>
+</MudPopover>
+
+@if (onPreview)
+{
+    <div class="blur-effect" @onclick="TogglePreview"></div>
+}
 <style>
     .mud-button {
         padding: 4px !important;
         min-width: 50px;
     }
+
+    @@keyframes fadeBlur {
+        from {
+            backdrop-filter: blur(0px);
+            background: rgba(0, 0, 0, 0);
+        }
+
+        to {
+            backdrop-filter: blur(12px);
+            background: rgba(0, 0, 0, 0.3);
+        }
+    }
+
+    .blur-effect {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        backdrop-filter: blur(12px);
+        background: rgba(0, 0, 0, 0.3);
+        animation: fadeBlur 0.3s ease-in-out;
+        z-index: 10;
+    }
+
 </style>
 
 @code {

@@ -36,7 +36,7 @@ namespace BlankBartender.WebApi.Services
                         Key = ing.Properties().First().Name,
                         Value = decimal.Parse(ing.Properties().First().Value.ToString()),
                     }).ToDictionary(k => k.Key, v => v.Value),
-                    Garnishes = drink["garnishes"].Values<string>().ToList()
+                    Garnishes = drink["garnishes"]?.Values<string>()?.ToList() ?? new List<string>()
                 }).ToList();
 
                 Console.WriteLine($"Success getting all cocktails");
@@ -78,7 +78,7 @@ namespace BlankBartender.WebApi.Services
                         Key = ing.Properties().First().Name,
                         Value = decimal.Parse(ing.Properties().First().Value.ToString()),
                     }).ToDictionary(k => k.Key, v => v.Value),
-                    Garnishes = drink["garnishes"].Values<string>().ToList()
+                    Garnishes = drink["garnishes"]?.Values<string>()?.ToList() ?? new List<string>()
                 }).ToList();
 
                 var pumpAlcohols = _pumps.Select(x => x.Value).ToList();
