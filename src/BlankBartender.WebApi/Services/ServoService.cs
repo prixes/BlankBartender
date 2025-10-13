@@ -11,7 +11,7 @@ namespace BlankBartender.WebApi.Services
         const int stirrerServoMaxClockwise = 215;  // Adjust based on actual direction
         const int stirrerServoMaxCounterClockwise = 388;  // Adjust based on actual direction
 
-        const int platformServoMin = 102;
+        const int platformServoMin = 95;
         const int platformServoMid = 307;
         const int platformServoMax = 530;
 
@@ -37,13 +37,12 @@ namespace BlankBartender.WebApi.Services
 #if !DEBUG
             i2cDevice = I2cDevice.Create(i2cConnection);
             pca = new Pca9685(i2cDevice, 50);
-            plaformPwmChannel = pca.CreatePwmChannel(7);
-            stirrerPwmChannel = pca.CreatePwmChannel(1);
 #endif
         }
 
         public void MovePlatformToStirrer()
         {
+            plaformPwmChannel = pca.CreatePwmChannel(7); // using channel 7 for plaform servo
             plaformPwmChannel.Start();
             for (int i = loopCountPlatform / 2; i <= loopCountPlatform; i++)
             {
@@ -63,9 +62,11 @@ namespace BlankBartender.WebApi.Services
             }
             plaformPwmChannel.DutyCycle = 0;
             plaformPwmChannel.Stop();
+            plaformPwmChannel.Dispose();
         }
         public void MoveStirrerToGlass() 
         {
+            stirrerPwmChannel = pca.CreatePwmChannel(1); // using channel 1 for stirrer servo
             stirrerPwmChannel.Start();
             for (int i = loopCountArmDown; i >= 0; i--)
             {
@@ -116,6 +117,7 @@ namespace BlankBartender.WebApi.Services
             }
             stirrerPwmChannel.DutyCycle = 0;
             stirrerPwmChannel.Stop();
+            stirrerPwmChannel.Dispose();
         }
 
         private double CalculateDutyCycle(int i)

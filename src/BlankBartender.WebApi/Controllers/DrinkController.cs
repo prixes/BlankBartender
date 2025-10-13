@@ -46,7 +46,7 @@ public class DrinkController : ControllerBase
         }
 }
 
-    [Route("available/all/")]
+    [HttpGet("available/all/")]
     public ActionResult GetAvailableDrinks()
     {
 
@@ -61,7 +61,7 @@ public class DrinkController : ControllerBase
         });
     }
 
-    [Route("all/")]
+    [HttpGet("all/")]
     public ActionResult GetDrinks()
     {
 #if !DEBUG
@@ -75,7 +75,7 @@ public class DrinkController : ControllerBase
         });
     }
 
-    [Route("process")]
+    [HttpPost("process")]
     public async Task<ActionResult> ProcessDrink(IEnumerable<Pump> model, string name = "")
     {
         _settinsValues = _settingsService.GetMachineSettings();
@@ -164,8 +164,7 @@ public class DrinkController : ControllerBase
     }
 
 
-    [HttpGet]
-    [Route("make/cocktail/{id}")]
+    [HttpGet("make/cocktail/{id}")]
     public async Task<ActionResult> MakeCocktail(int id)
     {
         _statusService.StartRunning();
@@ -202,8 +201,7 @@ public class DrinkController : ControllerBase
     }
 
 
-    [HttpPost]
-    [Route("make/cocktail/custom")]
+    [HttpPost("make/cocktail/custom")]
     public async Task<ActionResult> MakeCustomCocktail(Drink drink)
     {
         _statusService.StartRunning();
@@ -242,8 +240,7 @@ public class DrinkController : ControllerBase
         return await ProcessDrink(recipe, drink.Name);
     }
 
-    [HttpPost]
-    [Route("cocktail/create")]
+    [HttpPost("cocktail/create")]
     public async Task<ActionResult> AddCocktail(Drink newDrink)
     {
         try

@@ -48,7 +48,7 @@ namespace BlankBartender.WebApi.Controllers
 
         }
 
-        [Route("liquids")]
+        [HttpGet("liquids")]
         public ActionResult AllLiquids()
         {
             if (System.IO.File.Exists(_liquidsFilePath))
@@ -66,7 +66,7 @@ namespace BlankBartender.WebApi.Controllers
             });
         }
 
-        [Route("liquids/available")]
+        [HttpGet("liquids/available")]
         public ActionResult ReadAvailableLiquids()
         {
             if (System.IO.File.Exists(_pumpsFilePath))
@@ -86,8 +86,7 @@ namespace BlankBartender.WebApi.Controllers
             });
         }
 
-        [Route("liquids/add")]
-        [HttpPut]
+        [HttpPost("liquids/add")]
         public ActionResult AddLiquid(string removeLiquid)
         {
             _settingsService.AddLiquid(removeLiquid);
@@ -95,8 +94,7 @@ namespace BlankBartender.WebApi.Controllers
             return new JsonResult(new { });
         }
 
-        [Route("liquids/remove")]
-        [HttpDelete]
+        [HttpDelete("liquids/remove")]
         public ActionResult RemoveLiquid(string removeLiquid)
         {
             _settingsService.RemoveLiquid(removeLiquid);
@@ -104,7 +102,7 @@ namespace BlankBartender.WebApi.Controllers
             return new JsonResult(new { });
         }
 
-        [Route("pump")]
+        [HttpGet("pump")]
         public ActionResult ReadCurrentPumpConfiguration()
         {
             if (System.IO.File.Exists(_pumpsFilePath))
@@ -127,7 +125,7 @@ namespace BlankBartender.WebApi.Controllers
             });
         }
 
-        [Route("pump/change")]
+        [HttpPut("pump/change")]
         public async Task<ActionResult> ChangePumpLiquid(int pumpNumber, string liquid)
         {
             await _statusService.StartRunning();
@@ -147,7 +145,7 @@ namespace BlankBartender.WebApi.Controllers
             return Ok();
         }
 
-        [Route("pumps/all/start")]
+        [HttpPost("pumps/all/start")]
         public async Task<ActionResult> StartAllPumps()
         {
             await _statusService.StartRunning();
@@ -159,7 +157,7 @@ namespace BlankBartender.WebApi.Controllers
             return Ok();
         }
 
-        [Route("pump/{pumpNumber}/start")]
+        [HttpPost("pump/{pumpNumber}/start")]
         public async Task<ActionResult> StartPump(int pumpNumber)
         {
             await _statusService.StartRunning();
@@ -169,7 +167,7 @@ namespace BlankBartender.WebApi.Controllers
             return Ok();
         }
 
-        [Route("pumps/all/stop")]
+        [HttpPost("pumps/all/stop")]
         public async Task<ActionResult> StopAllPumps()
         {
             await _statusService.StartRunning();
@@ -181,7 +179,7 @@ namespace BlankBartender.WebApi.Controllers
             return Ok();
         }
 
-        [Route("pump/{pumpNumber}/stop")]
+        [HttpPost("pump/{pumpNumber}/stop")]
         public async Task<ActionResult> Stop(int pumpNumber)
         {
             await _statusService.StartRunning();
@@ -191,7 +189,7 @@ namespace BlankBartender.WebApi.Controllers
             return Ok();
         }
 
-        [Route("initialize")]
+        [HttpPost("initialize")]
         public async Task<ActionResult> InitializeLiquidFlow()
         {
             await _statusService.StartRunning();
@@ -235,8 +233,7 @@ namespace BlankBartender.WebApi.Controllers
             _pinService.SwitchPin(pin, false);
         }
 
-        [HttpGet]
-        [Route("settings")]
+        [HttpGet("settings")]
         public ActionResult GetMachineSettings()
         {
             var settingsValues = _settingsService.GetMachineSettings();
@@ -247,8 +244,7 @@ namespace BlankBartender.WebApi.Controllers
             });
         }
 
-        [HttpPut]
-        [Route("settings")]
+        [HttpPut("settings")]
         public async Task<ActionResult> SetMachineSettings(bool useCameraAI, bool useStitter)
         {
             await _statusService.StartRunning();

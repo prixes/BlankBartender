@@ -2,6 +2,7 @@ using BlankBartender.UI.Core.Interfaces;
 using BlankBartender.UI.Core.Services;
 using BlankBartender.UI.Web;
 using BlankBartender.UI.Web.Services;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
@@ -12,9 +13,13 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddHttpClient();
 
 
-var config = builder.Configuration;
-var apiUrl = config["ApiUrl"];
+//var config = builder.Configuration;
+//var apiUrl = config["ApiUrl"];
+var host = builder.Build();
+var navManager = host.Services.GetRequiredService<NavigationManager>();
 
+var hostUri = new Uri(navManager.BaseUri);
+var apiUrl = $"http://{hostUri.Host}";
 var httpClient = new HttpClient { BaseAddress = new Uri(apiUrl) };
 httpClient.DefaultRequestHeaders.Add("Access-Control-Allow-Origin", "*");
 httpClient.DefaultRequestHeaders.Add("Access-Control-Allow-Credentials", "true");

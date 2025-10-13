@@ -1,20 +1,23 @@
 ﻿using BlankBartender.UI.Core.Interfaces;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
-using Microsoft.Extensions.Configuration;
 namespace BlankBartender.UI.Core.Services
 {
     public class StatusService : IStatusService
     {
         private HubConnection? hubConnection;
-        private readonly IConfiguration Configuration;
         public bool isProcessing { get; set; }
 
         public event Action OnChange;
         private void NotifyStateChanged() => OnChange?.Invoke();
+        
 
-        public StatusService(IConfiguration Configuration)
+        string url = "";
+
+        public StatusService(NavigationManager NavigationManager)
         {
-            this.Configuration = Configuration;
+            var host = new Uri(NavigationManager.BaseUri).Host;
+            url = $"http://{host}:5000/ProcessingHub";
         }
 
         public async Task StartHub()
@@ -23,13 +26,13 @@ namespace BlankBartender.UI.Core.Services
             if (OperatingSystem.IsBrowser())
             {
                 hubConnection = new HubConnectionBuilder()
-                    .WithUrl(Configuration.GetValue<string>("ProcessingHub"))
+                    .WithUrl(url)
                     .Build();
             }
             else
             {
                 hubConnection = new HubConnectionBuilder()
-                    .WithUrl(Configuration.GetValue<string>("ProcessingHub"), options =>
+                    .WithUrl(url, options =>
                     {
                         options.HttpMessageHandlerFactory = (message) =>
                         {
