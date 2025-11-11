@@ -1,5 +1,4 @@
 ﻿using BlankBartender.Shared;
-using BlankBartender.UI.Core.Helpers;
 
 namespace BlankBartender.UI.Core.Interfaces
 {
@@ -20,7 +19,7 @@ namespace BlankBartender.UI.Core.Interfaces
 
         public Task<bool> PumpLiquidChange(int pumpNumber, string liquid);
 
-        public Task<(bool, bool)> GetSettings();
-        public Task<bool> SetSettings(bool UseCameraAI, bool UseStirrer);
+        public Task<(bool, bool, bool)> GetSettings();
+        public Task<bool> SetSettings(bool UseCameraAI, bool UseStirrer, bool UseIceDispenser);
     }
 }

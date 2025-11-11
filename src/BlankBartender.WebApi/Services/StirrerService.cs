@@ -1,5 +1,6 @@
 ﻿using BlankBartender.WebApi.Services.Interfaces;
 using System.Device.Gpio;
+using System.Device.Gpio.Drivers;
 
 namespace BlankBartender.WebApi.Services
 {
@@ -8,7 +9,8 @@ namespace BlankBartender.WebApi.Services
         private readonly GpioController _gpioController;
         public StirrerService() 
         {
-            _gpioController = new GpioController();
+            var driverGpio = new SysFsDriver();
+            _gpioController = new GpioController(PinNumberingScheme.Logical, driverGpio);
         }
 
         public async Task StartStirrer() 

@@ -14,11 +14,11 @@ namespace BlankBartender.WebApi.Services
         private readonly string _settingsPath = Path.Combine(Directory.GetCurrentDirectory(), "ConfigurationData", _settingsFileName);
         private readonly string liquidFilePath = Path.Combine(Directory.GetCurrentDirectory(), "ConfigurationData", "liquids-config.json");
 
-        private SettingsValues _settinsValues;
+        private readonly SettingsValues _settingsValues;
         private string? _settingsJson;
         public SettingsService()
         {
-            _settinsValues = new SettingsValues();
+            _settingsValues = new SettingsValues();
         }
 
         public SettingsValues GetMachineSettings()
@@ -28,16 +28,18 @@ namespace BlankBartender.WebApi.Services
             }
             JObject settingsJsonObject = JObject.Parse(_settingsJson);
 
-            _settinsValues.UseCameraAI = settingsJsonObject["useCameraAI"].Value<bool>();
-            _settinsValues.UseStirrer = settingsJsonObject["useStirrer"].Value<bool>();
+            _settingsValues.UseCameraAI = settingsJsonObject["useCameraAI"].Value<bool>();
+            _settingsValues.UseStirrer = settingsJsonObject["useStirrer"].Value<bool>();
+            _settingsValues.UseIceDispenser = settingsJsonObject["useIceDispenser"].Value<bool>();
 
-            return _settinsValues;
+            return _settingsValues;
         }
 
-        public async Task SetMachineSettings(bool useCameraAI, bool useStitter)
+        public async Task SetMachineSettings(bool useCameraAI, bool useStitter, bool useIceDispenser)
         {
-            _settinsValues.UseCameraAI = useCameraAI;
-            _settinsValues.UseStirrer = useStitter;
+            _settingsValues.UseCameraAI = useCameraAI;
+            _settingsValues.UseStirrer = useStitter;
+            _settingsValues.UseIceDispenser = useIceDispenser;
             ;
             var serializeOptions = new JsonSerializerOptions
             {
@@ -45,7 +47,7 @@ namespace BlankBartender.WebApi.Services
                 WriteIndented = true
             };
 
-            string json = JsonSerializer.Serialize(_settinsValues, serializeOptions);
+            string json = JsonSerializer.Serialize(_settingsValues, serializeOptions);
             using StreamWriter file = new(_settingsPath);
             await file.WriteLineAsync(json);
 

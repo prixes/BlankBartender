@@ -1,4 +1,5 @@
 {
   "useCameraAI": false,
-  "useStirrer": true
+  "useStirrer": false,
+  "useIceDispenser": true
 }

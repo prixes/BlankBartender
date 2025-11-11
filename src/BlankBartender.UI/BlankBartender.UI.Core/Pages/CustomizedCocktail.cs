@@ -56,10 +56,5 @@ namespace BlankBartender.UI.Core.Pages
                 drink.Ingredients[key] = originalIngredients[key];
             }
         }
-
-        private void FallbackImage()
-        {
-            imageSrc = "/images/cocktail.png";
-        }
     }
 }

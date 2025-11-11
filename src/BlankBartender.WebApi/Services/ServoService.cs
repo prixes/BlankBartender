@@ -15,9 +15,9 @@ namespace BlankBartender.WebApi.Services
         const int platformServoMid = 307;
         const int platformServoMax = 530;
 
-        I2cConnectionSettings i2cConnection = new I2cConnectionSettings(3, 0x40);
-        I2cDevice i2cDevice;
-        Pca9685 pca;
+        readonly I2cConnectionSettings i2cConnection = new I2cConnectionSettings(3, 0x40);
+        readonly I2cDevice i2cDevice;
+        readonly Pca9685 pca;
 
         double t, easedValue, dutyCycle;
         const int loopCountPlatform = 1400;
@@ -39,6 +39,39 @@ namespace BlankBartender.WebApi.Services
             pca = new Pca9685(i2cDevice, 50);
 #endif
         }
+
+        public void MovePlatformToIceDispenser()
+        {
+            plaformPwmChannel = pca.CreatePwmChannel(7); // using channel 7 for platform servo
+            plaformPwmChannel.Start();
+
+            // Move from middle (start) to ice dispenser (min)
+            for (int i = loopCountPlatform / 2; i >= 0; i--)
+            {
+                plaformPwmChannel.DutyCycle = CalculateDutyCycle(i) / 4096.0;
+                Thread.Sleep(delay);
+            }
+
+            plaformPwmChannel.DutyCycle = 0;
+            plaformPwmChannel.Stop();
+        }
+
+        public void MovePlatformFromIceToStart()
+        {
+            plaformPwmChannel.Start();
+
+            // Move from ice dispenser (min) back to middle (start)
+            for (int i = 0; i <= loopCountPlatform / 2; i++)
+            {
+                plaformPwmChannel.DutyCycle = CalculateDutyCycle(i) / 4096.0;
+                Thread.Sleep(delay);
+            }
+
+            plaformPwmChannel.DutyCycle = 0;
+            plaformPwmChannel.Stop();
+            plaformPwmChannel.Dispose();
+        }
+
 
         public void MovePlatformToStirrer()
         {
@@ -92,7 +125,7 @@ namespace BlankBartender.WebApi.Services
             stirrerPwmChannel.Stop();
         }
 
-        public void MoveStirrerToStart() 
+        public void MoveStirrerToStart()
         {
             stirrerPwmChannel.Start();
             for (int i = loopCountArmUp; i >= 0; i--)
@@ -103,7 +136,7 @@ namespace BlankBartender.WebApi.Services
 
                 stirrerPwmChannel.DutyCycle = dutyCycle / 4096.0;
                 Thread.Sleep((int)(armUpSeconds * 1000) / (2 * loopCountArmUp));
-               // Console.WriteLine(dutyCycle.ToString());
+                // Console.WriteLine(dutyCycle.ToString());
             }
             for (int i = 0; i <= loopCountArmUp; i++)
             {
@@ -113,12 +146,55 @@ namespace BlankBartender.WebApi.Services
 
                 stirrerPwmChannel.DutyCycle = dutyCycle / 4096.0; // Convert to a value between 0 and 1.
                 Thread.Sleep((int)(armUpSeconds * 1000) / (2 * loopCountArmUp));
-               // Console.WriteLine(dutyCycle.ToString());
+                // Console.WriteLine(dutyCycle.ToString());
             }
             stirrerPwmChannel.DutyCycle = 0;
             stirrerPwmChannel.Stop();
             stirrerPwmChannel.Dispose();
         }
+
+        public void MoveAngleServo300()
+        {
+            // Example servo pulse limits — adjust based on calibration
+            const int servoMin = 100;   // Pulse for 0 degrees
+            const int servoMax = 380;   // Pulse for 300 degrees
+
+            const double moveSeconds = 4.0;
+            const double pauseSeconds = 2.0;
+            const int loopCount = 200; // Smoothness — higher = smoother
+            int delay = (int)(moveSeconds * 1000) / loopCount;
+
+            var angleServo = pca.CreatePwmChannel(8); // example channel 3
+            angleServo.Start();
+
+            // Move 0 → 300 degrees
+            for (int i = 0; i <= loopCount; i++)
+            {
+                double t = (double)i / loopCount;
+                double easedValue = (Math.Sin((t - 0.5) * Math.PI) + 1) / 2; // smooth ease
+                double dutyCycle = easedValue * servoMax + (1 - easedValue) * servoMin;
+                angleServo.DutyCycle = dutyCycle / 4096.0;
+                Thread.Sleep(delay);
+            }
+
+            // Pause 2 seconds
+            Thread.Sleep((int)(pauseSeconds * 1000));
+
+            // Move 300 → 0 degrees
+            for (int i = loopCount; i >= 0; i--)
+            {
+                double t = (double)i / loopCount;
+                double easedValue = (Math.Sin((t - 0.5) * Math.PI) + 1) / 2;
+                double dutyCycle = easedValue * servoMax + (1 - easedValue) * servoMin;
+                angleServo.DutyCycle = dutyCycle / 4096.0;
+                Thread.Sleep(delay);
+            }
+
+            angleServo.DutyCycle = 0;
+            angleServo.Stop();
+            angleServo.Dispose();
+        }
+
 
         private double CalculateDutyCycle(int i)
         {

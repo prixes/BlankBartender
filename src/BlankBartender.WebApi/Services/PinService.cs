@@ -1,6 +1,7 @@
 ﻿using BlankBartender.Shared;
 using BlankBartender.WebApi.Services.Interfaces;
 using System.Device.Gpio;
+using System.Device.Gpio.Drivers;
 
 namespace BlankBartender.WebApi.Services
 {
@@ -11,7 +12,8 @@ namespace BlankBartender.WebApi.Services
         public PinService() 
         {
 #if !DEBUG
-            gpioController = new GpioController();
+            var driverGpio = new SysFsDriver();
+            gpioController = new GpioController(PinNumberingScheme.Logical, driverGpio);
             Console.WriteLine("Pin service initialized");
 #endif
         }

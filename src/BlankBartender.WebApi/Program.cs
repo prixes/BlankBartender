@@ -6,6 +6,7 @@ using Iot.Device.CharacterLcd;
 using Iot.Device.Pcx857x;
 using OpenCvSharp;
 using System.Device.Gpio;
+using System.Device.Gpio.Drivers;
 using System.Device.I2c;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -39,7 +40,8 @@ builder.Services.AddOpenApiDocument();
 
 var app = builder.Build();
 #if !DEBUG
-var light = new GpioController();
+var driverGpio = new SysFsDriver();
+var light = new GpioController(PinNumberingScheme.Logical, driverGpio);
 light.OpenPin(120, PinMode.Output);
 if (light.Read(120) == PinValue.High)
     light.Write(120, PinValue.Low);

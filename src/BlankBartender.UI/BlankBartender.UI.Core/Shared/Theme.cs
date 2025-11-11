@@ -10,7 +10,7 @@ namespace BlankBartender.UI.Core.Shared
 
     public static class Theme
     {
-        public static MudTheme AppTheme = new MudTheme()
+        public static MudTheme AppTheme = new()
         {
             PaletteLight = new PaletteLight()
             {
@@ -43,43 +43,43 @@ namespace BlankBartender.UI.Core.Shared
             },
             Typography = new Typography()
             {
-                Default = new Default
+                Default = new DefaultTypography
                 {
                     FontFamily =  ["Roboto", "sans-serif"],
                 },
-                Body2 = new Body2()
+                Body2 = new Body2Typography()
                 {
                     FontFamily = ["Koulen", "sans-serif"],
-                    FontWeight = 400,
+                    FontWeight = "400",
                     FontSize = "13px",
                 },
-                Body1 = new Body1
+                Body1 = new Body1Typography
                 {
                     FontFamily = ["Roboto", "sans-serif"],
-                    FontWeight = 400,
+                    FontWeight = "400",
                     FontSize = "13px",
                 },
-                H3 = new H3()
+                H3 = new H3Typography()
                 {
                     FontFamily = ["Koulen", "sans-serif"],
-                    FontWeight = 400,
+                    FontWeight = "400",
                     FontSize = "28px",
                 },
-                H4 = new H4()
+                H4 = new H4Typography()
                 {
                     FontFamily = ["Istok Web", "Arial", "sans-serif"],
                     FontSize = "25px",
                 },
-                H5 = new H5()
+                H5 = new H5Typography()
                 {
                     FontFamily = ["Koulen", "sans-serif"],
-                    FontWeight = 400,
+                    FontWeight = "400",
                     FontSize = "22px",
                 },
-                Button = new Button
+                Button = new ButtonTypography
                 {
                     FontFamily = ["Roboto", "sans-serif"],
-                    FontWeight = 400,
+                    FontWeight = "400",
                     FontSize = "13px",
                 }
                 // Add more for H3, H4, Body1, Body2, etc., as needed.

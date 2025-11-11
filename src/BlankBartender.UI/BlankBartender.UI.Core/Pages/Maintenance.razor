@@ -19,6 +19,12 @@
                    Size="Size.Small"
                    UncheckedColor="Color.Error" />
 
+        <MudSwitch @bind-Value="UseIceDispenser"
+                   @bind-Value:after="(async () => await UpdateSettings())"
+                   Label="@(UseIceDispenser ? "Use Ice Dispenser" : "No ICE")"
+                   Color="Color.Success"
+                   Size="Size.Small"
+                   UncheckedColor="Color.Error" />
     </MudStack>
     <MudStack Class="d-flex align-center justify-center flex-grow-1 gap-6" Row>
         @if (!showRemoveLiquid)

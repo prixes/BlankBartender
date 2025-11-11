@@ -4,5 +4,6 @@
     {
         public bool UseCameraAI { get; set; }
         public bool UseStirrer { get; set; }
+        public bool UseIceDispenser { get; set; }
     }
 }

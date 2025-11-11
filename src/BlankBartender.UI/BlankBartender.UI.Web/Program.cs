@@ -19,7 +19,7 @@ var host = builder.Build();
 var navManager = host.Services.GetRequiredService<NavigationManager>();
 
 var hostUri = new Uri(navManager.BaseUri);
-var apiUrl = $"http://{hostUri.Host}";
+var apiUrl = $"http://{hostUri.Host}:5000";
 var httpClient = new HttpClient { BaseAddress = new Uri(apiUrl) };
 httpClient.DefaultRequestHeaders.Add("Access-Control-Allow-Origin", "*");
 httpClient.DefaultRequestHeaders.Add("Access-Control-Allow-Credentials", "true");

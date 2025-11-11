@@ -22,6 +22,7 @@ public partial class Maintenance
     public bool UseCameraAI { get; set; } = false;
 
     public bool UseStirrer { get; set; } = false;
+    public bool UseIceDispenser { get; set; } = false;
     public string liquidName { get; set; } = string.Empty;
 
     protected override async Task OnInitializedAsync()
@@ -32,9 +33,10 @@ public partial class Maintenance
         pumps = await _service.GetPumpConfiguration();
         pumpsSwitch = Enumerable.Repeat(false, pumps.Count()).ToList(); 
         selectedLiquids = pumps.Select(pump => pump.Value).ToList();
-        var (cameraAI, stirrer) = await _service.GetSettings();
+        var (cameraAI, stirrer, iceDispenser) = await _service.GetSettings();
         UseCameraAI = cameraAI;
         UseStirrer = stirrer;
+        UseIceDispenser = iceDispenser;
     }
 
     protected async Task AddLiquid()
@@ -82,7 +84,7 @@ public partial class Maintenance
     protected async Task UpdateSettings()
     {
         isProcessing = true;
-        await _service.SetSettings(UseCameraAI, UseStirrer);
+        await _service.SetSettings(UseCameraAI, UseStirrer, UseIceDispenser);
         isProcessing = false;
     }
 

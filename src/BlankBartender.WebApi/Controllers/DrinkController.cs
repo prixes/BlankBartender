@@ -123,17 +123,29 @@ public class DrinkController : ControllerBase
             _pinService.SwitchPin(pump.Pin, false);
         }
 
-        var tasks = model.Select(pump => Task.Run(() => ExecutePumpAction(pump))).ToList();
+       
 
         try
         {
             var timeToMakeCocktail = (int)model.Max(x => x.Time) / 1050;
             if (_settinsValues.UseStirrer)
-                timeToMakeCocktail += 16;
-
+                timeToMakeCocktail += 18;
+            if (_settinsValues.UseIceDispenser)
+                timeToMakeCocktail += 19;
             Task.Run(() => _displayService.Countdown(timeToMakeCocktail));
 
+            if (_settinsValues.UseIceDispenser)
+            {
+                _servoService.MovePlatformToIceDispenser();
+                Console.WriteLine($"Start Ice Dispenser");
+                _servoService.MoveAngleServo300();
+                _servoService.MovePlatformFromIceToStart();
+                await Task.Delay(1000);
+            }
+
+            var tasks = model.Select(pump => Task.Run(() => ExecutePumpAction(pump))).ToList();
             await Task.WhenAll(tasks);
+
             if (_settinsValues.UseStirrer)
             {
                 Thread.Sleep(2500);
@@ -141,7 +153,6 @@ public class DrinkController : ControllerBase
                 _servoService.MovePlatformToStirrer();
                 _servoService.MoveStirrerToGlass();
                 Console.WriteLine($"Start Stirrer");
-                //await _stirrerService.StartStirrer();
                 _pinService.SwitchPin(147, true);
                 await Task.Delay(3000);
                 Console.WriteLine($"wait");
@@ -149,7 +160,6 @@ public class DrinkController : ControllerBase
                 _servoService.MoveStirrerToStart();
                 Console.WriteLine($"Start stop");
                 _pinService.SwitchPin(147, false);
-                //_stirrerService.StopStirrer();
                 _servoService.MovePlatformToStart();
             }
 

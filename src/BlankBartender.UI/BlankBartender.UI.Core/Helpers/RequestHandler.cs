@@ -1,6 +1,5 @@
 ﻿using BlankBartender.UI.Core.Services;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace BlankBartender.UI.Core.Helpers
 {
@@ -19,10 +18,31 @@ namespace BlankBartender.UI.Core.Helpers
 
         public static async Task<T> ParseResponseJsonAsync<T>(FileResponse response, string key)
         {
+            if (response == null)
+                throw new ArgumentNullException(nameof(response));
+
+            // Read the response stream completely
             using var streamReader = new StreamReader(response.Stream);
             var responseData = await streamReader.ReadToEndAsync();
-            JObject jsonObject = JObject.Parse(responseData);
-            return JsonConvert.DeserializeObject<T>(jsonObject[key].ToString());
+
+            if (string.IsNullOrWhiteSpace(responseData))
+                throw new InvalidOperationException("Response stream was empty.");
+
+            using var jsonDoc = JsonDocument.Parse(responseData);
+            if (!jsonDoc.RootElement.TryGetProperty(key, out JsonElement valueElement))
+                throw new KeyNotFoundException($"Key '{key}' not found in JSON: {responseData}");
+
+            // Important: configure to ignore case
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+
+            var result = JsonSerializer.Deserialize<T>(valueElement.GetRawText(), options);
+            if (result == null)
+                throw new InvalidOperationException($"Deserialization of key '{key}' returned null.");
+
+            return result;
         }
     }
 }

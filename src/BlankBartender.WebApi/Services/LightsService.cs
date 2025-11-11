@@ -2,6 +2,7 @@
 using BlankBartender.WebApi.Services.Interfaces;
 using Newtonsoft.Json.Linq;
 using System.Device.Gpio;
+using System.Device.Gpio.Drivers;
 
 namespace BlankBartender.WebApi.Services
 {
@@ -9,12 +10,18 @@ namespace BlankBartender.WebApi.Services
     {
         private const string LightConfigFileName = "lights-config.json";
 #if !DEBUG
-        private readonly GpioController _gpioController = new GpioController();
+        private readonly SysFsDriver driverGpio;
+        private readonly GpioController _gpioController;
 #endif
         private readonly Dictionary<string, short> _lightPins = new Dictionary<string, short>();
 
         public LightsService()
         {
+#if !DEBUG
+             driverGpio = new SysFsDriver();
+            _gpioController = new GpioController(PinNumberingScheme.Logical, driverGpio);
+#endif
+
             var lightsFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Configuration", LightConfigFileName);
             if (!File.Exists(lightsFilePath)) return;
 

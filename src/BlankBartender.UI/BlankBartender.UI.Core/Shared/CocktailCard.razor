@@ -3,7 +3,11 @@
 @using System.Collections.Generic
 
 <MudStack AlignItems="AlignItems.Center" Row>
-    <MudImage Src="@currentSrc" Alt="images/cocktail.png" Class="img-fluid cocktailImage" @onclick="TogglePreview" @onerror="FallbackImage" />
+    <MudImage Src="@currentSrc"
+              Alt="Cocktail"
+              Class="img-fluid cocktailImage"
+              @onclick="TogglePreview"
+              FallbackSrc="/images/cocktail.png" />
     <MudContainer Style="padding-right: 0px">
         <MudText Color="@Color.Tertiary" Typo="Typo.h5">@Name.ToUpper()</MudText>
         <MudText Color="@Color.Secondary" Typo="Typo.body1">
@@ -48,7 +52,7 @@
 <MudPopover Class="popover" Open="@onPreview" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" @onclick="TogglePreview">
     <MudStack Spacing="2" AlignItems="AlignItems.Center" Class="mt-2" StretchItems="StretchItems.Middle" Row>
         <MudItem>
-            <MudImage Src="@currentSrc" Alt="images/cocktail.png" Class="img-fluid cocktailImage focusedImage" @onerror="FallbackImage" />
+            <MudImage Src="@currentSrc" Alt="images/cocktail.png" Class="img-fluid cocktailImage focusedImage" FallbackSrc="/images/cocktail.png" />
         </MudItem>
 
 
@@ -160,10 +164,5 @@
     protected override async Task OnInitializedAsync()
     {
         currentSrc = await ImageService.GetCocktailImageAsync(Id);
-    }
-
-    private void FallbackImage()
-    {
-        currentSrc = "/images/cocktail.png";
     }
 }

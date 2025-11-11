@@ -90,7 +90,7 @@ namespace BlankBartender.UI.Core.Services
             return true;
         }
 
-        public async Task<(bool, bool)> GetSettings()
+        public async Task<(bool, bool, bool)> GetSettings()
         {
             var response = await _configurationClient.GetMachineSettingsAsync();
 
@@ -100,13 +100,14 @@ namespace BlankBartender.UI.Core.Services
 
             var useCameraAI = root.GetProperty("useCameraAI").GetBoolean();
             var useStirrer = root.GetProperty("useStirrer").GetBoolean();
+            var useIceDispenser = root.GetProperty("useIceDispenser").GetBoolean();
 
-            return (useCameraAI, useStirrer);
+            return (useCameraAI, useStirrer, useIceDispenser);
         }
 
-        public async Task<bool> SetSettings(bool UseCameraAI, bool UseStirrer)
+        public async Task<bool> SetSettings(bool UseCameraAI, bool UseStirrer, bool UseIceDispenser)
         {
-            var response = await _configurationClient.SetMachineSettingsAsync(UseCameraAI, UseStirrer);
+            var response = await _configurationClient.SetMachineSettingsAsync(UseCameraAI, UseStirrer, UseIceDispenser);
             await RequestHandler.ValidateResponseAsync(response);
             return true;
         }

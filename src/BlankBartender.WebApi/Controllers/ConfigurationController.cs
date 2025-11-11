@@ -240,15 +240,16 @@ namespace BlankBartender.WebApi.Controllers
             return new JsonResult(new
             {
                 settingsValues.UseCameraAI,
-                settingsValues.UseStirrer
+                settingsValues.UseStirrer,
+                settingsValues.UseIceDispenser
             });
         }
 
         [HttpPut("settings")]
-        public async Task<ActionResult> SetMachineSettings(bool useCameraAI, bool useStitter)
+        public async Task<ActionResult> SetMachineSettings(bool useCameraAI, bool useStitter, bool useIceDispenser)
         {
             await _statusService.StartRunning();
-            _settingsService.SetMachineSettings(useCameraAI, useStitter);
+            _settingsService.SetMachineSettings(useCameraAI, useStitter, useIceDispenser);
             await _statusService.StopRunning();
 
             return Ok();
