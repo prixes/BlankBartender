@@ -6,366 +6,6 @@
     "version": "1.0.0"
   },
   "paths": {
-    "/Configuration/liquids": {
-      "get": {
-        "tags": [
-          "Configuration"
-        ],
-        "operationId": "Configuration_AllLiquids",
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/Configuration/liquids/available": {
-      "get": {
-        "tags": [
-          "Configuration"
-        ],
-        "operationId": "Configuration_ReadAvailableLiquids",
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/Configuration/liquids/add": {
-      "post": {
-        "tags": [
-          "Configuration"
-        ],
-        "operationId": "Configuration_AddLiquid",
-        "parameters": [
-          {
-            "name": "removeLiquid",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/Configuration/liquids/remove": {
-      "delete": {
-        "tags": [
-          "Configuration"
-        ],
-        "operationId": "Configuration_RemoveLiquid",
-        "parameters": [
-          {
-            "name": "removeLiquid",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/Configuration/pump": {
-      "get": {
-        "tags": [
-          "Configuration"
-        ],
-        "operationId": "Configuration_ReadCurrentPumpConfiguration",
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/Configuration/pump/change": {
-      "put": {
-        "tags": [
-          "Configuration"
-        ],
-        "operationId": "Configuration_ChangePumpLiquid",
-        "parameters": [
-          {
-            "name": "pumpNumber",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 1
-          },
-          {
-            "name": "liquid",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 2
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/Configuration/pumps/all/start": {
-      "post": {
-        "tags": [
-          "Configuration"
-        ],
-        "operationId": "Configuration_StartAllPumps",
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/Configuration/pump/{pumpNumber}/start": {
-      "post": {
-        "tags": [
-          "Configuration"
-        ],
-        "operationId": "Configuration_StartPump",
-        "parameters": [
-          {
-            "name": "pumpNumber",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/Configuration/pumps/all/stop": {
-      "post": {
-        "tags": [
-          "Configuration"
-        ],
-        "operationId": "Configuration_StopAllPumps",
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/Configuration/pump/{pumpNumber}/stop": {
-      "post": {
-        "tags": [
-          "Configuration"
-        ],
-        "operationId": "Configuration_Stop",
-        "parameters": [
-          {
-            "name": "pumpNumber",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/Configuration/initialize": {
-      "post": {
-        "tags": [
-          "Configuration"
-        ],
-        "operationId": "Configuration_InitializeLiquidFlow",
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/Configuration/settings": {
-      "get": {
-        "tags": [
-          "Configuration"
-        ],
-        "operationId": "Configuration_GetMachineSettings",
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "Configuration"
-        ],
-        "operationId": "Configuration_SetMachineSettings",
-        "parameters": [
-          {
-            "name": "useCameraAI",
-            "in": "query",
-            "schema": {
-              "type": "boolean"
-            },
-            "x-position": 1
-          },
-          {
-            "name": "useStitter",
-            "in": "query",
-            "schema": {
-              "type": "boolean"
-            },
-            "x-position": 2
-          },
-          {
-            "name": "useIceDispenser",
-            "in": "query",
-            "schema": {
-              "type": "boolean"
-            },
-            "x-position": 3
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/Drink/available/all": {
       "get": {
         "tags": [
@@ -539,6 +179,366 @@
           "required": true,
           "x-position": 1
         },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/configuration/liquids": {
+      "get": {
+        "tags": [
+          "Liquids"
+        ],
+        "operationId": "Liquids_AllLiquids",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/configuration/liquids/add": {
+      "post": {
+        "tags": [
+          "Liquids"
+        ],
+        "operationId": "Liquids_AddLiquid",
+        "parameters": [
+          {
+            "name": "removeLiquid",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/configuration/liquids/remove": {
+      "delete": {
+        "tags": [
+          "Liquids"
+        ],
+        "operationId": "Liquids_RemoveLiquid",
+        "parameters": [
+          {
+            "name": "removeLiquid",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/configuration/liquids/available": {
+      "get": {
+        "tags": [
+          "Pumps"
+        ],
+        "operationId": "Pumps_ReadAvailableLiquids",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/configuration/pump": {
+      "get": {
+        "tags": [
+          "Pumps"
+        ],
+        "operationId": "Pumps_ReadCurrentPumpConfiguration",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/configuration/pump/change": {
+      "put": {
+        "tags": [
+          "Pumps"
+        ],
+        "operationId": "Pumps_ChangePumpLiquid",
+        "parameters": [
+          {
+            "name": "pumpNumber",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "liquid",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/configuration/pumps/all/start": {
+      "post": {
+        "tags": [
+          "Pumps"
+        ],
+        "operationId": "Pumps_StartAllPumps",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/configuration/pump/{pumpNumber}/start": {
+      "post": {
+        "tags": [
+          "Pumps"
+        ],
+        "operationId": "Pumps_StartPump",
+        "parameters": [
+          {
+            "name": "pumpNumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/configuration/pumps/all/stop": {
+      "post": {
+        "tags": [
+          "Pumps"
+        ],
+        "operationId": "Pumps_StopAllPumps",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/configuration/pump/{pumpNumber}/stop": {
+      "post": {
+        "tags": [
+          "Pumps"
+        ],
+        "operationId": "Pumps_Stop",
+        "parameters": [
+          {
+            "name": "pumpNumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/configuration/settings": {
+      "get": {
+        "tags": [
+          "Settings"
+        ],
+        "operationId": "Settings_GetMachineSettings",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Settings"
+        ],
+        "operationId": "Settings_SetMachineSettings",
+        "parameters": [
+          {
+            "name": "useCameraAI",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "useStitter",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            },
+            "x-position": 2
+          },
+          {
+            "name": "useIceDispenser",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            },
+            "x-position": 3
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/configuration/initialize": {
+      "post": {
+        "tags": [
+          "System"
+        ],
+        "operationId": "System_InitializeLiquidFlow",
         "responses": {
           "200": {
             "description": "",

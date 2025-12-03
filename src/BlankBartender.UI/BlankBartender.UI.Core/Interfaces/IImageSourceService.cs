@@ -1,8 +1,6 @@
-﻿
-namespace BlankBartender.UI.Core.Interfaces
+﻿namespace BlankBartender.UI.Core.Interfaces;
+
+public interface IImageSourceService
 {
-    public interface IImageSourceService
-    {
-        Task<string> GetCocktailImageAsync(int id);
-    }
+    Task<string> GetCocktailImageAsync(int id);
 }

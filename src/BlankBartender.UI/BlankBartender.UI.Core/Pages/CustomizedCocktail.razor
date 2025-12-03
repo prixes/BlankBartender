@@ -7,7 +7,7 @@
         <MudItem>
             <MudText Color="Color.Tertiary" Typo="Typo.h4" Align="Align.Center" Class="title-container">
                 Customize
-                @drink.Name
+                @Drink.Name
             </MudText>
         </MudItem>
         <MudItem>
@@ -18,7 +18,7 @@
 
 
 
-    @if (_statusService.isProcessing)
+    @if (StatusService.IsProcessing)
     {
         <MudAlert Severity="Severity.Warning">Machine is busy please wait</MudAlert>
     }
@@ -29,22 +29,22 @@
         <MudStack AlignItems="AlignItems.Center" Justify="Justify.Center" Spacing="3">
             <MudItem xs="9" sm="9" Class="py-3">
                 <MudText Color="Color.Secondary" Typo="Typo.body1">
-                    @string.Join(", ", drink.Ingredients.Select(ingredient => ingredient.Key))
+                    @string.Join(", ", Drink.Ingredients.Select(ingredient => ingredient.Key))
                 </MudText>
-                @if (drink.Garnishes.Count > 0)
+                @if (Drink.Garnishes.Count > 0)
                 {
                     <MudText Color="Color.Primary" Typo="Typo.body2">
                         Garnish:
                     </MudText>
                     <MudText Color="Color.Secondary" Typo="Typo.body2">
-                        @string.Join(", ", drink.Garnishes.Where(g => !string.IsNullOrEmpty(g)))
+                        @string.Join(", ", Drink.Garnishes.Where(g => !string.IsNullOrEmpty(g)))
                     </MudText>
                 }
             </MudItem>
         </MudStack>
 
         <MudGrid Spacing="6" Class="justify-center m-6">
-            @foreach (var ingredient in drink.Ingredients)
+            @foreach (var ingredient in Drink.Ingredients)
             {
 
                 <MudItem xs="9" sm="9">
@@ -52,7 +52,7 @@
                         <MudText Typo="Typo.body1" Color="Color.Secondary">@ingredient.Key:</MudText>
                         <MudText Typo="Typo.body2">@ingredient.Value.ToString() ml</MudText>
                     </MudStack>
-                    <MudSlider @bind-Value="drink.Ingredients[ingredient.Key]" Min="1" Max="200" Size="Size.Large" ValueLabel="true" ValueLabelFormat=@("0 ml") />
+                    <MudSlider @bind-Value="Drink.Ingredients[ingredient.Key]" Min="1" Max="200" Size="Size.Large" ValueLabel="true" ValueLabelFormat=@("0 ml") />
                     @* @onchange="val => UpdateValue(ingredient.Key, (decimal)val)" *@
                 </MudItem>
 
@@ -61,20 +61,20 @@
 
         <MudGrid Spacing="3" Justify="Justify.Center">
             <MudItem>
-                @if ((!drink.IsProcessing && !_statusService.isProcessing) || (drink.IsProcessing && _statusService.isProcessing))
+                @if ((!Drink.IsProcessing && !StatusService.IsProcessing) || (Drink.IsProcessing && StatusService.IsProcessing))
                 {
-                    <MudButton Disabled="@_statusService.isProcessing" Color="@((drink.IsProcessing ? Color.Warning : Color.Primary))" Variant="Variant.Filled" OnClick="@(async () => await ProcessCustomDrink(drink))">
-                        @(drink.IsProcessing ? "Processing" : "Make")
+                    <MudButton Disabled="@StatusService.IsProcessing" Color="@((Drink.IsProcessing ? Color.Warning : Color.Primary))" Variant="Variant.Filled" OnClick="@(async () => await ProcessCustomDrink(Drink))">
+                        @(Drink.IsProcessing ? "Processing" : "Make")
                     </MudButton>
                 }
             </MudItem>
         </MudGrid>
     </MudStack>
 
-    @if (drink.Garnishes.Count > 0)
+    @if (Drink.Garnishes.Count > 0)
     {
         <MudText>
-            Drink can be garnished with the following Ingredients: @string.Join(", ", drink.Garnishes)
+            Drink can be garnished with the following Ingredients: @string.Join(", ", Drink.Garnishes)
         </MudText>
     }
 </MudStack>

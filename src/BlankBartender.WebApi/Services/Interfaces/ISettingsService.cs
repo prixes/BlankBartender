@@ -1,12 +1,11 @@
 ﻿using BlankBartender.WebApi.Configuration;
 
-namespace BlankBartender.WebApi.Services.Interfaces
+namespace BlankBartender.WebApi.Services.Interfaces;
+
+public interface ISettingsService
 {
-    public interface ISettingsService
-    {
-        public SettingsValues GetMachineSettings();
-        public Task SetMachineSettings(bool useCameraAI, bool useStitter, bool useIceDispenser);
-        public void AddLiquid(string newLiquid);
-        public void RemoveLiquid(string liquidToRemove);
-    }
+    Task<SettingsValues> GetMachineSettingsAsync();
+    Task SetMachineSettingsAsync(bool useCameraAI, bool useStitter, bool useIceDispenser);
+    Task AddLiquidAsync(string newLiquid);
+    Task RemoveLiquidAsync(string liquidToRemove);
 }

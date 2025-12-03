@@ -5,6 +5,10 @@ using Microsoft.Extensions.Configuration;
 using MudBlazor.Services;
 using System.Reflection;
 using IImageSourceService = BlankBartender.UI.Core.Interfaces.IImageSourceService;
+using Microsoft.Extensions.DependencyInjection;
+using System.Net.Http;
+using System;
+using BlankBartender.UI.Core.Http;
 
 namespace BlankBartender.UI.Mobile;
 
@@ -25,19 +29,35 @@ public static class MauiProgram
         using var stream = a.GetManifestResourceStream("BlankBartender.UI.Mobile.appsettings.json");
         var config = new ConfigurationBuilder().AddJsonStream(stream).Build();
 
-     builder.Configuration.AddConfiguration(config);
+        builder.Configuration.AddConfiguration(config);
 
         builder.Services.AddMauiBlazorWebView();
 #if DEBUG
         builder.Services.AddBlazorWebViewDeveloperTools();
 #endif
-        //HttpClientHandler insecureHandler = GetInsecureHandler();
-        var handler = new HttpClientHandler();
-        handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
 
-        HttpClient httpClient = new HttpClient(handler);
-        builder.Services.AddScoped<IDrinkClient>(_ => new DrinkClient(builder.Configuration["ApiUrl"], httpClient));
-        builder.Services.AddScoped<IConfigurationClient>(_ => new ConfigurationClient(builder.Configuration["ApiUrl"], httpClient));
+        // Configure a named HttpClient for API calls; include insecure handler for device if necessary
+        var apiUrl = builder.Configuration["ApiUrl"] ?? throw new InvalidOperationException("ApiUrl not configured");
+        builder.Services.AddHttpClient("api", client =>
+        {
+            client.BaseAddress = new Uri(apiUrl);
+            client.Timeout = TimeSpan.FromSeconds(30);
+        })
+        .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+        {
+            ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+        });
+
+        // Register generated clients using factory registrations (constructor expects baseUrl + HttpClient)
+        builder.Services.AddScoped<IDrinkClient>(sp => new DrinkClient(apiUrl, sp.GetRequiredService<IHttpClientFactory>().CreateClient("api")));
+        builder.Services.AddScoped<ILiquidsClient>(sp => new LiquidsClient(apiUrl, sp.GetRequiredService<IHttpClientFactory>().CreateClient("api")));
+        builder.Services.AddScoped<IPumpsClient>(sp => new PumpsClient(apiUrl, sp.GetRequiredService<IHttpClientFactory>().CreateClient("api")));
+        builder.Services.AddScoped<ISettingsClient>(sp => new SettingsClient(apiUrl, sp.GetRequiredService<IHttpClientFactory>().CreateClient("api")));
+        builder.Services.AddScoped<ISystemClient>(sp => new SystemClient(apiUrl, sp.GetRequiredService<IHttpClientFactory>().CreateClient("api")));
+
+        // register our configuration API adapter and high-level services
+        builder.Services.AddHttpClient<BlankBartender.UI.Core.Http.IConfigurationApi, BlankBartender.UI.Core.Http.HttpConfigurationApi>(client => client.BaseAddress = new Uri(apiUrl));
+
         builder.Services.AddScoped<IConfigurationService, ConfigurationService>();
         builder.Services.AddScoped<IDrinkService, DrinkService>();
         builder.Services.AddScoped<IPlatformService, PlatformService>();
@@ -53,17 +73,5 @@ public static class MauiProgram
         return app;
     }
     public static IServiceProvider Services { get; private set; }
-
-    //public static HttpClientHandler GetInsecureHandler()
-    //{
-    //    HttpClientHandler handler = new HttpClientHandler();
-    //    handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) =>
-    //    {
-    //        if (cert.Issuer.Equals("CN=192.168.101.254"))
-    //            return true;
-    //        return errors == System.Net.Security.SslPolicyErrors.None;
-    //    };
-    //    return handler;
-    //}
 
 }

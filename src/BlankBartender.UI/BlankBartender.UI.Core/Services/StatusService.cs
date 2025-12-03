@@ -1,56 +1,56 @@
 ﻿using BlankBartender.UI.Core.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
-namespace BlankBartender.UI.Core.Services
+
+namespace BlankBartender.UI.Core.Services;
+
+public class StatusService : IStatusService
 {
-    public class StatusService : IStatusService
+    private HubConnection? hubConnection;
+    public bool IsProcessing { get; set; }
+
+    public event Action OnChange;
+    private void NotifyStateChanged() => OnChange?.Invoke();
+
+
+    private readonly string url = "";
+
+    public StatusService(NavigationManager NavigationManager)
     {
-        private HubConnection? hubConnection;
-        public bool isProcessing { get; set; }
+        var host = new Uri(NavigationManager.BaseUri).Host;
+        url = $"http://{host}:5000/ProcessingHub";
+    }
 
-        public event Action OnChange;
-        private void NotifyStateChanged() => OnChange?.Invoke();
-        
+    public async Task StartHub()
+    {
 
-        string url = "";
-
-        public StatusService(NavigationManager NavigationManager)
+        if (OperatingSystem.IsBrowser())
         {
-            var host = new Uri(NavigationManager.BaseUri).Host;
-            url = $"http://{host}:5000/ProcessingHub";
+            hubConnection = new HubConnectionBuilder()
+                .WithUrl(url)
+                .Build();
         }
-
-        public async Task StartHub()
+        else
         {
-
-            if (OperatingSystem.IsBrowser())
-            {
-                hubConnection = new HubConnectionBuilder()
-                    .WithUrl(url)
-                    .Build();
-            }
-            else
-            {
-                hubConnection = new HubConnectionBuilder()
-                    .WithUrl(url, options =>
+            hubConnection = new HubConnectionBuilder()
+                .WithUrl(url, options =>
+                {
+                    options.HttpMessageHandlerFactory = (message) =>
                     {
-                        options.HttpMessageHandlerFactory = (message) =>
-                        {
-                            if (message is HttpClientHandler clientHandler)
-                                clientHandler.ServerCertificateCustomValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
-                            return message;
-                        };
-                    })
-                    .Build();
-            }
-
-            hubConnection.On<bool>("SendStatus", (isProcessing) =>
-            {
-                this.isProcessing = isProcessing;
-                NotifyStateChanged();
-            });
-
-            await hubConnection.StartAsync();
+                        if (message is HttpClientHandler clientHandler)
+                            clientHandler.ServerCertificateCustomValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
+                        return message;
+                    };
+                })
+                .Build();
         }
+
+        hubConnection.On<bool>("SendStatus", (isProcessing) =>
+        {
+            this.IsProcessing = isProcessing;
+            NotifyStateChanged();
+        });
+
+        await hubConnection.StartAsync();
     }
 }

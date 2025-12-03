@@ -1,17 +1,25 @@
-﻿using BlankBartender.UI.Core.Services;
+﻿using BlankBartender.UI.Core.Http;
 using System.Text.Json;
 
 namespace BlankBartender.UI.Core.Helpers
 {
     public static class RequestHandler
     {
+        private static readonly JsonSerializerOptions _defaultOptions = new()
+        {
+            PropertyNameCaseInsensitive = true
+        };
+
         public static async Task ValidateResponseAsync(FileResponse response)
         {
+            if (response == null) throw new ArgumentNullException(nameof(response));
+
             var status = (int)response.StatusCode;
             if (status != 200)
             {
+                // Read remaining content (if any) for diagnostic purposes
                 using var streamReader = new StreamReader(response.Stream);
-                var responseData = await streamReader.ReadToEndAsync();
+                var responseData = await streamReader.ReadToEndAsync().ConfigureAwait(false);
                 throw new ApiException($"The HTTP status code of the response was not expected ({status}).", status, responseData, response.Headers, null);
             }
         }
@@ -21,28 +29,20 @@ namespace BlankBartender.UI.Core.Helpers
             if (response == null)
                 throw new ArgumentNullException(nameof(response));
 
-            // Read the response stream completely
-            using var streamReader = new StreamReader(response.Stream);
-            var responseData = await streamReader.ReadToEndAsync();
+            if (string.IsNullOrWhiteSpace(key))
+                throw new ArgumentNullException(nameof(key));
 
-            if (string.IsNullOrWhiteSpace(responseData))
-                throw new InvalidOperationException("Response stream was empty.");
-
-            using var jsonDoc = JsonDocument.Parse(responseData);
-            if (!jsonDoc.RootElement.TryGetProperty(key, out JsonElement valueElement))
-                throw new KeyNotFoundException($"Key '{key}' not found in JSON: {responseData}");
-
-            // Important: configure to ignore case
-            var options = new JsonSerializerOptions
+            // Parse directly from the response stream to avoid buffering the whole content in memory
+            using var jsonDoc = await JsonDocument.ParseAsync(response.Stream, new JsonDocumentOptions
             {
-                PropertyNameCaseInsensitive = true
-            };
+                AllowTrailingCommas = true
+            }).ConfigureAwait(false);
 
-            var result = JsonSerializer.Deserialize<T>(valueElement.GetRawText(), options);
-            if (result == null)
-                throw new InvalidOperationException($"Deserialization of key '{key}' returned null.");
+            if (!jsonDoc.RootElement.TryGetProperty(key, out JsonElement valueElement))
+                throw new KeyNotFoundException($"Key '{key}' not found in JSON response.");
 
-            return result;
+            var result = JsonSerializer.Deserialize<T>(valueElement.GetRawText(), _defaultOptions);
+            return result == null ? throw new InvalidOperationException($"Deserialization of key '{key}' returned null.") : result;
         }
     }
 }

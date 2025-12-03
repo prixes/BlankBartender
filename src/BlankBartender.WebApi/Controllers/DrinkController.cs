@@ -17,19 +17,18 @@ public class DrinkController : ControllerBase
     private readonly IPinService _pinService;
     private readonly IStatusService _statusService;
     private readonly IPumpService _pumpService;
-    private readonly IDetectionService _detectionService;
+    private readonly IDetectionService? _detectionService;
     private readonly IServoService _servoService;
     private readonly ISettingsService _settingsService;
-    private SettingsValues _settinsValues;
+    private SettingsValues _settingsValues;
 
-    public DrinkController(ILightsService lightsService,     IDisplayService displayService,
-                           ICocktailService cocktailService, IPinService pinService, 
-                           IStatusService statusService,     IPumpService pumpService, 
-                           IDetectionService detectionService,IServoService servoService,
+    public DrinkController(ILightsService lightsService, IDisplayService displayService,
+                           ICocktailService cocktailService, IPinService pinService,
+                           IStatusService statusService, IPumpService pumpService,
+                           IDetectionService detectionService, IServoService servoService,
                            ISettingsService settingsService)
     {
         _cocktailService = cocktailService;
-        _statusService = statusService;
         _lightsService = lightsService;
         _displayService = displayService;
         _pinService = pinService;
@@ -37,14 +36,11 @@ public class DrinkController : ControllerBase
         _pumpService = pumpService;
         _servoService = servoService;
         _settingsService = settingsService;
+        _detectionService = detectionService;
 
         _pumps = _pumpService.GetConfiguration();
-        _settinsValues = _settingsService.GetMachineSettings();
-        if(_settinsValues.UseCameraAI)
-        {
-            _detectionService = detectionService;
-        }
-}
+        _settingsValues = _settingsService.GetMachineSettingsAsync().Result;   
+    }
 
     [HttpGet("available/all/")]
     public ActionResult GetAvailableDrinks()
@@ -76,12 +72,13 @@ public class DrinkController : ControllerBase
     }
 
     [HttpPost("process")]
-    public async Task<ActionResult> ProcessDrink(IEnumerable<Pump> model, string name = "")
+    public async Task<ActionResult> ProcessDrink([FromBody] IEnumerable<Pump> model, string name = "", CancellationToken cancellationToken = default)
     {
-        _settinsValues = _settingsService.GetMachineSettings();
+        _settingsValues = _settingsService.GetMachineSettingsAsync().Result;
         //_lightsService.StartCocktailLights();
-        Thread.Sleep(1580);
-        if(_settinsValues.UseCameraAI)
+        await Task.Delay(1580, cancellationToken);
+
+        if (_settingsValues.UseCameraAI)
         {
             _displayService.PlaceGlassMessage();
             var timeout = TimeSpan.FromSeconds(30);
@@ -89,7 +86,8 @@ public class DrinkController : ControllerBase
 
             while (DateTime.UtcNow < stopTime)
             {
-                if (await _detectionService.DetectGlass())
+                var detected = await (_detectionService?.DetectGlass() ?? Task.FromResult(false));
+                if (detected)
                 {
                     Console.WriteLine($"Glass detected success");
                     break;
@@ -97,64 +95,70 @@ public class DrinkController : ControllerBase
                 else
                 {
                     Console.WriteLine($"Glass detected failed");
-                    Thread.Sleep(1580);
+                    await Task.Delay(1580, cancellationToken);
                 }
+
+                if (cancellationToken.IsCancellationRequested)
+                    break;
             }
+
             if (DateTime.UtcNow > stopTime)
             {
                 await _displayService.Clear();
                 await _displayService.WriteFirstLineDisplay("cocktail cancel!");
-                Thread.Sleep(1580);
+                await Task.Delay(1580, cancellationToken);
                 _lightsService.TurnLight("green", true);
                 _displayService.MachineReadyForUse();
                 return Ok();
             }
         }
-       
+
         await _displayService.PrepareStartDisplay(name);
 
         async Task ExecutePumpAction(Pump pump)
         {
             _pinService.SwitchPin(pump.Pin, true);
-            Console.WriteLine($"Start pump {pump.Number} on pin {pump.Pin} for {pump.Time.Value.ToString("00000.00")} ms");
-            await Task.Delay((int)pump.Time);  // Replacing Thread.Sleep with Task.Delay in async methods.
-            Console.WriteLine($"Stop pump {pump.Number} on pin {pump.Pin} that worked for {pump.Time.Value.ToString("00000.00")} ms");
+            Console.WriteLine($"Start pump {pump.Number} on pin {pump.Pin} for {pump.Time?.ToString("00000.00")} ms");
+            var delayMs = (int)(pump.Time ?? 0m);
+            await Task.Delay(delayMs, cancellationToken);
+            Console.WriteLine($"Stop pump {pump.Number} on pin {pump.Pin} that worked for {pump.Time?.ToString("00000.00")} ms");
 
             _pinService.SwitchPin(pump.Pin, false);
         }
 
-       
-
         try
         {
-            var timeToMakeCocktail = (int)model.Max(x => x.Time) / 1050;
-            if (_settinsValues.UseStirrer)
+            var maxTime = model?.Max(x => x.Time) ?? 0m;
+            var timeToMakeCocktail = (int)(maxTime / 1050m);
+            if (_settingsValues.UseStirrer)
                 timeToMakeCocktail += 18;
-            if (_settinsValues.UseIceDispenser)
+            if (_settingsValues.UseIceDispenser)
                 timeToMakeCocktail += 19;
-            Task.Run(() => _displayService.Countdown(timeToMakeCocktail));
 
-            if (_settinsValues.UseIceDispenser)
+            // start countdown without blocking
+            _ = _displayService.Countdown(timeToMakeCocktail);
+
+            if (_settingsValues.UseIceDispenser)
             {
                 _servoService.MovePlatformToIceDispenser();
                 Console.WriteLine($"Start Ice Dispenser");
                 _servoService.MoveAngleServo300();
                 _servoService.MovePlatformFromIceToStart();
-                await Task.Delay(1000);
+                await Task.Delay(1000, cancellationToken);
             }
 
-            var tasks = model.Select(pump => Task.Run(() => ExecutePumpAction(pump))).ToList();
+            var tasks = model.Select(pump => ExecutePumpAction(pump)).ToList();
             await Task.WhenAll(tasks);
 
-            if (_settinsValues.UseStirrer)
+            if (_settingsValues.UseStirrer)
             {
-                Thread.Sleep(2500);
+                await Task.Delay(2500, cancellationToken);
                 //Stirring process part
                 _servoService.MovePlatformToStirrer();
                 _servoService.MoveStirrerToGlass();
                 Console.WriteLine($"Start Stirrer");
                 _pinService.SwitchPin(147, true);
-                await Task.Delay(3000);
+                await Task.Delay(3000, cancellationToken);
                 Console.WriteLine($"wait");
                 Console.WriteLine($"go up");
                 _servoService.MoveStirrerToStart();
@@ -164,8 +168,13 @@ public class DrinkController : ControllerBase
             }
 
             await CocktailDoneLightsAndDisplay();
-            _statusService.StopRunning();
+            await _statusService.StopRunning();
             return Ok();
+        }
+        catch (OperationCanceledException)
+        {
+            await _statusService.StopRunning();
+            return new StatusCodeResult(499);
         }
         catch
         {
@@ -175,7 +184,7 @@ public class DrinkController : ControllerBase
 
 
     [HttpGet("make/cocktail/{id}")]
-    public async Task<ActionResult> MakeCocktail(int id)
+    public async Task<ActionResult> MakeCocktail(int id, CancellationToken cancellationToken = default)
     {
         _statusService.StartRunning();
         _drinks = _cocktailService.GetAvaiableCocktails();
@@ -192,27 +201,21 @@ public class DrinkController : ControllerBase
 
         var recipe = drink.Ingredients.Select(ingridient =>
         {
-            var pump = _pumps.FirstOrDefault(x => x.Value == ingridient.Key);
-            var time = ingridient.Value * 1000 / pump.FlowRate;
-
-            if (pump == null)
-            {
-                // TODO: Handle the exception if the pump is not found.
-                throw new Exception($"Pump for ingredient {ingridient.Key} not found.");
-            }
+            var pump = _pumps.FirstOrDefault(x => x.Value == ingridient.Key) ?? throw new Exception($"Pump for ingredient {ingridient.Key} not found.");
+            var time = ingridient.Value * 1000m / pump.FlowRate;
             pump.Time = time;
-            Console.WriteLine($"Found and added ingredient {ingridient.Key} amount:{ingridient.Value.ToString("0.00")} (taking {time / 1000:0.00} seconds) corresponding to Pump {pump.Number}");
+            Console.WriteLine($"Found and added ingredient {ingridient.Key} amount:{ingridient.Value:0.00} (taking {time / 1000:0.00} seconds) corresponding to Pump {pump.Number}");
             return pump;
         }).ToList();
 
         await _displayService.PrepareStartDisplay(drink.Name);
-        ProcessDrink(recipe, drink.Name);
-        return Ok();
+        var result = await ProcessDrink(recipe, drink.Name, cancellationToken);
+        return result;
     }
 
 
     [HttpPost("make/cocktail/custom")]
-    public async Task<ActionResult> MakeCustomCocktail(Drink drink)
+    public async Task<ActionResult> MakeCustomCocktail(Drink drink, CancellationToken cancellationToken = default)
     {
         _statusService.StartRunning();
         _pumps = _pumpService.GetConfiguration();
@@ -226,28 +229,27 @@ public class DrinkController : ControllerBase
 
         Console.WriteLine($"Received request for {drink.Name}");
 
-        var recipe = drink.Ingredients.Select(ingridient =>
+        var recipe = new List<Pump>();
+        foreach (var ingridient in drink.Ingredients)
         {
             var pump = _pumps.FirstOrDefault(x => x.Value == ingridient.Key);
-            var time = ingridient.Value * 1000 / pump.FlowRate;
-
             if (pump == null)
             {
-                throw new Exception($"Pump for ingredient {ingridient.Key} not found.");
+                return BadRequest($"Pump for ingredient {ingridient.Key} not found.");
             }
-
+            var time = ingridient.Value * 1000m / pump.FlowRate;
             pump.Time = time;
             Console.WriteLine($"Added ingredient {ingridient.Key} amount:{ingridient.Value:0.00} (taking {time / 1000:0.00} seconds) to Pump{pump.Number}");
-            return pump;
+            recipe.Add(pump);
+        }
 
-        }).ToList();
-
-        var timeToMakeCocktail = (int)recipe.Max(x => x.Time) / 1000;
+        var maxRecipeTime = recipe.Max(x => x.Time) ?? 0m;
+        var timeToMakeCocktail = (int)(maxRecipeTime / 1000m);
 
         await _displayService.PrepareStartDisplay(drink.Name);
 
         Console.WriteLine($"Start pouring");
-        return await ProcessDrink(recipe, drink.Name);
+        return await ProcessDrink(recipe, drink.Name, cancellationToken);
     }
 
     [HttpPost("cocktail/create")]

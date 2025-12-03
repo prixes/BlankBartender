@@ -1,122 +1,77 @@
 ﻿using BlankBartender.WebApi.Configuration;
+using BlankBartender.WebApi.Repositories.Interfaces;
 using BlankBartender.WebApi.Services.Interfaces;
-using Newtonsoft.Json.Linq;
-using System.Text.Json;
 
-namespace BlankBartender.WebApi.Services
+namespace BlankBartender.WebApi.Services;
+
+public class SettingsService : ISettingsService
 {
-    public class SettingsService : ISettingsService
+    private readonly SettingsValues _settingsValues = new();
+    private volatile bool _settingsLoaded;
+
+    private readonly SemaphoreSlim _settingsSemaphore = new(1, 1);
+
+    private readonly IConfigurationFileService _fileService;
+    private readonly ILiquidsRepository _liquidsRepository;
+    private readonly ILogger<SettingsService>? _logger;
+
+    public SettingsService(IConfigurationFileService fileService, ILiquidsRepository liquidsRepository, ILogger<SettingsService>? logger = null)
     {
-        private const string _settingsFileName = "settings.json";
+        _fileService = fileService;
+        _liquidsRepository = liquidsRepository;
+        _logger = logger;
+    }
 
-        private string _liquidConfigJson;
-
-        private readonly string _settingsPath = Path.Combine(Directory.GetCurrentDirectory(), "ConfigurationData", _settingsFileName);
-        private readonly string liquidFilePath = Path.Combine(Directory.GetCurrentDirectory(), "ConfigurationData", "liquids-config.json");
-
-        private readonly SettingsValues _settingsValues;
-        private string? _settingsJson;
-        public SettingsService()
+    public async Task<SettingsValues> GetMachineSettingsAsync()
+    {
+        await _settingsSemaphore.WaitAsync().ConfigureAwait(false);
+        try
         {
-            _settingsValues = new SettingsValues();
-        }
+            if (_settingsLoaded)
+                return _settingsValues;
 
-        public SettingsValues GetMachineSettings()
-        {            if (System.IO.File.Exists(_settingsPath))
+            var parsed = await _fileService.ReadJsonAsync<SettingsValues>(ConfigurationPaths.SettingsFileName).ConfigureAwait(false);
+            if (parsed != null)
             {
-                _settingsJson = System.IO.File.ReadAllText(_settingsPath);
+                _settingsValues.UseCameraAI = parsed.UseCameraAI;
+                _settingsValues.UseStirrer = parsed.UseStirrer;
+                _settingsValues.UseIceDispenser = parsed.UseIceDispenser;
             }
-            JObject settingsJsonObject = JObject.Parse(_settingsJson);
 
-            _settingsValues.UseCameraAI = settingsJsonObject["useCameraAI"].Value<bool>();
-            _settingsValues.UseStirrer = settingsJsonObject["useStirrer"].Value<bool>();
-            _settingsValues.UseIceDispenser = settingsJsonObject["useIceDispenser"].Value<bool>();
-
+            _settingsLoaded = true;
             return _settingsValues;
         }
+        finally
+        {
+            _settingsSemaphore.Release();
+        }
+    }
 
-        public async Task SetMachineSettings(bool useCameraAI, bool useStitter, bool useIceDispenser)
+    public async Task SetMachineSettingsAsync(bool useCameraAI, bool useStitter, bool useIceDispenser)
+    {
+        await _settingsSemaphore.WaitAsync().ConfigureAwait(false);
+        try
         {
             _settingsValues.UseCameraAI = useCameraAI;
             _settingsValues.UseStirrer = useStitter;
             _settingsValues.UseIceDispenser = useIceDispenser;
-            ;
-            var serializeOptions = new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                WriteIndented = true
-            };
 
-            string json = JsonSerializer.Serialize(_settingsValues, serializeOptions);
-            using StreamWriter file = new(_settingsPath);
-            await file.WriteLineAsync(json);
+            await _fileService.WriteJsonAsync(ConfigurationPaths.SettingsFileName, _settingsValues).ConfigureAwait(false);
 
+            _settingsLoaded = true;
         }
-
-        public void AddLiquid(string newLiquid)
+        catch (Exception ex)
         {
-            Console.WriteLine($"Adding new liquid: {newLiquid}");
-            JArray liquidsArray;
-
-            if (System.IO.File.Exists(liquidFilePath))
-            {
-                _liquidConfigJson = System.IO.File.ReadAllText(liquidFilePath);
-                if (!string.IsNullOrEmpty(_liquidConfigJson))
-                {
-                    liquidsArray = JArray.Parse(_liquidConfigJson);
-                }
-                else
-                {
-                    liquidsArray = new JArray();
-                }
-            }
-            else
-            {
-                liquidsArray = new JArray();
-            }
-
-            // Add new liquid if it doesn't already exist in the array
-            if (!liquidsArray.Contains(newLiquid))
-            {
-                liquidsArray.Add(newLiquid);
-                System.IO.File.WriteAllText(liquidFilePath, liquidsArray.ToString());
-                Console.WriteLine("Liquid added successfully");
-            }
-            else
-            {
-                Console.WriteLine("Liquid already exists in the list");
-            }
+            _logger?.LogError(ex, "Failed to write settings file '{Path}'", _fileService.GetFullPath(ConfigurationPaths.SettingsFileName));
+            throw;
         }
-
-        public void RemoveLiquid(string liquidToRemove)
+        finally
         {
-            Console.WriteLine($"Removing liquid: {liquidToRemove}");
-            List<string> liquidsArray;
-
-            if (System.IO.File.Exists(liquidFilePath))
-            {
-                _liquidConfigJson = System.IO.File.ReadAllText(liquidFilePath);
-                if (!string.IsNullOrEmpty(_liquidConfigJson))
-                {
-                    liquidsArray = JArray.Parse(_liquidConfigJson).ToObject<List<string>>(); ;
-
-                    // Remove liquid if it exists in the array
-                    if (liquidsArray.Contains(liquidToRemove))
-                    {
-                        liquidsArray.Remove(liquidToRemove);
-                        System.IO.File.WriteAllText(liquidFilePath, JArray.FromObject(liquidsArray).ToString());
-                        Console.WriteLine("Liquid removed successfully");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Liquid not found in the list");
-                    }
-                }
-            }
-            else
-            {
-                Console.WriteLine("Liquid configuration file does not exist");
-            }
+            _settingsSemaphore.Release();
         }
     }
+
+    public Task AddLiquidAsync(string newLiquid) => _liquidsRepository.AddAsync(newLiquid);
+
+    public Task RemoveLiquidAsync(string liquidToRemove) => _liquidsRepository.RemoveAsync(liquidToRemove);
 }

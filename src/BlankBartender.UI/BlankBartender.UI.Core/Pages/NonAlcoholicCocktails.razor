@@ -4,7 +4,7 @@
     <HeaderWithSearch Title="Non-alcoholic" SearchQuery="@_searchQuery" SearchQueryChanged="OnSearchQueryChanged" />
 
 
-    @if (_statusService.isProcessing)
+    @if (_statusService.IsProcessing)
     {
         <MudStack AlignItems="AlignItems.Center" Spacing="0">
             <MudAlert Severity="Severity.Warning">
@@ -38,7 +38,7 @@
                               Ingredients="drink.Ingredients"
                               Garnishes="drink.Garnishes"
                               ShowActions="true"
-                              IsProcessing="@_statusService.isProcessing"
+                              IsProcessing="@_statusService.IsProcessing"
                           OnEditProcess="@(async () => await Process(drink))"
                               OnTune="@(async () => NavigateToCustomCocktailPage(drink))" />
             }

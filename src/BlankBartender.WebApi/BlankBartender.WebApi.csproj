@@ -54,10 +54,14 @@
 	  </None>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Repositories\Interfaces\" />
+	</ItemGroup>
+
 	<PropertyGroup>
 		<RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
 		<PublishAot>False</PublishAot>
-		<!--<SupportedOSPlatformVersion>10.0.22000.0</SupportedOSPlatformVersion>-->
+		<SupportedOSPlatformVersion>10.0.22000.0</SupportedOSPlatformVersion>
     <!--CommentOut when nswag client generate !!!-->
 		<!--<PlatformTarget>ARM64</PlatformTarget>-->
 	</PropertyGroup>
@@ -70,13 +74,13 @@
 	  <Optimize>False</Optimize>
 	</PropertyGroup>
 
-  <!--<Target Name="NSwag" AfterTargets="ComputeFilesToPublish" Condition=" '$(Configuration)' == 'Release' ">
+  <Target Name="NSwag" AfterTargets="ComputeFilesToPublish" Condition=" '$(Configuration)' == 'Release' ">
     <Exec WorkingDirectory="$(ProjectDir)" EnvironmentVariables="ASPNETCORE_ENVIRONMENT=Development" Command="$(NSwagExe_Net70) run config.nswag" />
   </Target>
 
   <Target Name="NSwag" AfterTargets="PostBuildEvent" Condition=" '$(Configuration)' == 'Debug' ">
     <Exec WorkingDirectory="$(ProjectDir)" EnvironmentVariables="ASPNETCORE_ENVIRONMENT=Development" Command="$(NSwagExe_Net80) run config.nswag" />
-  </Target>-->
+  </Target>
 
 
   <Target Name="RunWebpack" AfterTargets="PostBuildEvent">

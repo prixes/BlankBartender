@@ -11,13 +11,13 @@ namespace BlankBartender.UI.Core.Pages
     public partial class CustomizedCocktail : ComponentBase
     {
         [Parameter]
-        public string model { get; set; }
+        public required string Model { get; set; }
         [Inject]
-        public IDrinkService _service { get; set; } = default!;
+        public IDrinkService Service { get; set; } = default!;
         [Inject]
-        public IStatusService _statusService { get; set; } = default!;
-        private Drink drink { get; set; }
-        private Dictionary<string, decimal> originalIngredients { get; set; }
+        public IStatusService StatusService { get; set; } = default!;
+        public required Drink Drink { get; set; }
+        public required Dictionary<string, decimal> OriginalIngredients { get; set; }
 
         public string SliderFormat { get; set; }
 
@@ -28,19 +28,19 @@ namespace BlankBartender.UI.Core.Pages
         protected override async Task OnInitializedAsync()
         {
             base.OnInitialized();
-            var modelJson = WebUtility.UrlDecode(model);
-            drink = JsonSerializer.Deserialize<Drink>(modelJson);
-            originalIngredients = new Dictionary<string, decimal>(drink.Ingredients);
-            await _statusService.StartHub();
-            _statusService.OnChange += OnChangeHandler;
+            var modelJson = WebUtility.UrlDecode(Model);
+            Drink = JsonSerializer.Deserialize<Drink>(modelJson);
+            OriginalIngredients = new Dictionary<string, decimal>(Drink.Ingredients);
+            await StatusService.StartHub();
+            StatusService.OnChange += OnChangeHandler;
 
-            imageSrc = await ImageService.GetCocktailImageAsync(drink.Id);
+            imageSrc = await ImageService.GetCocktailImageAsync(Drink.Id);
         }
 
         protected async Task ProcessCustomDrink(Drink drink)
         {
             drink.IsProcessing = true;
-            await _service.ProcessCustomDrink(drink);
+            await Service.ProcessCustomDrink(drink);
             drink.IsProcessing = false;
         }
 
@@ -51,9 +51,9 @@ namespace BlankBartender.UI.Core.Pages
 
         private void ResetValues()
         {
-            foreach (var key in originalIngredients.Keys)
+            foreach (var key in OriginalIngredients.Keys)
             {
-                drink.Ingredients[key] = originalIngredients[key];
+                Drink.Ingredients[key] = OriginalIngredients[key];
             }
         }
     }

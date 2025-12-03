@@ -1,7 +1,11 @@
 ﻿using BlankBartender.WebApi.Notifications;
+using BlankBartender.WebApi.Repositories;
+using BlankBartender.WebApi.Repositories.Interfaces;
 using BlankBartender.WebApi.Services;
 using BlankBartender.WebApi.Services.Interfaces;
 using BlankBartender.WebApi.WorkerQueues;
+using BlankBartender.WebApi.Middleware;
+using BlankBartender.WebApi.Validation;
 using Iot.Device.CharacterLcd;
 using Iot.Device.Pcx857x;
 using OpenCvSharp;
@@ -24,6 +28,17 @@ builder.Services.AddControllers();
 builder.Services.AddSignalR();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddHostedService<QueuedHostedService>();
+
+// Centralized file service + repositories
+builder.Services.AddSingleton<IConfigurationFileService, ConfigurationFileService>();
+builder.Services.AddSingleton<ILiquidsRepository, LiquidsRepository>();
+builder.Services.AddSingleton<IPumpsRepository, PumpsRepository>();
+
+// validators
+builder.Services.AddSingleton<ILiquidValidator, LiquidValidator>();
+builder.Services.AddSingleton<ISettingsValidator, SettingsValidator>();
+
+// existing services (SettingsService depends on IConfigurationFileService + ILiquidsRepository)
 builder.Services.AddSingleton<IStatusService, StatusService>();
 builder.Services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
 builder.Services.AddSingleton<IDisplayService, DisplayService>();
@@ -36,6 +51,10 @@ builder.Services.AddSingleton<IServoService, ServoService>();
 builder.Services.AddTransient<ICocktailService, CocktailService>();
 builder.Services.AddSingleton<IStirrerService, StirrerService>();
 builder.Services.AddSingleton<ISettingsService, SettingsService>();
+
+// preload configuration at startup
+builder.Services.AddHostedService<ConfigurationInitializationService>();
+
 builder.Services.AddOpenApiDocument();
 
 var app = builder.Build();
@@ -68,6 +87,9 @@ app.UseCors(options =>
     options.AllowAnyHeader();
     options.AllowAnyMethod();
 });
+
+// Global exception handler
+app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
 app.UseOpenApi();
 app.UseSwaggerUi();

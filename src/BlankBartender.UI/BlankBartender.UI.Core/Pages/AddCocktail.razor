@@ -65,12 +65,12 @@
             if (drink.Ingredients.Count > 0)
             {
                 <MudStack AlignItems="AlignItems.Center" Row>
-                    @if ((!drink.IsProcessing && !_statusService.isProcessing))
+                    @if ((!drink.IsProcessing && !_statusService.IsProcessing))
                     {
                         @if (!openPopup)
                         {
                             <MudButton OnClick="@( () => openPopup = true)"
-                                       Disabled="@_statusService.isProcessing"
+                                       Disabled="@_statusService.IsProcessing"
                                        Color="@((drink.IsProcessing ? Color.Warning : Color.Primary))"
                                        Variant="Variant.Outlined">
                                 Save
@@ -78,10 +78,10 @@
                         }
                     }
 
-                    @if (!openPopup && useAvailableLiquids && ((!drink.IsProcessing && !_statusService.isProcessing) || (drink.IsProcessing && _statusService.isProcessing)))
+                    @if (!openPopup && useAvailableLiquids && ((!drink.IsProcessing && !_statusService.IsProcessing) || (drink.IsProcessing && _statusService.IsProcessing)))
                     {
                         <MudButton OnClick="@(async () => await ProcessCustomDrink(drink))"
-                                   Disabled="@_statusService.isProcessing"
+                                   Disabled="@_statusService.IsProcessing"
                                    Color="@((drink.IsProcessing ? Color.Warning : Color.Primary))"
                                    Variant="Variant.Filled">
                             @(drink.IsProcessing ? "Processing" : "Make")
@@ -94,7 +94,7 @@
                     <MudStack AlignItems="AlignItems.Center">
                         <MudTextField @bind-Value="drink.Name" Label="Please enter cocktail name" Style="width:300px" Variant="Variant.Text"></MudTextField>
                         <MudButton OnClick="@(() => SaveCocktail(drink))"
-                                   Disabled="@_statusService.isProcessing"
+                                   Disabled="@_statusService.IsProcessing"
                                    Color="@((drink.IsProcessing ? Color.Warning : Color.Primary))"
                                    Variant="Variant.Filled">
                             Finalize cocktail
